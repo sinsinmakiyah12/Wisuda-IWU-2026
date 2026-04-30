@@ -7,7 +7,6 @@
     <!-- Library QR & Font -->
     <script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
@@ -23,7 +22,7 @@
 
         .container { width: 100%; max-width: 480px; text-align: center; }
 
-        /* Header & Tema */
+        /* Header */
         .header-section { margin-bottom: 30px; }
         .header-section h1 { font-size: 1.8rem; font-weight: 800; color: #fff; line-height: 1.2; }
         .header-section .tahun { font-size: 1.1rem; color: #a286f4; font-weight: 700; margin-top: 5px; }
@@ -44,7 +43,7 @@
             border-radius: 30px;
             padding: 35px 25px;
             border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
         }
 
         .input-box {
@@ -55,14 +54,14 @@
 
         select.input-box { background: #2a1b4d; color: white; border: 1px solid #6a1b9a; text-align-last: center; }
 
-        /* Tombol - Deep Purple (Hapus Biru Muda) */
+        /* Tombol Utama (Deep Purple) */
         .btn-action {
             background: #6a1b9a; 
             color: white; border: none; padding: 18px;
             border-radius: 15px; width: 100%; font-weight: 700; cursor: pointer;
             text-transform: uppercase; margin-bottom: 15px;
             box-shadow: 0 8px 20px rgba(106, 27, 154, 0.3);
-            transition: 0.3s;
+            transition: 0.3s ease;
         }
         .btn-action:hover { background: #8e24aa; transform: translateY(-2px); }
 
@@ -71,7 +70,6 @@
             padding: 15px; border-radius: 15px; width: 100%; cursor: pointer; font-weight: 600;
             transition: 0.3s;
         }
-        .btn-back:hover { background: rgba(255,255,255,0.1); border-color: white; }
 
         .qr-display { 
             background: white; 
@@ -79,10 +77,9 @@
             border-radius: 20px; 
             display: inline-block; 
             margin: 20px 0; 
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
 
-        #detailMhs h3 { font-size: 1.4rem; margin-bottom: 5px; color: #fff; }
+        #detailMhs h3 { font-size: 1.4rem; margin-bottom: 5px; }
         #detailMhs p { font-size: 0.9rem; opacity: 0.8; margin-bottom: 15px; }
     </style>
 </head>
@@ -90,49 +87,48 @@
 
     <div class="container">
         
-        <!-- HEADER -->
         <div class="header-section" id="headerArea">
             <h1>SIDANG TERBUKA SENAT WISUDA IWU</h1>
             <div class="tahun">Tahun Akademik 2025/2026</div>
             <div class="tema">"Transformasi Bangsa Melalui Intelektual Muda yang Adaptif"</div>
         </div>
         
-        <!-- AREA PENCARIAN -->
+        <!-- UI PENCARIAN -->
         <div id="searchArea" class="glass-card">
-            <h2 style="margin-bottom:20px; font-size: 1.2rem;">Cek Data Presensi</h2>
-            <input type="text" id="nimInput" placeholder="Masukkan NIM Anda" class="input-box">
-            <button class="btn-action" onclick="cariData()">LIHAT DATA SAYA</button>
+            <h2 style="margin-bottom:20px; font-size: 1.2rem;">Cek Data Wisudawan</h2>
+            <input type="text" id="nimInput" placeholder="Masukkan NIM" class="input-box">
+            <button class="btn-action" onclick="cariData()">CARI DATA</button>
         </div>
 
-        <!-- AREA HASIL & DOWNLOAD -->
+        <!-- UI HASIL & DOWNLOAD (Fix: P-T Database) -->
         <div id="resultArea" class="glass-card" style="display:none; margin-top: 20px;">
             <div id="infoMhs"></div>
             
-            <p style="font-size: 0.8rem; margin-bottom: 10px; color: #a286f4; font-weight: 600;">PILIH KATEGORI QR:</p>
+            <p style="font-size: 0.8rem; margin-bottom: 10px; color: #a286f4; font-weight: 700;">KATEGORI DOWNLOAD:</p>
             <select id="kategoriQR" class="input-box" onchange="generateQR()">
-                <option value="Simulasi">1. QR Simulasi</option>
-                <option value="Ortu">2. QR Undangan Ortu</option>
-                <option value="Mahasiswa">3. QR Kehadiran Hari H</option>
-                <option value="Toga">4. QR Ambil Toga</option>
-                <option value="Ijazah">5. QR Ambil Ijazah</option>
+                <option value="Simulasi">QR Simulasi (Kolom P)</option>
+                <option value="Ortu">QR Undangan Ortu (Kolom Q)</option>
+                <option value="Mahasiswa">QR Kehadiran (Kolom R)</option>
+                <option value="Toga">QR Ambil Toga (Kolom S)</option>
+                <option value="Ijazah">QR Ambil Ijazah (Kolom T)</option>
             </select>
 
             <div class="qr-display"><canvas id="qrCanvas"></canvas></div>
             
-            <button class="btn-action" onclick="downloadDanLog()">DOWNLOAD & SIMPAN DATA</button>
+            <button class="btn-action" onclick="downloadDanLog()">DOWNLOAD & UPDATE DATABASE</button>
             <button class="btn-back" onclick="location.reload()">KEMBALI</button>
         </div>
 
     </div>
 
     <script>
-        // GANTI DENGAN URL WEB APP HASIL DEPLOY GOOGLE APPS SCRIPT KAMU
-        const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbxL3JynAHYYB3APAUBrTixwXqnTjutln6374veUFowe1-dRHubj04YUZ6NeBOePpHyROg/exec"; 
+        // MASUKKAN URL WEB APP DARI GOOGLE APPS SCRIPT DISINI
+        const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbwxX6etqKNtPgwKDr-AkK6pHD4ndd7tie7KhkkyEfiSohGs6ggF1QsbcpEl_H3j9xNJ1A/exec"; 
         let userData = null;
 
         async function cariData() {
             const nim = document.getElementById('nimInput').value.trim();
-            if(!nim) return alert("NIM tidak boleh kosong!");
+            if(!nim) return alert("NIM harus diisi!");
 
             try {
                 const res = await fetch(`${URL_SCRIPT}?action=getMahasiswa&nim=${nim}`);
@@ -141,7 +137,6 @@
                 if(data.nim) {
                     userData = data;
                     document.getElementById('searchArea').style.display = 'none';
-                    document.getElementById('headerArea').style.display = 'none';
                     document.getElementById('resultArea').style.display = 'block';
                     document.getElementById('infoMhs').innerHTML = `
                         <h3>${data.nama}</h3>
@@ -149,43 +144,35 @@
                     `;
                     generateQR();
                 } else {
-                    alert("Maaf, NIM tidak ditemukan di database.");
+                    alert("NIM tidak ditemukan!");
                 }
             } catch(e) {
-                alert("Gagal terhubung ke database. Pastikan URL Script benar.");
+                alert("Koneksi gagal! Cek URL Script kamu.");
             }
         }
 
         function generateQR() {
             const kat = document.getElementById('kategoriQR').value;
-            // Format QR: NIM|KATEGORI (Contoh: 21023204|Toga)
-            QRCode.toCanvas(document.getElementById('qrCanvas'), `${userData.nim}|${kat}`, { 
-                width: 200,
-                margin: 2
-            });
+            QRCode.toCanvas(document.getElementById('qrCanvas'), `${userData.nim}|${kat}`, { width: 200 });
         }
 
         async function downloadDanLog() {
             const kat = document.getElementById('kategoriQR').value;
             const canvas = document.getElementById('qrCanvas');
             
-            // 1. Simpan tanda "V" ke Google Sheets sesuai kolom P-T
+            // 1. Kirim Log ke Sheets (Memicu tanda 'V' di kolom P-T)
             fetch(URL_SCRIPT, {
                 method: 'POST',
-                body: JSON.stringify({
-                    action: "logDownload",
-                    nim: userData.nim,
-                    tipe: kat
-                })
+                body: JSON.stringify({ action: "logDownload", nim: userData.nim, tipe: kat })
             });
 
-            // 2. Proses Download Gambar QR
+            // 2. Download File
             const link = document.createElement('a');
             link.download = `QR_${kat}_${userData.nim}.png`;
             link.href = canvas.toDataURL();
             link.click();
             
-            alert(`Berhasil! QR ${kat} telah didownload.`);
+            alert(`Berhasil! QR ${kat} tersimpan & database diperbarui.`);
         }
     </script>
 </body>
