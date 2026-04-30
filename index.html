@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wisuda IWU 2025/2026</title>
-    <!-- Library QR & Font -->
     <script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js"></script>
     <script src="https://unpkg.com/html5-qrcode"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
+        /* Base Styling */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
         body { 
             background: radial-gradient(circle at top right, #1e0b4d, #0d0421); 
@@ -24,7 +24,7 @@
 
         .container { width: 100%; max-width: 480px; text-align: center; }
 
-        /* HEADER: JUDUL & TEMA */
+        /* Header & Tema */
         .header-section { margin-bottom: 40px; }
         .header-section h1 { font-size: 1.8rem; font-weight: 800; letter-spacing: 1px; color: #fff; line-height: 1.2; }
         .header-section .tahun { font-size: 1.1rem; color: #a286f4; font-weight: 700; margin-top: 5px; }
@@ -39,7 +39,7 @@
             padding: 0 10px;
         }
 
-        /* Menu Card Styling */
+        /* Menu Card */
         .menu-card {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -56,9 +56,8 @@
         }
         .menu-card i { font-size: 55px; margin-bottom: 20px; color: #a286f4; }
         .menu-card h2 { font-size: 1.6rem; margin-bottom: 8px; font-weight: 700; }
-        .menu-card p { font-size: 0.95rem; opacity: 0.7; }
 
-        /* Interface Glass UI */
+        /* Glass UI Input & Button */
         .glass-card {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(25px);
@@ -74,14 +73,20 @@
             margin-bottom: 20px; font-size: 1rem; outline: none; background: white; color: #333;
         }
 
-        /* Button Action (Sekarang Ungu) */
+        /* TOMBOL UTAMA - FIX: SUDAH UNGU */
         .btn-action {
             background: #6a1b9a; /* Deep Purple */
-            color: white; border: none; padding: 18px;
-            border-radius: 15px; width: 100%; font-weight: 700; cursor: pointer;
-            text-transform: uppercase; margin-bottom: 15px;
+            color: white; 
+            border: none; 
+            padding: 18px;
+            border-radius: 15px; 
+            width: 100%; 
+            font-weight: 700; 
+            cursor: pointer;
+            text-transform: uppercase; 
+            margin-bottom: 15px;
             box-shadow: 0 8px 20px rgba(106, 27, 154, 0.3);
-            transition: 0.3s;
+            transition: background 0.3s ease;
         }
         .btn-action:hover { background: #8e24aa; }
 
@@ -97,7 +102,6 @@
 <body>
 
     <div class="container">
-        
         <!-- HEADER -->
         <div class="header-section" id="headerArea">
             <h1>SIDANG TERBUKA SENAT WISUDA IWU</h1>
@@ -110,13 +114,10 @@
             <div class="menu-card" onclick="openWisudawan()">
                 <i class="fas fa-user-graduate"></i>
                 <h2>Wisudawan</h2>
-                <p>Unduh QR Code Kehadiran & Atribut</p>
             </div>
-
             <div class="menu-card" onclick="openPanitia()">
                 <i class="fas fa-qrcode"></i>
                 <h2>Panitia</h2>
-                <p>Scanner Verifikasi Real-time</p>
             </div>
         </div>
 
@@ -126,14 +127,13 @@
             <input type="text" id="nimMhs" placeholder="Masukkan NIM Anda" class="input-box">
             <button class="btn-action" onclick="getQR()">LIHAT DATA</button>
             <button class="btn-back" onclick="backToMenu()">KEMBALI</button>
-
             <div id="hasilMhs" style="display:none; margin-top:30px;">
                 <div id="detailMhs" style="margin-bottom:10px;"></div>
                 <div class="qr-display"><canvas id="canvasQR"></canvas></div>
             </div>
         </div>
 
-        <!-- LOGIN & SCANNER PANITIA -->
+        <!-- AREA PANITIA -->
         <div id="uiPanitia" class="glass-card">
             <div id="loginPanitia">
                 <h2 style="margin-bottom:20px;">Akses Panitia</h2>
@@ -141,7 +141,6 @@
                 <button class="btn-action" onclick="prosesLogin()">MASUK KE SCANNER</button>
                 <button class="btn-back" onclick="backToMenu()">BATAL</button>
             </div>
-
             <div id="scannerSection" style="display:none;">
                 <h2 style="margin-bottom:20px;">Scanner Presensi</h2>
                 <div id="reader"></div>
@@ -149,7 +148,6 @@
                 <button class="btn-back" onclick="location.reload()" style="margin-top:20px;">KELUAR</button>
             </div>
         </div>
-
     </div>
 
     <script>
@@ -162,21 +160,16 @@
             document.getElementById('headerArea').style.display = 'none';
             document.getElementById('uiWisudawan').style.display = 'block';
         }
-
         function openPanitia() {
             document.getElementById('uiMenu').style.display = 'none';
             document.getElementById('headerArea').style.display = 'none';
             document.getElementById('uiPanitia').style.display = 'block';
         }
-
-        function backToMenu() {
-            location.reload();
-        }
+        function backToMenu() { location.reload(); }
 
         async function getQR() {
             const nim = document.getElementById('nimMhs').value.trim();
             if(!nim) return;
-            
             try {
                 const res = await fetch(`${URL_SCRIPT}?action=getMahasiswa&nim=${nim}`);
                 const d = await res.json();
