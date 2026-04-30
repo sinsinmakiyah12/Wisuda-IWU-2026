@@ -4,88 +4,129 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistem Wisuda IWU 2026</title>
-    <!-- Library Penting -->
-    <script src="https://unpkg.com/html5-qrcode"></script>
+    <!-- Library QR, Scanner & Font -->
     <script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        body { background: #0d0421; color: white; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
-        .container { width: 100%; max-width: 450px; text-align: center; }
-        .glass { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border-radius: 25px; padding: 25px; border: 1px solid rgba(255, 255, 255, 0.2); }
-        .input-box { width: 100%; padding: 15px; border-radius: 12px; border: none; margin-bottom: 10px; font-size: 1rem; text-align: center; }
-        .btn-purple { background: #6a1b9a; color: white; border: none; padding: 15px; border-radius: 12px; width: 100%; font-weight: 700; cursor: pointer; margin-top: 10px; }
-        #reader { width: 100%; border-radius: 15px; overflow: hidden; background: black; margin-top: 15px; }
-        .hidden { display: none; }
-        .menu-btn { background: rgba(255,255,255,0.05); padding: 20px; border-radius: 15px; margin-bottom: 15px; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); }
+        body { background: radial-gradient(circle at top right, #1e0b4d, #0d0421); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; color: white; }
+        .container { width: 100%; max-width: 480px; text-align: center; }
+        .glass-card { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(20px); border-radius: 30px; padding: 30px; border: 1px solid rgba(255, 255, 255, 0.2); display: none; }
+        .input-box { width: 100%; padding: 15px; border-radius: 12px; border: none; margin-bottom: 15px; font-size: 1rem; text-align: center; font-weight: 600; }
+        select.input-box { background: #2a1b4d; color: white; border: 1px solid #6a1b9a; }
+        .btn-purple { background: #6a1b9a; color: white; border: none; padding: 15px; border-radius: 12px; width: 100%; font-weight: 700; cursor: pointer; text-transform: uppercase; margin-top: 10px; }
+        .btn-outline { background: transparent; color: white; border: 2px solid rgba(255,255,255,0.4); padding: 12px; border-radius: 12px; width: 100%; font-weight: 600; margin-top: 10px; cursor: pointer; }
+        .menu-card { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 25px; padding: 30px; margin-bottom: 20px; cursor: pointer; }
+        #reader { width: 100%; border-radius: 15px; overflow: hidden; margin-top: 15px; }
+        .qr-display { background: white; padding: 15px; border-radius: 15px; display: inline-block; margin: 15px 0; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <!-- MENU UTAMA -->
-    <div id="menuUtama">
-        <h1 style="margin-bottom: 20px;">WISUDA IWU 2026</h1>
-        <div class="menu-btn" onclick="tampilHalaman('viewWisudawan')"><h2>Wisudawan</h2><p>Cek Data & QR</p></div>
-        <div class="menu-btn" onclick="tampilHalaman('viewPanitia')"><h2>Panitia</h2><p>Scanner Kamera</p></div>
-    </div>
-
-    <!-- HALAMAN PANITIA -->
-    <div id="viewPanitia" class="glass hidden">
-        <h2>Scanner Panitia</h2>
-        <div id="loginPanitia">
-            <input type="password" id="pinField" placeholder="Masukkan PIN" class="input-box">
-            <button class="btn-purple" onclick="mulaiScanner()">AKTIFKAN KAMERA</button>
+    <div id="mainMenu">
+        <h1 style="margin-bottom: 30px;">WISUDA IWU 2026</h1>
+        <div class="menu-card" onclick="showPage('viewWisudawan')">
+            <i class="fas fa-user-graduate" style="font-size: 40px; color: #a286f4; margin-bottom: 10px;"></i>
+            <h2>Wisudawan</h2>
+            <p>Unduh QR Kehadiran</p>
         </div>
-        <div id="scannerArea" class="hidden">
-            <div id="reader"></div>
-            <p id="hasilScan" style="margin-top: 10px; color: #a286f4; font-weight: bold;"></p>
-            <button class="btn-purple" style="background: #444;" onclick="location.reload()">STOP / KEMBALI</button>
+        <div class="menu-card" onclick="showPage('viewPanitia')">
+            <i class="fas fa-qrcode" style="font-size: 40px; color: #a286f4; margin-bottom: 10px;"></i>
+            <h2>Panitia</h2>
+            <p>Scanner Kamera</p>
         </div>
     </div>
 
     <!-- HALAMAN WISUDAWAN -->
-    <div id="viewWisudawan" class="glass hidden">
-        <h2>Data Wisudawan</h2>
+    <div id="viewWisudawan" class="glass-card">
+        <h2>Cek Data</h2>
         <input type="text" id="nimInput" placeholder="Masukkan NIM" class="input-box">
-        <button class="btn-purple" onclick="alert('Fungsi Cari Aktif di Script')">CARI DATA</button>
-        <button class="btn-purple" style="background: #444;" onclick="location.reload()">KEMBALI</button>
+        <button class="btn-purple" onclick="cariDataMhs()">CARI DATA</button>
+        
+        <div id="hasilMhs" style="display:none; margin-top:20px;">
+            <div id="infoDetail"></div>
+            <select id="tipeQR" class="input-box" onchange="renderQR()">
+                <option value="Simulasi">QR Simulasi</option>
+                <option value="Ortu">QR Undangan Ortu</option>
+                <option value="Mahasiswa">QR Kehadiran</option>
+                <option value="Toga">QR Ambil Toga</option>
+                <option value="Ijazah">QR Ambil Ijazah</option>
+            </select>
+            <div class="qr-display"><canvas id="qrCanvas"></canvas></div>
+            <button class="btn-purple" onclick="downloadQR()">DOWNLOAD & UPDATE</button>
+        </div>
+        <button class="btn-outline" onclick="location.reload()">KEMBALI</button>
+    </div>
+
+    <!-- HALAMAN PANITIA -->
+    <div id="viewPanitia" class="glass-card">
+        <h2>Scanner Panitia</h2>
+        <div id="loginArea">
+            <input type="password" id="pinField" placeholder="Masukkan PIN" class="input-box">
+            <button class="btn-purple" onclick="startCamera()">AKTIFKAN SCANNER</button>
+        </div>
+        <div id="scannerArea" style="display:none;">
+            <div id="reader"></div>
+            <button class="btn-purple" style="background:#cc0000;" onclick="location.reload()">STOP SCANNER</button>
+        </div>
+        <button class="btn-outline" onclick="location.reload()">KEMBALI</button>
     </div>
 </div>
 
 <script>
-    function tampilHalaman(id) {
-        document.getElementById('menuUtama').classList.add('hidden');
-        document.getElementById(id).classList.remove('hidden');
+    const URL_SCRIPT = "https://script.google.com/macros/s/AKfycby3cvhso9z9rrnGeCxN3ACxR2ldcNmNQui70XJZVuS7TEzyqz48RzkgUV_zAjdi5NoOjw/exec"; 
+    let currentData = null;
+
+    function showPage(id) {
+        document.getElementById('mainMenu').style.display = 'none';
+        document.getElementById(id).style.display = 'block';
     }
 
-    function mulaiScanner() {
-        const pin = document.getElementById('pinField').value;
+    async function cariDataMhs() {
+        const nim = document.getElementById('nimInput').value;
+        try {
+            const res = await fetch(`${URL_SCRIPT}?action=getMahasiswa&nim=${nim}`);
+            const data = await res.json();
+            if(data.nim) {
+                currentData = data;
+                document.getElementById('hasilMhs').style.display = 'block';
+                document.getElementById('infoDetail').innerHTML = `<h3>${data.nama}</h3><p>Kursi: ${data.kursi}</p>`;
+                renderQR();
+            } else { alert("NIM Tidak Ditemukan!"); }
+        } catch(e) { alert("Pastikan URL_SCRIPT sudah benar!"); }
+    }
+
+    function renderQR() {
+        const tipe = document.getElementById('tipeQR').value;
+        QRCode.toCanvas(document.getElementById('qrCanvas'), `${currentData.nim}|${tipe}`, { width: 180 });
+    }
+
+    async function downloadQR() {
+        const tipe = document.getElementById('tipeQR').value;
+        // Kirim update ke Spreadsheet
+        fetch(URL_SCRIPT, { method: 'POST', body: JSON.stringify({ action: "logDownload", nim: currentData.nim, tipe: tipe }) });
         
-        if (pin === "WISUDAIWU26") {
-            document.getElementById('loginPanitia').classList.add('hidden');
-            document.getElementById('scannerArea').classList.remove('hidden');
+        const link = document.createElement('a');
+        link.download = `QR_${tipe}_${currentData.nim}.png`;
+        link.href = document.getElementById('qrCanvas').toDataURL();
+        link.click();
+        alert("Berhasil didownload & database diperbarui!");
+    }
 
+    function startCamera() {
+        const pin = document.getElementById('pinField').value;
+        if(pin === "WISUDAIWU26") {
+            document.getElementById('loginArea').style.display = 'none';
+            document.getElementById('scannerArea').style.display = 'block';
             const html5QrCode = new Html5Qrcode("reader");
-            const config = { fps: 10, qrbox: { width: 250, height: 250 } };
-
-            html5QrCode.start(
-                { facingMode: "environment" }, 
-                config,
-                (decodedText) => {
-                    document.getElementById('hasilScan').innerText = "Terdeteksi: " + decodedText;
-                    // Suara bip atau getar bisa ditambah di sini
-                    alert("Berhasil Scan: " + decodedText);
-                },
-                (errorMessage) => { /* scanning... */ }
-            ).catch(err => {
-                alert("Kamera Error: Pastikan Izin Kamera Diberikan!");
-                console.error(err);
-            });
-        } else {
-            alert("PIN SALAH!");
-        }
+            html5QrCode.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 }, (text) => {
+                alert("Hasil Scan: " + text);
+            }).catch(err => alert("Izin kamera ditolak!"));
+        } else { alert("PIN SALAH!"); }
     }
 </script>
 </body>
