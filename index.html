@@ -7,11 +7,10 @@
     <!-- Library QR & Font -->
     <script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js"></script>
     <script src="https://unpkg.com/html5-qrcode"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
-        /* Gaya Dasar & Background Gelap */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
         body { 
             background: radial-gradient(circle at top right, #1e0b4d, #0d0421); 
@@ -25,13 +24,18 @@
 
         .container { width: 100%; max-width: 450px; text-align: center; }
 
-        /* MENU UTAMA - KARTU PILIHAN */
+        /* Judul & Tema */
+        .header-section { margin-bottom: 40px; }
+        .header-section h1 { font-size: 2.2rem; font-weight: 800; letter-spacing: 1px; color: #fff; }
+        .header-section p { font-size: 0.9rem; opacity: 0.8; color: #a286f4; text-transform: uppercase; font-weight: 600; margin-top: 5px; }
+
+        /* Menu Card Styling (Sesuai Gambar Referensi) */
         .menu-card {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 30px;
-            padding: 40px 25px;
-            margin-bottom: 20px;
+            padding: 45px 25px;
+            margin-bottom: 25px;
             cursor: pointer;
             transition: all 0.3s ease;
         }
@@ -40,11 +44,11 @@
             transform: translateY(-8px);
             border-color: rgba(255, 255, 255, 0.3);
         }
-        .menu-card i { font-size: 55px; margin-bottom: 20px; color: #a286f4; }
-        .menu-card h2 { font-size: 1.6rem; margin-bottom: 8px; font-weight: 700; }
-        .menu-card p { font-size: 0.95rem; opacity: 0.7; font-weight: 400; }
+        .menu-card i { font-size: 60px; margin-bottom: 20px; color: #a286f4; }
+        .menu-card h2 { font-size: 1.7rem; margin-bottom: 8px; font-weight: 700; }
+        .menu-card p { font-size: 1rem; opacity: 0.7; font-weight: 400; }
 
-        /* GLASS CARD UNTUK FORM & SCANNER */
+        /* Glass Card UI */
         .glass-card {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(25px);
@@ -52,13 +56,12 @@
             border-radius: 35px;
             padding: 40px 30px;
             border: 1px solid rgba(255, 255, 255, 0.2);
-            display: none; /* Sembunyi sampai dipilih */
+            display: none;
         }
 
-        /* Input & Button */
         .input-box {
             width: 100%; padding: 18px; border-radius: 15px; border: none;
-            margin-bottom: 20px; font-size: 1rem; outline: none; background: white;
+            margin-bottom: 20px; font-size: 1rem; outline: none; background: white; color: #333;
         }
         .btn-action {
             background: #4cc9f0; color: white; border: none; padding: 18px;
@@ -70,7 +73,6 @@
             padding: 15px; border-radius: 15px; width: 100%; cursor: pointer; font-weight: 600;
         }
 
-        /* Hasil QR */
         .qr-display { background: white; padding: 20px; border-radius: 20px; display: inline-block; margin: 20px 0; }
         #reader { width: 100%; border-radius: 20px; overflow: hidden; border: 2px solid white !important; }
     </style>
@@ -79,7 +81,13 @@
 
     <div class="container">
         
-        <!-- BAGIAN 1: MENU UTAMA (TAMPILAN AWAL) -->
+        <!-- BAGIAN 1: JUDUL & TEMA -->
+        <div class="header-section" id="headerMain">
+            <h1>WISUDA IWU 2026</h1>
+            <p>Empowering Women Through Technology & Innovation</p>
+        </div>
+        
+        <!-- BAGIAN 2: MENU UTAMA -->
         <div id="uiMenu">
             <div class="menu-card" onclick="openWisudawan()">
                 <i class="fas fa-user-graduate"></i>
@@ -94,85 +102,90 @@
             </div>
         </div>
 
-        <!-- BAGIAN 2: FORM WISUDAWAN -->
+        <!-- BAGIAN 3: INTERFACE WISUDAWAN -->
         <div id="uiWisudawan" class="glass-card">
             <h2 style="margin-bottom:25px;">Cek Data Wisuda</h2>
-            <input type="text" id="nimMhs" placeholder="Masukkan NIM" class="input-box">
+            <input type="text" id="nimMhs" placeholder="Masukkan NIM Anda" class="input-box">
             <button class="btn-action" onclick="getQR()">TAMPILKAN QR</button>
             <button class="btn-back" onclick="backToMenu()">KEMBALI</button>
 
             <div id="hasilMhs" style="display:none; margin-top:30px;">
-                <div id="detailMhs"></div>
+                <div id="detailMhs" style="margin-bottom:10px;"></div>
                 <div class="qr-display"><canvas id="canvasQR"></canvas></div>
             </div>
         </div>
 
-        <!-- BAGIAN 3: LOGIN & SCANNER PANITIA -->
+        <!-- BAGIAN 4: LOGIN PANITIA DENGAN PASSWORD -->
         <div id="uiPanitia" class="glass-card">
             <div id="loginPanitia">
-                <h2 style="margin-bottom:25px;">Login Panitia</h2>
-                <input type="password" id="pinPass" placeholder="Masukkan PIN" class="input-box" style="text-align:center;">
+                <h2 style="margin-bottom:25px;">Akses Keamanan</h2>
+                <p style="margin-bottom:15px; font-size:0.9rem; opacity:0.8;">Masukkan Password Panitia HIMAIF</p>
+                <input type="password" id="pinPass" placeholder="Password" class="input-box" style="text-align:center;">
                 <button class="btn-action" onclick="prosesLogin()">MASUK</button>
                 <button class="btn-back" onclick="backToMenu()">BATAL</button>
             </div>
 
+            <!-- SCANNER (Hanya tampil jika password benar) -->
             <div id="scannerSection" style="display:none;">
-                <h2 style="margin-bottom:20px;">Scanner Ready</h2>
+                <h2 style="margin-bottom:20px;">Scanner Presensi</h2>
                 <div id="reader"></div>
                 <p id="statusScan" style="margin-top:20px; font-weight:700; font-size:1.1rem;"></p>
-                <button class="btn-back" onclick="location.reload()" style="margin-top:20px;">LOGOUT</button>
+                <button class="btn-back" onclick="location.reload()" style="margin-top:20px;">KELUAR</button>
             </div>
         </div>
 
     </div>
 
     <script>
-        const URL_SCRIPT = 'https://script.google.com/macros/s/AKfycbwtVl3lHGkb_vb7-cQuycylVz-ClfM6Kq2Q58TBbdbClXPfKrOpWfM0Ryn0moTdqUGxCg/exec'; // GANTI DENGAN URL APPS SCRIPT
-        const PIN_SECRET = "WISUDAIWU26";
+        const URL_SCRIPT = 'https://script.google.com/macros/s/AKfycbwtVl3lHGkb_vb7-cQuycylVz-ClfM6Kq2Q58TBbdbClXPfKrOpWfM0Ryn0moTdqUGxCg/exec'; // Ganti dengan link Apps Script kamu
+        const PIN_SECRET = "WISUDAIWU2026"; // Ganti password di sini sesuai keinginan
         let html5QrScanner;
 
-        // Navigasi
         function openWisudawan() {
             document.getElementById('uiMenu').style.display = 'none';
+            document.getElementById('headerMain').style.display = 'none';
             document.getElementById('uiWisudawan').style.display = 'block';
         }
+
         function openPanitia() {
             document.getElementById('uiMenu').style.display = 'none';
+            document.getElementById('headerMain').style.display = 'none';
             document.getElementById('uiPanitia').style.display = 'block';
         }
+
         function backToMenu() {
             location.reload();
         }
 
-        // Fungsi Ambil Data Mahasiswa
         async function getQR() {
             const nim = document.getElementById('nimMhs').value.trim();
-            if(!nim) return alert("Isi NIM dulu!");
+            if(!nim) return alert("Masukkan NIM terlebih dahulu!");
             
             try {
                 const res = await fetch(`${URL_SCRIPT}?action=getMahasiswa&nim=${nim}`);
                 const d = await res.json();
                 if(d.nim) {
                     document.getElementById('hasilMhs').style.display = 'block';
-                    document.getElementById('detailMhs').innerHTML = `<h3>${d.nama}</h3><p>${d.prodi}</p><p>Kursi: ${d.kursi}</p>`;
+                    document.getElementById('detailMhs').innerHTML = `<h3>${d.nama}</h3><p>${d.prodi}</p><p>Kursi: <b>${d.kursi}</b></p>`;
                     QRCode.toCanvas(document.getElementById('canvasQR'), `MHS:${d.nim}`, { width: 220 });
-                } else { alert("Data tidak ada!"); }
-            } catch(e) { alert("Koneksi Error"); }
+                } else { alert("Data NIM tidak ditemukan!"); }
+            } catch(e) { alert("Terjadi kesalahan koneksi."); }
         }
 
-        // Fungsi Login & Scanner
         function prosesLogin() {
             if(document.getElementById('pinPass').value === PIN_SECRET) {
                 document.getElementById('loginPanitia').style.display = 'none';
                 document.getElementById('scannerSection').style.display = 'block';
                 startScan();
-            } else { alert("PIN Salah!"); }
+            } else { 
+                alert("Password Salah! Hanya Panitia HIMAIF yang diizinkan."); 
+            }
         }
 
         function startScan() {
             html5QrScanner = new Html5Qrcode("reader");
             html5QrScanner.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 }, (decodedText) => {
-                document.getElementById('statusScan').innerText = "Sedang diproses...";
+                document.getElementById('statusScan').innerText = "Memproses Data...";
                 kirimDataScan(decodedText);
             });
         }
@@ -184,7 +197,7 @@
                 const st = document.getElementById('statusScan');
                 st.innerText = resJson.message;
                 st.style.color = resJson.success ? "#00ff00" : "#ff4d4d";
-            } catch(e) { }
+            } catch(e) { alert("Gagal mengirim data scan."); }
         }
     </script>
 </body>
