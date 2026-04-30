@@ -7,173 +7,172 @@
     <!-- Library QR & Font -->
     <script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
         body { 
             background: radial-gradient(circle at top right, #1e0b4d, #0d0421); 
-            min-height: 100vh; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            padding: 20px;
-            color: white;
+            min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; color: white;
         }
-
         .container { width: 100%; max-width: 480px; text-align: center; }
-
-        /* Header */
+        
+        /* Header Section */
         .header-section { margin-bottom: 30px; }
-        .header-section h1 { font-size: 1.8rem; font-weight: 800; color: #fff; line-height: 1.2; }
+        .header-section h1 { font-size: 1.8rem; font-weight: 800; line-height: 1.2; text-transform: uppercase; }
         .header-section .tahun { font-size: 1.1rem; color: #a286f4; font-weight: 700; margin-top: 5px; }
-        .header-section .tema { 
-            font-size: 0.85rem; 
-            opacity: 0.9; 
-            color: #d1c4e9; 
-            font-style: italic;
-            margin-top: 15px; 
-            line-height: 1.4;
-        }
 
-        /* Glass Card UI */
+        /* Menu Card UI */
+        .menu-card {
+            background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 25px; padding: 30px; margin-bottom: 20px; cursor: pointer; transition: 0.3s ease;
+        }
+        .menu-card:hover { background: rgba(255, 255, 255, 0.15); transform: translateY(-5px); }
+        .menu-card i { font-size: 45px; color: #a286f4; margin-bottom: 15px; }
+        .menu-card h2 { font-size: 1.4rem; margin-bottom: 5px; }
+        .menu-card p { font-size: 0.85rem; opacity: 0.7; }
+
+        /* Glass Form UI */
         .glass-card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border-radius: 30px;
-            padding: 35px 25px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(25px);
+            border-radius: 30px; padding: 30px; border: 1px solid rgba(255, 255, 255, 0.2); 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3); display: none;
         }
-
         .input-box {
-            width: 100%; padding: 18px; border-radius: 15px; border: none;
-            margin-bottom: 20px; font-size: 1rem; outline: none; background: white; color: #333;
-            text-align: center; font-weight: 600;
+            width: 100%; padding: 15px; border-radius: 12px; border: none;
+            margin-bottom: 15px; font-size: 1rem; text-align: center; font-weight: 600; outline: none;
         }
-
         select.input-box { background: #2a1b4d; color: white; border: 1px solid #6a1b9a; text-align-last: center; }
 
-        /* Tombol Utama (Deep Purple) */
-        .btn-action {
-            background: #6a1b9a; 
-            color: white; border: none; padding: 18px;
-            border-radius: 15px; width: 100%; font-weight: 700; cursor: pointer;
-            text-transform: uppercase; margin-bottom: 15px;
-            box-shadow: 0 8px 20px rgba(106, 27, 154, 0.3);
-            transition: 0.3s ease;
+        /* Purple Button Action */
+        .btn-purple {
+            background: #6a1b9a; color: white; border: none; padding: 16px;
+            border-radius: 12px; width: 100%; font-weight: 700; cursor: pointer; text-transform: uppercase;
+            box-shadow: 0 5px 15px rgba(106, 27, 154, 0.4); transition: 0.3s;
         }
-        .btn-action:hover { background: #8e24aa; transform: translateY(-2px); }
-
-        .btn-back {
-            background: transparent; color: white; border: 2px solid rgba(255,255,255,0.5);
-            padding: 15px; border-radius: 15px; width: 100%; cursor: pointer; font-weight: 600;
-            transition: 0.3s;
+        .btn-purple:hover { background: #8e24aa; }
+        .btn-outline {
+            background: transparent; color: white; border: 2px solid rgba(255,255,255,0.4);
+            padding: 12px; border-radius: 12px; width: 100%; font-weight: 600; margin-top: 10px; cursor: pointer;
         }
 
-        .qr-display { 
-            background: white; 
-            padding: 15px; 
-            border-radius: 20px; 
-            display: inline-block; 
-            margin: 20px 0; 
-        }
-
-        #detailMhs h3 { font-size: 1.4rem; margin-bottom: 5px; }
-        #detailMhs p { font-size: 0.9rem; opacity: 0.8; margin-bottom: 15px; }
+        .qr-display { background: white; padding: 15px; border-radius: 15px; display: inline-block; margin: 20px 0; }
+        #infoMhs h3 { font-size: 1.4rem; color: #fff; margin-bottom: 5px; }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        
-        <div class="header-section" id="headerArea">
-            <h1>SIDANG TERBUKA SENAT WISUDA IWU</h1>
-            <div class="tahun">Tahun Akademik 2025/2026</div>
-            <div class="tema">"Transformasi Bangsa Melalui Intelektual Muda yang Adaptif"</div>
-        </div>
-        
-        <!-- UI PENCARIAN -->
-        <div id="searchArea" class="glass-card">
-            <h2 style="margin-bottom:20px; font-size: 1.2rem;">Cek Data Wisudawan</h2>
-            <input type="text" id="nimInput" placeholder="Masukkan NIM" class="input-box">
-            <button class="btn-action" onclick="cariData()">CARI DATA</button>
-        </div>
-
-        <!-- UI HASIL & DOWNLOAD (Fix: P-T Database) -->
-        <div id="resultArea" class="glass-card" style="display:none; margin-top: 20px;">
-            <div id="infoMhs"></div>
-            
-            <p style="font-size: 0.8rem; margin-bottom: 10px; color: #a286f4; font-weight: 700;">KATEGORI DOWNLOAD:</p>
-            <select id="kategoriQR" class="input-box" onchange="generateQR()">
-                <option value="Simulasi">QR Simulasi (Kolom P)</option>
-                <option value="Ortu">QR Undangan Ortu (Kolom Q)</option>
-                <option value="Mahasiswa">QR Kehadiran (Kolom R)</option>
-                <option value="Toga">QR Ambil Toga (Kolom S)</option>
-                <option value="Ijazah">QR Ambil Ijazah (Kolom T)</option>
-            </select>
-
-            <div class="qr-display"><canvas id="qrCanvas"></canvas></div>
-            
-            <button class="btn-action" onclick="downloadDanLog()">DOWNLOAD & UPDATE DATABASE</button>
-            <button class="btn-back" onclick="location.reload()">KEMBALI</button>
-        </div>
-
+<div class="container">
+    <div class="header-section" id="headTitle">
+        <h1>Sidang Terbuka Senat Wisuda IWU</h1>
+        <div class="tahun">Tahun Akademik 2025/2026</div>
     </div>
 
-    <script>
-        // MASUKKAN URL WEB APP DARI GOOGLE APPS SCRIPT DISINI
-        const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbwxX6etqKNtPgwKDr-AkK6pHD4ndd7tie7KhkkyEfiSohGs6ggF1QsbcpEl_H3j9xNJ1A/exec"; 
-        let userData = null;
+    <!-- TAMPILAN AWAL (MENU PILIHAN) -->
+    <div id="mainMenu">
+        <div class="menu-card" onclick="openPage('viewWisudawan')">
+            <i class="fas fa-user-graduate"></i>
+            <h2>Wisudawan</h2>
+            <p>Unduh QR Code Kehadiran & Atribut</p>
+        </div>
+        <div class="menu-card" onclick="openPage('viewPanitia')">
+            <i class="fas fa-qrcode"></i>
+            <h2>Panitia</h2>
+            <p>Scanner Verifikasi Real-time</p>
+        </div>
+    </div>
 
-        async function cariData() {
-            const nim = document.getElementById('nimInput').value.trim();
-            if(!nim) return alert("NIM harus diisi!");
+    <!-- HALAMAN WISUDAWAN -->
+    <div id="viewWisudawan" class="glass-card">
+        <h2 style="margin-bottom:15px;">Cek Data Wisudawan</h2>
+        <input type="text" id="nimMhs" placeholder="Masukkan NIM" class="input-box">
+        <button class="btn-purple" onclick="searchData()">LIHAT DATA</button>
+        <button class="btn-outline" onclick="location.reload()">KEMBALI</button>
+        
+        <div id="hasilSearch" style="display:none; margin-top:25px;">
+            <div id="infoMhs"></div>
+            <p style="font-size: 0.8rem; color: #a286f4; margin-bottom: 10px; font-weight: 700;">PILIH ATRIBUT:</p>
+            <select id="kategori" class="input-box" onchange="generateQR()">
+                <option value="Simulasi">QR Simulasi (P)</option>
+                <option value="Ortu">QR Undangan Ortu (Q)</option>
+                <option value="Mahasiswa">QR Kehadiran Hari-H (R)</option>
+                <option value="Toga">QR Pengambilan Toga (S)</option>
+                <option value="Ijazah">QR Pengambilan Ijazah (T)</option>
+            </select>
+            <div class="qr-display"><canvas id="qrCanvas"></canvas></div>
+            <button class="btn-purple" onclick="saveAndDownload()">DOWNLOAD & UPDATE DB</button>
+        </div>
+    </div>
 
-            try {
-                const res = await fetch(`${URL_SCRIPT}?action=getMahasiswa&nim=${nim}`);
-                const data = await res.json();
-                
-                if(data.nim) {
-                    userData = data;
-                    document.getElementById('searchArea').style.display = 'none';
-                    document.getElementById('resultArea').style.display = 'block';
-                    document.getElementById('infoMhs').innerHTML = `
-                        <h3>${data.nama}</h3>
-                        <p>${data.prodi} | Kursi: <b>${data.kursi}</b></p>
-                    `;
-                    generateQR();
-                } else {
-                    alert("NIM tidak ditemukan!");
-                }
-            } catch(e) {
-                alert("Koneksi gagal! Cek URL Script kamu.");
-            }
+    <!-- HALAMAN PANITIA -->
+    <div id="viewPanitia" class="glass-card">
+        <h2 style="margin-bottom:15px;">Akses Khusus Panitia</h2>
+        <input type="password" id="pinPanitia" placeholder="Masukkan PIN Akses" class="input-box">
+        <button class="btn-purple" onclick="verifyPin()">MASUK SCANNER</button>
+        <button class="btn-outline" onclick="location.reload()">KEMBALI</button>
+    </div>
+
+</div>
+
+<script>
+    // MASUKKAN URL GOOGLE APPS SCRIPT KAMU DISINI
+    const URL_APP = "https://script.google.com/macros/s/AKfycbwdUtOR4vYtaXm_Mj7v-BNjuXtJO_n5y3kgngIqRWD6G3g4tsvkcqXlf1azFdrONs93Hg/exec"; 
+    let currentMhs = null;
+
+    function openPage(id) {
+        document.getElementById('mainMenu').style.display = 'none';
+        document.getElementById(id).style.display = 'block';
+    }
+
+    async function searchData() {
+        const nim = document.getElementById('nimMhs').value;
+        if(!nim) return alert("NIM wajib diisi!");
+        
+        try {
+            const res = await fetch(`${URL_APP}?action=getMahasiswa&nim=${nim}`);
+            const data = await res.json();
+            if(data.nim) {
+                currentMhs = data;
+                document.getElementById('hasilSearch').style.display = 'block';
+                document.getElementById('infoMhs').innerHTML = `<h3>${data.nama}</h3><p>${data.prodi} | Kursi: <b>${data.kursi}</b></p>`;
+                generateQR();
+            } else { alert("Data NIM tidak ditemukan!"); }
+        } catch(e) { alert("Gagal koneksi ke Database!"); }
+    }
+
+    function generateQR() {
+        const kat = document.getElementById('kategori').value;
+        QRCode.toCanvas(document.getElementById('qrCanvas'), `${currentMhs.nim}|${kat}`, { width: 180 });
+    }
+
+    async function saveAndDownload() {
+        const kat = document.getElementById('kategori').value;
+        const canvas = document.getElementById('qrCanvas');
+
+        // Update tanda 'V' ke Kolom P-T di Google Sheets
+        fetch(URL_APP, {
+            method: 'POST',
+            body: JSON.stringify({ action: "logDownload", nim: currentMhs.nim, tipe: kat })
+        });
+
+        // Download File Gambar
+        const link = document.createElement('a');
+        link.download = `QR_${kat}_${currentMhs.nim}.png`;
+        link.href = canvas.toDataURL();
+        link.click();
+        alert("QR Berhasil disimpan ke perangkat!");
+    }
+
+    function verifyPin() {
+        const pin = document.getElementById('pinPanitia').value;
+        // PIN Sesuai Permintaan: WISUDAIWU26
+        if(pin === "WISUDAIWU26") {
+            alert("Akses Panitia Diterima!");
+            // Implementasi scanner menyusul
+        } else {
+            alert("PIN Salah! Akses Ditolak.");
         }
-
-        function generateQR() {
-            const kat = document.getElementById('kategoriQR').value;
-            QRCode.toCanvas(document.getElementById('qrCanvas'), `${userData.nim}|${kat}`, { width: 200 });
-        }
-
-        async function downloadDanLog() {
-            const kat = document.getElementById('kategoriQR').value;
-            const canvas = document.getElementById('qrCanvas');
-            
-            // 1. Kirim Log ke Sheets (Memicu tanda 'V' di kolom P-T)
-            fetch(URL_SCRIPT, {
-                method: 'POST',
-                body: JSON.stringify({ action: "logDownload", nim: userData.nim, tipe: kat })
-            });
-
-            // 2. Download File
-            const link = document.createElement('a');
-            link.download = `QR_${kat}_${userData.nim}.png`;
-            link.href = canvas.toDataURL();
-            link.click();
-            
-            alert(`Berhasil! QR ${kat} tersimpan & database diperbarui.`);
-        }
-    </script>
+    }
+</script>
 </body>
 </html>
