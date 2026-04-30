@@ -4,76 +4,85 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistem Wisuda IWU 2026</title>
-    <!-- Library QR, Scanner & Font -->
-    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js"></script>
+    <!-- Library Penting -->
     <script src="https://unpkg.com/html5-qrcode"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
     
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        body { background: radial-gradient(circle at top right, #1e0b4d, #0d0421); min-height: 100vh; color: white; padding: 20px; display: flex; justify-content: center; align-items: center; }
-        .container { width: 100%; max-width: 480px; text-align: center; }
-        .glass-card { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(20px); border-radius: 30px; padding: 25px; border: 1px solid rgba(255, 255, 255, 0.2); display: none; }
-        .input-box { width: 100%; padding: 15px; border-radius: 12px; border: none; margin-bottom: 15px; text-align: center; font-weight: 600; }
-        .btn-purple { background: #6a1b9a; color: white; border: none; padding: 15px; border-radius: 12px; width: 100%; font-weight: 700; cursor: pointer; }
-        #reader { width: 100%; border-radius: 15px; overflow: hidden; margin-top: 15px; }
-        .menu-card { background: rgba(255, 255, 255, 0.05); border-radius: 20px; padding: 25px; margin-bottom: 15px; cursor: pointer; border: 1px solid rgba(255, 255, 255, 0.1); }
+        body { background: #0d0421; color: white; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .container { width: 100%; max-width: 450px; text-align: center; }
+        .glass { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border-radius: 25px; padding: 25px; border: 1px solid rgba(255, 255, 255, 0.2); }
+        .input-box { width: 100%; padding: 15px; border-radius: 12px; border: none; margin-bottom: 10px; font-size: 1rem; text-align: center; }
+        .btn-purple { background: #6a1b9a; color: white; border: none; padding: 15px; border-radius: 12px; width: 100%; font-weight: 700; cursor: pointer; margin-top: 10px; }
+        #reader { width: 100%; border-radius: 15px; overflow: hidden; background: black; margin-top: 15px; }
+        .hidden { display: none; }
+        .menu-btn { background: rgba(255,255,255,0.05); padding: 20px; border-radius: 15px; margin-bottom: 15px; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div id="mainMenu">
+    <!-- MENU UTAMA -->
+    <div id="menuUtama">
         <h1 style="margin-bottom: 20px;">WISUDA IWU 2026</h1>
-        <div class="menu-card" onclick="showView('viewWisudawan')"><h2>Wisudawan</h2><p>Unduh QR Kehadiran</p></div>
-        <div class="menu-card" onclick="showView('viewPanitia')"><h2>Panitia</h2><p>Scanner Verifikasi</p></div>
+        <div class="menu-btn" onclick="tampilHalaman('viewWisudawan')"><h2>Wisudawan</h2><p>Cek Data & QR</p></div>
+        <div class="menu-btn" onclick="tampilHalaman('viewPanitia')"><h2>Panitia</h2><p>Scanner Kamera</p></div>
     </div>
 
-    <!-- HALAMAN PANITIA / SCANNER -->
-    <div id="viewPanitia" class="glass-card">
+    <!-- HALAMAN PANITIA -->
+    <div id="viewPanitia" class="glass hidden">
         <h2>Scanner Panitia</h2>
-        <div id="loginSection">
-            <input type="password" id="pinInput" placeholder="Masukkan PIN" class="input-box">
-            <button class="btn-purple" onclick="startScanner()">BUKA KAMERA</button>
+        <div id="loginPanitia">
+            <input type="password" id="pinField" placeholder="Masukkan PIN" class="input-box">
+            <button class="btn-purple" onclick="mulaiScanner()">AKTIFKAN KAMERA</button>
         </div>
-        <div id="scannerSection" style="display:none;">
+        <div id="scannerArea" class="hidden">
             <div id="reader"></div>
-            <button class="btn-purple" style="margin-top:10px; background:#cc0000;" onclick="location.reload()">STOP SCANNER</button>
+            <p id="hasilScan" style="margin-top: 10px; color: #a286f4; font-weight: bold;"></p>
+            <button class="btn-purple" style="background: #444;" onclick="location.reload()">STOP / KEMBALI</button>
         </div>
-        <button class="btn-purple" style="margin-top:10px; background:transparent; border:1px solid white;" onclick="location.reload()">KEMBALI</button>
     </div>
 
-    <!-- HALAMAN WISUDAWAN (Simple) -->
-    <div id="viewWisudawan" class="glass-card">
-        <h2>Data Mahasiswa</h2>
-        <input type="text" id="nimMhs" placeholder="Masukkan NIM" class="input-box">
-        <button class="btn-purple" onclick="alert('Fitur download aktif di script utama')">CEK DATA</button>
-        <button class="btn-purple" style="margin-top:10px; background:transparent; border:1px solid white;" onclick="location.reload()">KEMBALI</button>
+    <!-- HALAMAN WISUDAWAN -->
+    <div id="viewWisudawan" class="glass hidden">
+        <h2>Data Wisudawan</h2>
+        <input type="text" id="nimInput" placeholder="Masukkan NIM" class="input-box">
+        <button class="btn-purple" onclick="alert('Fungsi Cari Aktif di Script')">CARI DATA</button>
+        <button class="btn-purple" style="background: #444;" onclick="location.reload()">KEMBALI</button>
     </div>
 </div>
 
 <script>
-    function showView(id) {
-        document.getElementById('mainMenu').style.display = 'none';
-        document.getElementById(id).style.display = 'block';
+    function tampilHalaman(id) {
+        document.getElementById('menuUtama').classList.add('hidden');
+        document.getElementById(id).classList.remove('hidden');
     }
 
-    function startScanner() {
-        const pin = document.getElementById('pinInput').value;
-        if(pin === "WISUDAIWU26") {
-            document.getElementById('loginSection').style.display = 'none';
-            document.getElementById('scannerSection').style.display = 'block';
-            
+    function mulaiScanner() {
+        const pin = document.getElementById('pinField').value;
+        
+        if (pin === "WISUDAIWU26") {
+            document.getElementById('loginPanitia').classList.add('hidden');
+            document.getElementById('scannerArea').classList.remove('hidden');
+
             const html5QrCode = new Html5Qrcode("reader");
+            const config = { fps: 10, qrbox: { width: 250, height: 250 } };
+
             html5QrCode.start(
                 { facingMode: "environment" }, 
-                { fps: 10, qrbox: { width: 250, height: 250 } },
+                config,
                 (decodedText) => {
-                    alert("Hasil Scan: " + decodedText);
-                    // Di sini nanti arahkan untuk update database kehadiran
+                    document.getElementById('hasilScan').innerText = "Terdeteksi: " + decodedText;
+                    // Suara bip atau getar bisa ditambah di sini
+                    alert("Berhasil Scan: " + decodedText);
                 },
                 (errorMessage) => { /* scanning... */ }
-            ).catch(err => alert("Gagal buka kamera: " + err));
+            ).catch(err => {
+                alert("Kamera Error: Pastikan Izin Kamera Diberikan!");
+                console.error(err);
+            });
         } else {
             alert("PIN SALAH!");
         }
