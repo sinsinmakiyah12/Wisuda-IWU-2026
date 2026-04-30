@@ -21,7 +21,6 @@
         }
         .container { width: 100%; max-width: 500px; text-align: center; }
         
-        /* EFEK KOTAK TRANSPARAN */
         .glass-card { 
             background: rgba(255, 255, 255, 0.05); 
             backdrop-filter: blur(15px); 
@@ -31,6 +30,7 @@
             box-shadow: 0 25px 50px rgba(0,0,0,0.4); 
         }
 
+        /* GRID LAYANAN 2-2-1 */
         .grid-container { 
             display: grid; 
             grid-template-columns: repeat(2, 1fr); 
@@ -50,15 +50,8 @@
             align-items: center;
             justify-content: center;
         }
-
         .grid-item.full-width { grid-column: span 2; }
-
-        .grid-item:hover { 
-            background: rgba(162, 134, 244, 0.15); 
-            border-color: #a286f4;
-            transform: scale(1.02);
-        }
-
+        .grid-item:hover { background: rgba(162, 134, 244, 0.15); border-color: #a286f4; transform: scale(1.02); }
         .grid-item i { font-size: 30px; color: #a286f4; margin-bottom: 12px; }
         .grid-item p { font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
 
@@ -67,19 +60,17 @@
             margin: 20px 0; font-size: 1rem; text-align: center; font-weight: 600; 
             background: rgba(255,255,255,0.95); color: #333; 
         }
-        
-        /* TOMBOL UTAMA */
+
+        /* TOMBOL UTAMA BESAR */
         .btn-purple { 
             background: linear-gradient(135deg, #6a1b9a, #8e24aa); 
-            color: white; border: none; padding: 18px; border-radius: 15px; 
+            color: white; border: none; padding: 18px; border-radius: 25px; 
             width: 100%; font-weight: 700; cursor: pointer; text-transform: uppercase;
-            transition: 0.3s;
         }
-        .btn-purple:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(142, 36, 170, 0.4); }
 
         .btn-outline-wide { 
             background: transparent; color: white; border: 1.5px solid rgba(255,255,255,0.3); 
-            padding: 15px; border-radius: 20px; width: 100%; font-weight: 600; 
+            padding: 15px; border-radius: 25px; width: 100%; font-weight: 600; 
             margin-top: 15px; cursor: pointer; text-transform: uppercase;
         }
         
@@ -89,14 +80,14 @@
 <body>
 
 <div class="container">
-    <!-- MENU UTAMA DENGAN GLASS-CARD -->
-    <div id="mainMenu" class="glass-card">
-        <h1 style="margin-bottom: 30px; font-weight: 800; letter-spacing: 1px;">WISUDA IWU 2026</h1>
-        <button class="btn-purple" style="margin-bottom: 10px; padding: 30px;" onclick="showPage('viewKategori')">
-            <i class="fas fa-user-graduate" style="font-size: 24px; margin-bottom: 10px;"></i><br>
-            WISUDAWAN
+    <!-- MENU UTAMA -->
+    <div id="mainMenu">
+        <h1 style="margin-bottom: 30px; font-weight: 800; font-size: 2.2rem;">WISUDA IWU 2026</h1>
+        <button class="btn-purple" style="margin-bottom: 20px; padding: 50px 20px; border-radius: 35px;" onclick="showPage('viewKategori')">
+            <i class="fas fa-user-graduate" style="font-size: 2rem; margin-bottom: 10px;"></i><br>
+            <span style="font-size: 1.2rem; letter-spacing: 2px;">WISUDAWAN</span>
         </button>
-        <button class="btn-outline-wide" onclick="showPage('viewPanitia')">
+        <button class="btn-outline-wide" style="padding: 25px; border-radius: 35px;" onclick="showPage('viewPanitia')">
             PANITIA SCANNER
         </button>
     </div>
@@ -189,6 +180,7 @@
         btn.innerText = "GENERATE QR";
     }
 
+    /* FUNGSI DOWNLOAD: DOWNLOAD FILE + UPDATE CHECKLIST & JAM DI SHEET */
     async function downloadQR() {
         if(!currentData) return;
         const canvas = document.getElementById('qrCanvas');
@@ -202,7 +194,7 @@
                 method: 'POST',
                 body: JSON.stringify({ action: 'updateDownload', nim: currentData.nim, tipe: selectedType })
             });
-        } catch (e) {}
+        } catch (e) { console.log("Gagal update database."); }
     }
 
     function startCamera() {
