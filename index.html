@@ -3,351 +3,384 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wisuda IWU 2026</title>
+    <title>Wisuda International Women University</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
             font-family: 'Poppins', sans-serif; 
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
             min-height: 100vh; overflow-x: hidden;
         }
         .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-        .header { 
-            text-align: center; color: white; margin-bottom: 40px; 
-            animation: fadeInDown 1s ease;
-        }
-        .header h1 { 
-            font-size: 2.5rem; font-weight: 700; margin-bottom: 10px; 
-            text-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        }
-        .header p { font-size: 1.1rem; opacity: 0.9; }
+        
+        /* COMMON STYLES */
+        .header { text-align: center; color: white; margin-bottom: 40px; animation: fadeInDown 1s ease; }
+        .header h1 { font-size: 2.8rem; font-weight: 700; margin-bottom: 10px; text-shadow: 0 4px 20px rgba(0,0,0,0.3); }
+        .header p { font-size: 1.2rem; opacity: 0.95; margin-top: 10px; }
+        
+        .section { display: none; animation: fadeInUp 0.8s ease; }
+        .section.active { display: block; }
+        
+        /* LANDING PAGE */
         .role-selector { 
-            display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; 
-            margin-bottom: 50px;
+            display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; margin-bottom: 50px;
         }
         .role-card { 
             background: rgba(255,255,255,0.15); backdrop-filter: blur(20px); 
-            border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; 
-            padding: 40px 30px; width: 320px; text-align: center; color: white; 
-            cursor: pointer; transition: all 0.4s ease; box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.3); border-radius: 25px; 
+            padding: 50px 40px; width: 350px; text-align: center; color: white; 
+            cursor: pointer; transition: all 0.4s ease; box-shadow: 0 25px 50px rgba(0,0,0,0.15);
         }
         .role-card:hover { 
-            transform: translateY(-15px); background: rgba(255,255,255,0.25); 
-            box-shadow: 0 30px 60px rgba(0,0,0,0.2);
+            transform: translateY(-15px) scale(1.05); background: rgba(255,255,255,0.25); 
+            box-shadow: 0 40px 80px rgba(0,0,0,0.25);
         }
-        .role-card.shake { animation: shake 0.5s ease-in-out; }
-        .role-card i { font-size: 4rem; margin-bottom: 20px; color: #e0c3fc; }
-        .role-card h3 { font-size: 1.4rem; margin-bottom: 10px; font-weight: 600; }
-        .role-card p { opacity: 0.9; line-height: 1.6; }
-        .mahasiswa-section, .panitia-section { display: none; animation: fadeInUp 0.8s ease; }
-        .mahasiswa-section.active, .panitia-section.active { display: block; }
-        .qr-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin-bottom: 30px; }
-        .qr-card { 
-            background: rgba(255,255,255,0.95); border-radius: 20px; padding: 30px; 
-            text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.1); 
-            transition: all 0.3s ease; border: 2px solid transparent;
+        .role-card i { font-size: 4.5rem; margin-bottom: 25px; color: #e0c3fc; }
+        .role-card h3 { font-size: 1.6rem; margin-bottom: 15px; font-weight: 600; }
+        .role-card p { opacity: 0.95; line-height: 1.6; font-size: 1.1rem; }
+        
+        /* MAHASISWA SECTION */
+        .input-section {
+            background: rgba(255,255,255,0.15); backdrop-filter: blur(20px); 
+            border: 1px solid rgba(255,255,255,0.3); border-radius: 25px; 
+            padding: 50px; text-align: center; margin-bottom: 40px; box-shadow: 0 25px 50px rgba(0,0,0,0.15);
         }
-        .qr-card:hover { transform: translateY(-5px); box-shadow: 0 25px 50px rgba(0,0,0,0.15); }
-        .qr-card.downloaded { 
-            border-color: #10b981; background: linear-gradient(135deg, #10b981, #059669); 
-            color: white;
-        }
-        .qr-card h3 { font-size: 1.2rem; margin-bottom: 10px; color: #4a5568; }
-        .qr-card.downloaded h3 { color: white; }
-        .qr-info { font-size: 0.85rem; opacity: 0.8; margin-bottom: 15px; line-height: 1.4; }
-        .qr-card.downloaded .qr-info { color: rgba(255,255,255,0.9); }
-        #qrCanvas { width: 180px; height: 180px; margin: 0 auto 20px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
-        .btn-download { 
-            background: linear-gradient(135deg, #667eea, #764ba2); color: white; 
-            border: none; padding: 12px 30px; border-radius: 50px; font-weight: 600; 
-            cursor: pointer; transition: all 0.3s ease; font-size: 0.95rem;
-        }
-        .btn-download:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(102,126,234,0.4); }
-        .btn-download:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
-        .scan-section { 
-            background: rgba(255,255,255,0.95); border-radius: 20px; padding: 40px; 
-            text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.1); margin-bottom: 30px;
-        }
-        #video { width: 100%; max-width: 400px; height: 400px; border-radius: 15px; margin-bottom: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); }
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; margin-top: 30px; }
-        .stat-card { 
-            background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.7)); 
-            padding: 25px; border-radius: 15px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-        .stat-number { font-size: 1.8rem; font-weight: 700; color: #667eea; }
-        .back-btn { 
-            background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.3); 
-            padding: 12px 30px; border-radius: 25px; cursor: pointer; font-family: inherit; margin-top: 20px;
-            font-size: 1rem; font-weight: 500;
-        }
-        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes shake { 
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-10px); }
-            75% { transform: translateX(10px); }
-        }
-        @media (max-width: 768px) { 
-            .role-selector { flex-direction: column; align-items: center; }
-            .role-card { width: 100%; max-width: 350px; }
-            .header h1 { font-size: 2rem; }
-            .qr-grid { grid-template-columns: 1fr; }
-        }
+        #nimInput { padding: 20px 35px; border: none; border-radius: 50px; font-size: 1.3rem; width: 380px; max-width: 90%; box-shadow: 0 20px 40px rgba(0,0,0,0.2); background: rgba(255,255,255,0.95); font-weight: 500; }
+        .btn-primary { background: linear-gradient(135deg, #10b981, #059669); color: white; border: none; padding: 20px 45px; border-radius: 50px; font-weight: 600; cursor: pointer; transition: all 0.4s ease; font-size: 1.1rem; margin-left: 20px; box-shadow: 0 20px 40px rgba(16,185,129,0.4); }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 30px 60px rgba(16,185,129,0.6); }
+        
+        .qr-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 35px; margin-bottom: 40px; }
+        .qr-card { background: rgba(255,255,255,0.95); border-radius: 25px; padding: 40px; text-align: center; box-shadow: 0 25px 50px rgba(0,0,0,0.15); transition: all 0.4s ease; border: 3px solid transparent; position: relative; overflow: hidden; }
+        .qr-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 6px; background: linear-gradient(90deg, #667eea, #764ba2, #f093fb); }
+        .qr-card:hover { transform: translateY(-10px); box-shadow: 0 40px 80px rgba(0,0,0,0.25); }
+        .qr-card.downloaded { border-color: #10b981; background: linear-gradient(135deg, #10b98120, #05966920); transform: scale(1.02); }
+        .qr-card h3 { font-size: 1.4rem; margin-bottom: 20px; color: #4a5568; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 12px; }
+        .qr-card.downloaded h3 { color: #059669; }
+        .qr-info { font-size: 0.95rem; color: #6b7280; margin-bottom: 25px; line-height: 1.6; background: rgba(102,126,234,0.1); padding: 20px; border-radius: 15px; }
+        canvas { width: 220px; height: 220px; margin: 0 auto 30px; border-radius: 18px; box-shadow: 0 20px 50px rgba(0,0,0,0.2); }
+        
+        /* PANITIA SECTION */
+        .pin-section { background: rgba(255,255,255,0.15); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.3); border-radius: 25px; padding: 60px; text-align: center; max-width: 500px; margin: 0 auto 50px; box-shadow: 0 30px 60px rgba(0,0,0,0.2); }
+        #pinInput { padding: 25px 40px; border: none; border-radius: 50px; font-size: 1.6rem; width: 100%; max-width: 350px; font-weight: 700; letter-spacing: 4px; text-align: center; background: rgba(255,255,255,0.95); box-shadow: 0 20px 50px rgba(0,0,0,0.2); margin-bottom: 30px; }
+        .btn-admin { background: linear-gradient(135deg, #ef4444, #dc2626); color: white; border: none; padding: 25px 60px; border-radius: 50px; font-weight: 700; cursor: pointer; transition: all 0.4s ease; font-size: 1.3rem; box-shadow: 0 25px 50px rgba(239,68,68,0.4); }
+        .btn-admin:hover { transform: translateY(-5px); box-shadow: 0 35px 70px rgba(239,68,68,0.6); }
+        
+        .scanner-section { background: rgba(255,255,255,0.95); border-radius: 25px; padding: 50px; text-align: center; box-shadow: 0 30px 70px rgba(0,0,0,0.2); margin-bottom: 40px; }
+        .scanner-tabs { display: flex; justify-content: center; gap: 20px; margin-bottom: 40px; flex-wrap: wrap; }
+        .tab-btn { padding: 18px 35px; border: none; border-radius: 50px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; font-size: 1.1rem; background: rgba(102,126,234,0.2); color: #4a5568; }
+        .tab-btn.active { background: linear-gradient(135deg, #667eea, #764ba2); color: white; box-shadow: 0 15px 40px rgba(102,126,234,0.4); transform: translateY(-3px); }
+        #video { width: 100%; max-width: 500px; height: 500px; border-radius: 25px; margin-bottom: 30px; box-shadow: 0 25px 60px rgba(0,0,0,0.2); }
+        #scanBtn { background: linear-gradient(135deg, #10b981, #059669); color: white; border: none; padding: 25px 60px; border-radius: 50px; font-weight: 700; cursor: pointer; transition: all 0.4s ease; font-size: 1.3rem; margin: 25px 0; box-shadow: 0 20px 50px rgba(16,185,129,0.4); }
+        #scanBtn:hover:not(:disabled) { transform: translateY(-5px); box-shadow: 0 30px 70px rgba(16,185,129,0.6); }
+        #scanResult { min-height: 80px; font-size: 1.5rem; font-weight: 700; padding: 30px; border-radius: 20px; margin: 30px 0; }
+        .success { background: rgba(16,185,129,0.2); color: #059669; border: 3px solid #10b981; }
+        .error { background: rgba(239,68,68,0.2); color: #dc2626; border: 3px solid #ef4444; }
+        
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 30px; margin-top: 50px; }
+        .stat-card { background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.7)); padding: 35px; border-radius: 25px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.1); transition: all 0.3s ease; }
+        .stat-card:hover { transform: translateY(-8px); box-shadow: 0 35px 80px rgba(0,0,0,0.2); }
+        .stat-number { font-size: 3rem; font-weight: 800; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 15px; }
+        .stat-label { color: #6b7280; font-weight: 600; font-size: 1.1rem; }
+        
+        .no-data { text-align: center; color: white; font-size: 1.4rem; padding: 80px 30px; background: rgba(255,255,255,0.15); border-radius: 25px; backdrop-filter: blur(20px); box-shadow: 0 25px 60px rgba(0,0,0,0.2); }
+        .back-btn { background: rgba(255,255,255,0.25); color: white; border: 2px solid rgba(255,255,255,0.4); padding: 20px 45px; border-radius: 35px; cursor: pointer; font-family: inherit; font-size: 1.2rem; font-weight: 600; transition: all 0.4s ease; display: block; margin: 30px auto; backdrop-filter: blur(15px); }
+        .back-btn:hover { background: rgba(255,255,255,0.35); transform: translateY(-5px); box-shadow: 0 25px 60px rgba(0,0,0,0.3); }
+        
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-50px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(50px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-12px); } 75% { transform: translateX(12px); } }
+        @media (max-width: 768px) { .role-selector { flex-direction: column; gap: 30px; } .role-card { width: 100%; max-width: 400px; } .qr-grid, .stats-grid { grid-template-columns: 1fr; } .header h1 { font-size: 2.2rem; } }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1><i class="fas fa-graduation-cap"></i> Wisuda UNP 2024</h1>
-            <p>Sistem Absensi Digital & QR Code</p>
-        </div>
-
-        <div class="role-selector">
-            <div class="role-card" onclick="showMahasiswa()">
-                <i class="fas fa-user-graduate"></i>
-                <h3>Wisudawan</h3>
-                <p>Download QR Code untuk semua proses wisuda</p>
+        <!-- LANDING -->
+        <div id="landing" class="section active">
+            <div class="header">
+                <h1><i class="fas fa-graduation-cap"></i> Wisuda UNP 2024</h1>
+                <p>Sistem Absensi Digital & QR Code Generator</p>
             </div>
-            <div class="role-card" onclick="showPanitia()" id="panitiaCard">
-                <i class="fas fa-qrcode"></i>
-                <h3>Panitia</h3>
-                <p>🔐 Scanner & Monitor Real-time</p>
-            </div>
-        </div>
-
-        <!-- WISUDAWAN SECTION -->
-        <div id="mahasiswaSection" class="mahasiswa-section">
-            <div style="text-align: center; margin-bottom: 30px;">
-                <h2 style="color: white; font-size: 2rem; margin-bottom: 10px;">
-                    <i class="fas fa-user-graduate"></i> Dashboard Wisudawan
-                </h2>
-                <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
-                    <input type="text" id="nimInput" placeholder="Masukkan NIM Anda" 
-                           style="padding: 15px 25px; border: none; border-radius: 50px; font-size: 1.1rem; min-width: 280px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
-                    <button onclick="loadMahasiswaData()" class="btn-download" style="padding: 15px 30px;">
-                        <i class="fas fa-search"></i> Cek Data
-                    </button>
+            <div class="role-selector">
+                <div class="role-card" onclick="showMahasiswa()">
+                    <i class="fas fa-user-graduate"></i>
+                    <h3>Wisudawan</h3>
+                    <p>📱 Download 5 QR Code untuk semua proses wisuda</p>
+                </div>
+                <div class="role-card" onclick="showPanitia()">
+                    <i class="fas fa-qrcode"></i>
+                    <h3>Panitia</h3>
+                    <p>🔐 Scanner Real-time + Monitoring Dashboard</p>
                 </div>
             </div>
-            <div id="qrGrid" class="qr-grid" style="display: none;"></div>
-            <div id="noData" style="text-align: center; color: white; font-size: 1.2rem; display: none;">
-                <i class="fas fa-exclamation-triangle"></i><br>NIM tidak ditemukan
+        </div>
+
+        <!-- MAHASISWA SECTION -->
+        <div id="mahasiswaSection" class="section">
+            <div class="input-section" id="inputSection">
+                <h2 style="color: white; font-size: 2rem; margin-bottom: 30px;">
+                    <i class="fas fa-user-graduate"></i> Masukkan NIM Anda
+                </h2>
+                <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 20px;">
+                    <input type="text" id="nimInput" placeholder="Contoh: 2201234567" maxlength="15">
+                    <button class="btn-primary" onclick="loadMahasiswaData()">
+                        <i class="fas fa-search"></i> Generate QR Codes
+                    </button>
+                </div>
+                <p style="color: rgba(255,255,255,0.85); margin-top: 20px; font-size: 1rem;">
+                    NIM otomatis dinormalisasi (spasi & 0 depan dihapus)
+                </p>
             </div>
-            <button class="back-btn" onclick="showLanding()" style="display: none;" id="backBtn">
-                <i class="fas fa-arrow-left"></i> Kembali ke Menu
+            <div id="qrGrid" class="qr-grid" style="display: none;"></div>
+            <div id="noData" class="no-data" style="display: none;">
+                <i class="fas fa-exclamation-triangle" style="font-size: 5rem; color: #f87171; margin-bottom: 25px;"></i>
+                <strong>NIM tidak ditemukan dalam database!</strong><br><br>
+                <small>Pastikan NIM sudah terdaftar atau hubungi panitia wisuda</small>
+            </div>
+            <button class="back-btn" onclick="showLanding()">
+                <i class="fas fa-arrow-left"></i> Kembali ke Menu Utama
             </button>
         </div>
 
         <!-- PANITIA SECTION -->
-        <div id="panitiaSection" class="panitia-section">
-            <div class="scan-section">
-                <h2 style="color: #4a5568; margin-bottom: 20px;">
-                    <i class="fas fa-qrcode"></i> Scanner Panitia Wisuda
+        <div id="panitiaSection" class="section">
+            <div class="pin-section" id="pinSection">
+                <h2 style="color: white; font-size: 2rem; margin-bottom: 35px;">
+                    <i class="fas fa-lock"></i> Verifikasi Panitia
                 </h2>
-                <video id="video" autoplay playsinline></video>
-                <button id="scanBtn" class="btn-download" style="padding: 15px 40px; font-size: 1.1rem; margin: 20px 0;">
-                    <i class="fas fa-camera"></i> Mulai Scan QR
+                <input type="password" id="pinInput" placeholder="Masukkan PIN Panitia">
+                <br><button class="btn-admin" onclick="verifyPin()">
+                    <i class="fas fa-sign-in-alt"></i> Masuk Scanner
                 </button>
-                <div id="scanResult" style="margin-top: 20px; font-size: 1.2rem; min-height: 40px;"></div>
+                <p style="color: rgba(255,255,255,0.8); margin-top: 25px; font-size: 1rem;">
+                    PIN diberikan oleh Koordinator Wisuda
+                </p>
             </div>
-            <div class="stats-grid" id="statsGrid" style="display: none;">
-                <!-- Stats akan dimuat otomatis -->
+            
+            <div id="scannerContainer" style="display: none;">
+                <div class="scanner-section">
+                    <h2 style="color: #4a5568; font-size: 2.2rem; margin-bottom: 30px;">
+                        <i class="fas fa-qrcode"></i> Scanner ${currentTabLabel()}
+                    </h2>
+                    <div class="scanner-tabs" id="scannerTabs">
+                        <!-- Tabs loaded dynamically -->
+                    </div>
+                    <video id="video" style="display: none;"></video>
+                    <button id="scanBtn" style="display: none;">
+                        <i class="fas fa-camera"></i> Mulai Scanner QR
+                    </button>
+                    <div id="scanResult"></div>
+                </div>
+                
+                <div class="stats-grid" id="statsGrid">
+                    <!-- Stats loaded dynamically -->
+                </div>
+                
+                <button class="back-btn" onclick="showLanding()">
+                    <i class="fas fa-arrow-left"></i> Kembali ke Menu
+                </button>
             </div>
-            <button class="back-btn" onclick="showLanding()">
-                <i class="fas fa-arrow-left"></i> Kembali ke Menu
-            </button>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
     <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
     <script>
-        let currentRole = ''; let mahasiswaData = {}; let html5QrCode;
-        const PANITIA_PIN = 'WISUDAIWU26'; 
-        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzVSvEDDpBnkbUabe7QefBodtli42kCMZ3ozfMTS4BdPdVxYxGsRE0_ew2M9zN5Qld7_w/exec';
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwWClUZCjzKIXfvAY1RNCs57feqJOmE27bvlqPsRd6LS1iKUBat17VUJ7x3hj_UDpxWhA/exec';
+        const PANITIA_PIN = 'WISUDAIWU26';
+        let mahasiswaData = {}, html5QrCode, currentTab = 'simulasi';
 
-        function showMahasiswa() {
-            document.querySelector('.role-selector').style.display = 'none';
-            document.getElementById('mahasiswaSection').classList.add('active');
-            currentRole = 'mahasiswa';
-        }
+        // Navigation
+        function showMahasiswa() { hideAll(); document.getElementById('mahasiswaSection').classList.add('active'); }
+        function showPanitia() { hideAll(); document.getElementById('panitiaSection').classList.add('active'); document.getElementById('pinInput').focus(); }
+        function showLanding() { hideAll(); document.getElementById('landing').classList.add('active'); if (html5QrCode) html5QrCode.stop(); }
+        function hideAll() { document.querySelectorAll('.section').forEach(s => s.classList.remove('active')); }
 
-        function showPanitia() {
-            const pin = prompt('🔐 Masukkan PIN Panitia (diberikan koordinator):', '');
-            if (!pin || pin !== PANITIA_PIN) {
-                const card = document.getElementById('panitiaCard');
-                card.classList.add('shake');
-                setTimeout(() => card.classList.remove('shake'), 500);
-                alert('❌ PIN Salah! Hanya Panitia resmi yang bisa akses.');
-                return;
-            }
-            document.querySelector('.role-selector').style.display = 'none';
-            document.getElementById('panitiaSection').classList.add('active');
-            currentRole = 'panitia';
-            initScanner();
-        }
-
-        function showLanding() {
-            document.querySelector('.role-selector').style.display = 'flex';
-            document.getElementById('mahasiswaSection').classList.remove('active');
-            document.getElementById('panitiaSection').classList.remove('active');
-            document.getElementById('qrGrid').style.display = 'none';
-            document.getElementById('noData').style.display = 'none';
-            document.getElementById('backBtn').style.display = 'none';
-            document.getElementById('statsGrid').style.display = 'none';
-            currentRole = '';
-            if (html5QrCode) html5QrCode.stop();
-        }
+        // MAHASISWA FUNCTIONS
+        document.getElementById('nimInput')?.addEventListener('keypress', e => e.key === 'Enter' && loadMahasiswaData());
 
         async function loadMahasiswaData() {
-            const nim = document.getElementById('nimInput').value.trim();
-            if (!nim) { alert('⭕ Masukkan NIM terlebih dahulu!'); return; }
+            const nimInput = document.getElementById('nimInput').value.trim();
+            if (!nimInput) return alert('⭕ Masukkan NIM terlebih dahulu!');
             
-            document.getElementById('qrGrid').style.display = 'none';
-            document.getElementById('noData').style.display = 'none';
-            document.getElementById('backBtn').style.display = 'none';
+            const inputSection = document.getElementById('inputSection');
+            inputSection.innerHTML += '<div style="text-align:center;margin-top:30px"><i class="fas fa-spinner fa-spin" style="font-size:3rem;color:white"></i></div>';
             
             try {
+                const nim = nimInput.replace(/^0+/, '').toUpperCase();
                 const response = await fetch(`${APPS_SCRIPT_URL}?action=getMahasiswa&nim=${nim}`);
                 mahasiswaData = await response.json();
-                if (mahasiswaData.nim) {
-                    displayQRCodes();
-                    document.getElementById('backBtn').style.display = 'inline-block';
-                } else {
-                    document.getElementById('noData').style.display = 'block';
-                    document.getElementById('backBtn').style.display = 'inline-block';
-                }
-            } catch (error) { 
-                alert('❌ Error koneksi: ' + error.message); 
+                
+                inputSection.innerHTML = `
+                    <h2 style="color: white; font-size: 2rem; margin-bottom: 30px;">
+                        <i class="fas fa-user-graduate"></i> Selamat ${mahasiswaData.nama || 'Mahasiswa'}
+                    </h2>
+                    <p style="color: rgba(255,255,255,0.9); font-size: 1.2rem; background: rgba(255,255,255,0.2); padding: 20px; border-radius: 20px; backdrop-filter: blur(10px);">
+                        <strong>${mahasiswaData.prodi}</strong> - ${mahasiswaData.fakultas}<br>
+                        Kursi: <strong style="font-size: 1.5rem;">${mahasiswaData.kursi}</strong>
+                    </p>
+                `;
+                
+                if (mahasiswaData.nim) displayQRCodes();
+                else showNoData();
+            } catch (error) {
+                alert('❌ Error: ' + error.message);
+                resetInputSection();
             }
         }
 
         function displayQRCodes() {
-            const qrGrid = document.getElementById('qrGrid');
+            document.getElementById('noData').style.display = 'none';
+            document.getElementById('qrGrid').style.display = 'grid';
+
             const types = [
-                { id: 'simulasi', name: 'Simulasi Wisuda', icon: '🎉' },
-                { id: 'kehadiran_ortu', name: 'Kehadiran OrtU', icon: '👨‍👩‍👧' },
-                { id: 'kehadiran_mhs', name: 'Kehadiran Mahasiswa', icon: '✅' },
-                { id: 'toga', name: 'Status Toga', icon: '🎓' },
-                { id: 'ijazah', name: 'Status Ijazah', icon: '📜' }
+                { id: 'simulasi', name: 'Simulasi Wisuda', icon: 'star' },
+                { id: 'kehadiran_ortu', name: 'Kehadiran Orang Tua', icon: 'users' },
+                { id: 'kehadiran_mhs', name: 'Kehadiran Mahasiswa', icon: 'check-circle' },
+                { id: 'toga', name: 'Pengambilan Toga', icon: 'hat-wizard' },
+                { id: 'ijazah', name: 'Pengambilan Ijazah', icon: 'scroll' }
             ];
-            
-            qrGrid.innerHTML = types.map(type => {
+
+            document.getElementById('qrGrid').innerHTML = types.map(type => {
                 const isDownloaded = mahasiswaData[`download_${type.id}`] === 'Downloaded';
                 return `
                     <div class="qr-card ${isDownloaded ? 'downloaded' : ''}" id="card_${type.id}">
-                        <h3>${type.icon} ${type.name}</h3>
+                        <h3><i class="fas fa-${type.icon}"></i> ${type.name}</h3>
                         <div class="qr-info">
                             <strong>${mahasiswaData.nama}</strong><br>
                             ${mahasiswaData.prodi} - ${mahasiswaData.fakultas}<br>
-                            ${mahasiswaData.ortu1} ${mahasiswaData.ortu2}<br>
-                            <strong>Kursi: ${mahasiswaData.kursi}</strong>
+                            <strong>NIM: ${mahasiswaData.nim}</strong><br>
+                            Kursi: ${mahasiswaData.kursi}
                         </div>
                         <canvas id="qr_${type.id}"></canvas>
-                        <br>
-                        <button class="btn-download" onclick="downloadQR('${type.id}')" 
+                        <button class="btn-primary" onclick="downloadQR('${type.id}')" 
                                 ${isDownloaded ? 'disabled' : ''}>
                             ${isDownloaded ? '✅ Sudah Download' : '📥 Download QR'}
                         </button>
                     </div>
                 `;
             }).join('');
-            
-            qrGrid.style.display = 'grid';
-            
-            // Generate QR codes
-            types.forEach(type => {
-                const canvas = document.getElementById(`qr_${type.id}`);
-                const qrText = `MHS:${mahasiswaData.nim}:${type.id}`;
-                generateQR(qrText, `qr_${type.id}`);
-            });
-        }
 
-        function generateQR(text, canvasId) {
-            QRCode.toCanvas(document.getElementById(canvasId), text, {
-                width: 180, margin: 2, color: { dark: '#1a202c', light: '#ffffff' }
+            types.forEach(type => {
+                QRCode.toCanvas(document.getElementById(`qr_${type.id}`), `MHS:${mahasiswaData.nim}:${type.id}`, {
+                    width: 220, margin: 2, color: { dark: '#1a202c', light: '#ffffff' }
+                });
             });
         }
 
         async function downloadQR(type) {
             const canvas = document.getElementById(`qr_${type}`);
             const link = document.createElement('a');
-            link.download = `QR_${mahasiswaData.nama.replace(/\s+/g, '_')}_${type}.png`;
+            link.download = `QR_${mahasiswaData.nama.replace(/[^a-zA-Z0-9]/g, '_')}_${type}.png`;
             link.href = canvas.toDataURL();
             link.click();
             
-            // Mark specific QR as downloaded
             try {
                 await fetch(APPS_SCRIPT_URL, {
-                    method: 'POST', 
-                    body: JSON.stringify({ 
-                        action: 'markDownloaded', 
-                        nim: mahasiswaData.nim,
-                        type: type 
-                    })
+                    method: 'POST', body: JSON.stringify({ action: 'markDownloaded', nim: mahasiswaData.nim, type }),
+                    headers: { 'Content-Type': 'application/json' }
                 });
-                
-                // Update UI immediately
-                document.getElementById(`card_${type}`).classList.add('downloaded');
-                document.querySelector(`#card_${type} button`).disabled = true;
-                document.querySelector(`#card_${type} button`).textContent = '✅ Sudah Download';
-                
-                alert(`✅ QR ${type.toUpperCase()} berhasil diunduh!`);
-            } catch (error) {
-                alert('✅ QR berhasil diunduh! (Update database gagal)');
+                const card = document.getElementById(`card_${type}`);
+                card.classList.add('downloaded');
+                card.querySelector('button').innerHTML = '✅ Sudah Download';
+                card.querySelector('button').disabled = true;
+            } catch (e) { console.error('DB Update failed:', e); }
+        }
+
+        function showNoData() {
+            document.getElementById('qrGrid').style.display = 'none';
+            document.getElementById('noData').style.display = 'block';
+        }
+
+        function resetInputSection() {
+            document.getElementById('inputSection').innerHTML = `
+                <h2 style="color: white; font-size: 2rem; margin-bottom: 30px;">
+                    <i class="fas fa-user-graduate"></i> Masukkan NIM Anda
+                </h2>
+                <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 20px;">
+                    <input type="text" id="nimInput" placeholder="Contoh: 2201234567" maxlength="15">
+                    <button class="btn-primary" onclick="loadMahasiswaData()">
+                        <i class="fas fa-search"></i> Generate QR Codes
+                    </button>
+                </div>
+                <p style="color: rgba(255,255,255,0.85); margin-top: 20px; font-size: 1rem;">
+                    NIM otomatis dinormalisasi (spasi & 0 depan dihapus)
+                </p>
+            `;
+        }
+
+        // PANITIA FUNCTIONS
+        function verifyPin() {
+            const pin = document.getElementById('pinInput').value;
+            if (pin === PANITIA_PIN) {
+                document.getElementById('pinSection').style.display = 'none';
+                document.getElementById('scannerContainer').style.display = 'block';
+                initScanner();
+            } else {
+                const input = document.getElementById('pinInput');
+                input.style.animation = 'shake 0.6s';
+                input.style.border = '4px solid #ef4444';
+                setTimeout(() => { input.style.animation = ''; input.style.border = ''; }, 600);
+                alert('❌ PIN PANITIA SALAH!');
             }
         }
 
-        // PANITIA SCANNER
-        async function initScanner() {
+        function initScanner() {
             html5QrCode = new Html5Qrcode("video");
-            document.getElementById('scanBtn').onclick = () => {
-                html5QrCode.start(
-                    { facingMode: "environment" }, 
-                    handleScan, 
-                    (error) => console.log('Camera error:', error)
-                ).catch(err => alert('Gagal start camera: ' + err));
-            };
+            document.getElementById('scanBtn').style.display = 'inline-block';
+            document.getElementById('video').style.display = 'block';
+            loadScannerTabs();
             updateStats();
+            
+            document.getElementById('scanBtn').onclick = startScanner;
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.onclick = () => {
+                    document.querySelector('.tab-btn.active')?.classList.remove('active');
+                    btn.classList.add('active');
+                    currentTab = btn.dataset.tab;
+                };
+            });
+        }
+
+        function loadScannerTabs() {
+            document.getElementById('scannerTabs').innerHTML = `
+                <button class="tab-btn active" data-tab="simulasi">🎉 Simulasi</button>
+                <button class="tab-btn" data-tab="kehadiran_ortu">👨‍👩‍👧 Orang Tua</button>
+                <button class="tab-btn" data-tab="kehadiran_mhs">✅ Mahasiswa</button>
+                <button class="tab-btn" data-tab="toga">🎓 Toga</button>
+                <button class="tab-btn" data-tab="ijazah">📜 Ijazah</button>
+            `;
+        }
+
+        let scannerRunning = false;
+        function startScanner() {
+            if (scannerRunning) return html5QrCode.stop();
+            scannerRunning = true;
+            document.getElementById('scanBtn').innerHTML = '<i class="fas fa-stop"></i> Stop Scanner';
+            
+            html5QrCode.start({ facingMode: "environment" }, handleScan, err => {
+                console.log('Camera error:', err);
+            }).catch(err => alert('Kamera error: ' + err));
         }
 
         async function handleScan(decodedText) {
             const resultDiv = document.getElementById('scanResult');
-            resultDiv.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses scan...';
+            resultDiv.innerHTML = '<i class="fas fa-spinner fa-spin" style="color: #667eea; font-size: 2rem;"></i> Processing...';
             
             try {
                 const response = await fetch(APPS_SCRIPT_URL, {
-                    method: 'POST', 
-                    body: JSON.stringify({ action: 'scanQR', data: decodedText })
+                    method: 'POST',
+                    body: JSON.stringify({ action: 'scanQR', data: decodedText, category: currentTab }),
+                    headers: { 'Content-Type': 'application/json' }
                 });
                 const result = await response.json();
-                showScanResult(result);
+                resultDiv.className = result.success ? 'success' : 'error';
+                resultDiv.innerHTML = result.message;
                 updateStats();
             } catch (error) {
-                resultDiv.innerHTML = '<i class="fas fa-times-circle" style="color:#ef4444;"></i> Error: ' + error.message;
-            }
-        }
-
-        function showScanResult(result) {
-            const resultDiv = document.getElementById('scanResult');
-            if (result.success) {
-                resultDiv.innerHTML = `<div style="color: #10b981; font-weight: 600; font-size: 1.1rem;">
-                    <i class="fas fa-check-circle"></i> ${result.message}
-                </div>`;
-                resultDiv.style.background = 'rgba(16,185,129,0.1)';
-                resultDiv.style.padding = '15px';
-                resultDiv.style.borderRadius = '10px';
-                resultDiv.style.border = '2px solid #10b981';
-            } else {
-                resultDiv.innerHTML = `<div style="color: #ef4444; font-weight: 600; font-size: 1.1rem;">
-                    <i class="fas fa-times-circle"></i> ${result.message}
-                </div>`;
-                resultDiv.style.background = 'rgba(239,68,68,0.1)';
-                resultDiv.style.padding = '15px';
-                resultDiv.style.borderRadius = '10px';
-                resultDiv.style.border = '2px solid #ef4444';
+                resultDiv.className = 'error';
+                resultDiv.innerHTML = '❌ Error koneksi';
             }
         }
 
@@ -355,22 +388,19 @@
             try {
                 const response = await fetch(`${APPS_SCRIPT_URL}?action=getStats`);
                 const stats = await response.json();
-                const statsGrid = document.getElementById('statsGrid');
-                statsGrid.innerHTML = `
-                    <div class="stat-card"><div class="stat-number">${stats.simulasi}</div><div>Simulasi</div></div>
-                    <div class="stat-card"><div class="stat-number">${stats.ortu}</div><div>Kehadiran OrtU</div></div>
-                    <div class="stat-card"><div class="stat-number">${stats.mhs}</div><div>Kehadiran Mhs</div></div>
-                    <div class="stat-card"><div class="stat-number">${stats.toga}</div><div>Toga Diambil</div></div>
-                    <div class="stat-card"><div class="stat-number">${stats.ijazah}</div><div>Ijazah Diambil</div></div>
-                    <div class="stat-card"><div class="stat-number">${stats.download}</div><div>Total QR Download</div></div>
+                document.getElementById('statsGrid').innerHTML = `
+                    <div class="stat-card"><div class="stat-number">${stats.simulasi}</div><div class="stat-label">Simulasi</div></div>
+                    <div class="stat-card"><div class="stat-number">${stats.ortu}</div><div class="stat-label">Orang Tua</div></div>
+                    <div class="stat-card"><div class="stat-number">${stats.mhs}</div><div class="stat-label">Mahasiswa</div></div>
+                    <div class="stat-card"><div class="stat-number">${stats.toga}</div><div class="stat-label">Toga</div></div>
+                    <div class="stat-card"><div class="stat-number">${stats.ijazah}</div><div class="stat-label">Ijazah</div></div>
+                    <div class="stat-card"><div class="stat-number">${stats.download}</div><div class="stat-label">QR Download</div></div>
                 `;
-                statsGrid.style.display = 'grid';
-            } catch (e) { console.log('Stats update error:', e); }
+            } catch (e) { console.log('Stats error:', e); }
         }
 
-        document.getElementById('nimInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') loadMahasiswaData();
-        });
+        // Auto update stats
+        setInterval(updateStats, 8000);
     </script>
 </body>
 </html>
