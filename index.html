@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistem Wisuda IWU 2026</title>
     <script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js"></script>
+    <script src="https://unpkg.com/html5-qrcode"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -18,147 +19,188 @@
             padding: 20px; 
             color: white; 
         }
-        .container { width: 100%; max-width: 600px; text-align: center; }
+        .container { width: 100%; max-width: 500px; text-align: center; }
         
-        /* HEADER SESUAI GAMBAR */
-        .title-main { font-size: 2.8rem; font-weight: 800; margin-bottom: 50px; text-transform: uppercase; letter-spacing: 2px; }
-
-        /* TOMBOL WISUDAWAN (PURPLE BLOCK) */
-        .btn-wisudawan { 
-            background: #8e24aa; 
-            color: white; border: none; padding: 70px 20px; border-radius: 35px; 
-            width: 100%; font-weight: 700; cursor: pointer; text-transform: uppercase;
-            margin-bottom: 45px; display: block;
-            box-shadow: inset 0 2px 15px rgba(255,255,255,0.2), 0 10px 30px rgba(0,0,0,0.3);
-        }
-        .btn-wisudawan i { font-size: 30px; margin-bottom: 12px; display: block; }
-        .btn-wisudawan span { font-size: 18px; letter-spacing: 2px; }
-
-        /* TOMBOL PANITIA (OUTLINE ONLY) */
-        .btn-scanner { 
-            background: transparent; color: white; border: 2px solid #3d364d; 
-            padding: 35px; border-radius: 50px; width: 100%; font-weight: 700; 
-            cursor: pointer; text-transform: uppercase; letter-spacing: 2px; font-size: 16px;
-        }
-
-        /* CARD DALAM DENGAN EFEK GLOSSY */
         .glass-card { 
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.02));
-            backdrop-filter: blur(20px); 
+            background: rgba(255, 255, 255, 0.05); 
+            backdrop-filter: blur(15px); 
             border-radius: 40px; 
-            padding: 40px; 
+            padding: 35px; 
             border: 1px solid rgba(255, 255, 255, 0.1); 
-            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.4); 
         }
 
-        .grid-container { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 30px; }
-        .grid-item { 
-            background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px; padding: 25px; cursor: pointer;
+        /* GRID SESUAI GAMBAR image_bb0bef.png */
+        .grid-container { 
+            display: grid; 
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 15px; 
+            margin-top: 30px; 
         }
-        .grid-item.full-width { grid-column: span 2; }
-        .grid-item i { font-size: 24px; color: #a286f4; margin-bottom: 10px; display: block; }
-        .grid-item p { font-size: 12px; font-weight: 700; text-transform: uppercase; }
-
-        .input-box { 
-            width: 100%; padding: 20px; border-radius: 15px; border: none; 
-            margin: 20px 0; font-size: 1rem; text-align: center; font-weight: 600; 
-        }
-        .btn-action { background: #8e24aa; color: white; border: none; padding: 20px; border-radius: 15px; width: 100%; font-weight: 700; cursor: pointer; }
-        .qr-display { background: white; padding: 15px; border-radius: 20px; display: inline-block; margin: 20px 0; }
         
-        #statusMessage { font-size: 14px; margin-top: 12px; color: #4caf50; font-weight: 600; }
+        .grid-item { 
+            background: rgba(255, 255, 255, 0.05);
+            border: 1.5px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px; 
+            padding: 25px 15px; 
+            cursor: pointer; 
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Ijazah jadi panjang di bawah */
+        .grid-item.full-width { 
+            grid-column: span 2; 
+        }
+
+        .grid-item:hover { 
+            background: rgba(162, 134, 244, 0.15); 
+            border-color: #a286f4;
+            transform: scale(1.02);
+        }
+
+        .grid-item i { font-size: 30px; color: #a286f4; margin-bottom: 12px; }
+        .grid-item p { font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+
+        /* UI Tambahan */
+        .input-box { 
+            width: 100%; padding: 18px; border-radius: 15px; border: none; 
+            margin: 20px 0; font-size: 1rem; text-align: center; font-weight: 600; 
+            background: rgba(255,255,255,0.95); color: #333; 
+        }
+        .btn-purple { 
+            background: linear-gradient(135deg, #6a1b9a, #8e24aa); 
+            color: white; border: none; padding: 18px; border-radius: 15px; 
+            width: 100%; font-weight: 700; cursor: pointer; text-transform: uppercase;
+        }
+        .btn-outline-wide { 
+            background: transparent; color: white; border: 1.5px solid rgba(255,255,255,0.3); 
+            padding: 15px; border-radius: 20px; width: 100%; font-weight: 600; 
+            margin-top: 15px; cursor: pointer; text-transform: uppercase;
+        }
+        
+        .qr-display { background: white; padding: 15px; border-radius: 20px; display: inline-block; margin: 20px 0; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <!-- TAMPILAN SESUAI image_ba900f.png -->
+    <!-- MENU UTAMA -->
     <div id="mainMenu">
-        <h1 class="title-main">WISUDA IWU 2026</h1>
-        <button class="btn-wisudawan" onclick="showPage('viewKategori')">
-            <i class="fas fa-user-graduate"></i>
-            <span>WISUDAWAN</span>
+        <h1 style="margin-bottom: 30px; font-weight: 800;">WISUDA IWU 2026</h1>
+        <button class="btn-purple" style="margin-bottom: 20px; padding: 40px;" onclick="showPage('viewKategori')">
+            <i class="fas fa-user-graduate"></i><br>WISUDAWAN
         </button>
-        <button class="btn-scanner" onclick="showPage('viewPanitia')">
+        <button class="btn-outline-wide" onclick="showPage('viewPanitia')">
             PANITIA SCANNER
         </button>
     </div>
 
-    <!-- KATEGORI -->
+    <!-- TAMPILAN PILIH LAYANAN (GRID 2-2-1) -->
     <div id="viewKategori" class="glass-card" style="display: none;">
-        <h2 style="margin-bottom: 20px;">Layanan Wisuda</h2>
+        <h2 style="font-weight: 700;">Pilih Layanan QR</h2>
         <div class="grid-container">
-            <div class="grid-item" onclick="selectKategori('Simulasi')"><i class="fas fa-vial"></i><p>Simulasi</p></div>
-            <div class="grid-item" onclick="selectKategori('Kehadiran')"><i class="fas fa-id-badge"></i><p>Kehadiran</p></div>
-            <div class="grid-item" onclick="selectKategori('Undangan')"><i class="fas fa-users"></i><p>Undangan</p></div>
-            <div class="grid-item" onclick="selectKategori('Toga')"><i class="fas fa-graduation-cap"></i><p>Toga</p></div>
-            <div class="grid-item full-width" onclick="selectKategori('Ijazah')"><i class="fas fa-scroll"></i><p>Ijazah</p></div>
+            <!-- Baris 1 -->
+            <div class="grid-item" onclick="selectKategori('Simulasi')">
+                <i class="fas fa-vial"></i><p>Simulasi</p>
+            </div>
+            <div class="grid-item" onclick="selectKategori('Mahasiswa')">
+                <i class="fas fa-id-badge"></i><p>Kehadiran</p>
+            </div>
+            <!-- Baris 2 -->
+            <div class="grid-item" onclick="selectKategori('Ortu')">
+                <i class="fas fa-users"></i><p>Undangan</p>
+            </div>
+            <div class="grid-item" onclick="selectKategori('Toga')">
+                <i class="fas fa-graduation-cap"></i><p>Toga</p>
+            </div>
+            <!-- Baris 3 (Full Width) -->
+            <div class="grid-item full-width" onclick="selectKategori('Ijazah')">
+                <i class="fas fa-scroll"></i><p>Ijazah</p>
+            </div>
         </div>
-        <button class="btn-scanner" style="margin-top: 30px; padding: 15px;" onclick="showPage('mainMenu')">KEMBALI</button>
+        <button class="btn-outline-wide" onclick="showPage('mainMenu')">KEMBALI</button>
     </div>
 
-    <!-- QR GENERATOR -->
+    <!-- VIEW GENERATE QR -->
     <div id="viewInputNIM" class="glass-card" style="display: none;">
-        <h2 id="labelKategori" style="color: #a286f4;">QR</h2>
-        <input type="text" id="nimInput" placeholder="NIM" class="input-box">
-        <button id="btnCari" class="btn-action" onclick="generateNow()">GENERATE QR</button>
+        <h2 id="labelKategoriSelected" style="color: #a286f4; text-transform: uppercase;">QR</h2>
+        <input type="text" id="nimInput" placeholder="MASUKKAN NIM" class="input-box">
+        <button id="btnCari" class="btn-purple" onclick="cariDanGenerate()">GENERATE QR</button>
         
         <div id="hasilMhs" style="display:none; margin-top:20px;">
-            <div class="qr-display"><canvas id="qrCanvas"></canvas></div><br>
-            <button id="btnDownload" class="btn-action" style="background: #2e7d32;" onclick="downloadQR()">
-                <i class="fas fa-download"></i> DOWNLOAD
-            </button>
-            <div id="statusMessage"></div>
+            <div id="infoDetail" style="margin-bottom: 10px; background: rgba(255,255,255,0.1); padding: 10px; border-radius: 10px;"></div>
+            <div class="qr-display"><canvas id="qrCanvas"></canvas></div>
+            <button class="btn-purple" style="background: #2e7d32;" onclick="downloadQR()">DOWNLOAD</button>
         </div>
-        <button class="btn-scanner" style="margin-top: 30px; padding: 15px;" onclick="showPage('viewKategori')">KEMBALI</button>
+        <button class="btn-outline-wide" onclick="showPage('viewKategori')">KEMBALI</button>
+    </div>
+
+    <!-- VIEW PANITIA -->
+    <div id="viewPanitia" class="glass-card" style="display: none;">
+        <h2>PANITIA ACCESS</h2>
+        <input type="password" id="pinField" placeholder="PIN" class="input-box">
+        <button class="btn-purple" onclick="startCamera()">OPEN SCANNER</button>
+        <div id="reader" style="margin-top: 20px; border-radius: 20px; overflow: hidden;"></div>
+        <button class="btn-outline-wide" onclick="showPage('mainMenu')">KEMBALI</button>
     </div>
 </div>
 
 <script>
-    let currentType = "";
+    const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbx74HXiCFngZ02pZoXcqX7zpoVcyOrJykK3opuCWF1PpQH_ADVhxxDVbYXKerYv9ANXmQ/exec"; 
+    let selectedType = "";
+    let currentData = null;
 
     function showPage(id) {
         document.getElementById('mainMenu').style.display = 'none';
         document.getElementById('viewKategori').style.display = 'none';
         document.getElementById('viewInputNIM').style.display = 'none';
-        if(document.getElementById('viewPanitia')) document.getElementById('viewPanitia').style.display = 'none';
+        document.getElementById('viewPanitia').style.display = 'none';
         document.getElementById(id).style.display = 'block';
     }
 
     function selectKategori(tipe) {
-        currentType = tipe;
-        document.getElementById('labelKategori').innerText = "QR " + tipe;
+        selectedType = tipe;
+        document.getElementById('labelKategoriSelected').innerText = "QR " + tipe;
         document.getElementById('hasilMhs').style.display = 'none';
-        document.getElementById('statusMessage').innerText = "";
+        document.getElementById('nimInput').value = "";
         showPage('viewInputNIM');
     }
 
-    function generateNow() {
+    async function cariDanGenerate() {
         const nim = document.getElementById('nimInput').value;
+        const btn = document.getElementById('btnCari');
         if(!nim) return alert("Isi NIM!");
-        document.getElementById('hasilMhs').style.display = 'block';
-        QRCode.toCanvas(document.getElementById('qrCanvas'), nim + "|" + currentType, { width: 220 });
-        // Reset tombol download jika generate ulang
-        document.getElementById('btnDownload').innerHTML = `<i class="fas fa-download"></i> DOWNLOAD`;
-        document.getElementById('statusMessage').innerHTML = "";
+        
+        btn.innerText = "LOADING...";
+        try {
+            const res = await fetch(`${URL_SCRIPT}?action=getMahasiswa&nim=${nim}`);
+            const data = await res.json();
+            if(data.nim) {
+                currentData = data;
+                document.getElementById('hasilMhs').style.display = 'block';
+                document.getElementById('infoDetail').innerHTML = `<b>${data.nama}</b><br>Kursi: ${data.kursi}`;
+                QRCode.toCanvas(document.getElementById('qrCanvas'), `${data.nim}|${selectedType}`, { width: 200 });
+            } else { alert("NIM tidak ada!"); }
+        } catch (e) { alert("Error database!"); }
+        btn.innerText = "GENERATE QR";
     }
 
     function downloadQR() {
-        const canvas = document.getElementById('qrCanvas');
         const link = document.createElement('a');
-        link.download = `QR_${currentType}.png`;
-        link.href = canvas.toDataURL();
+        link.download = `QR_${selectedType}_${currentData.nim}.png`;
+        link.href = document.getElementById('qrCanvas').toDataURL();
         link.click();
+    }
 
-        // FITUR TAMBAHAN: Jam Otomatis & Ceklis
-        const skrg = new Date();
-        const jam = skrg.getHours().toString().padStart(2, '0') + ":" + 
-                    skrg.getMinutes().toString().padStart(2, '0') + ":" + 
-                    skrg.getSeconds().toString().padStart(2, '0');
-
-        document.getElementById('btnDownload').innerHTML = `<i class="fas fa-check"></i> BERHASIL`;
-        document.getElementById('statusMessage').innerHTML = `Tersimpan pada: ${jam} ✓`;
+    function startCamera() {
+        if(document.getElementById('pinField').value === "WISUDAIWU26") {
+            const html5QrCode = new Html5Qrcode("reader");
+            html5QrCode.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 }, (txt) => { alert(txt); });
+        } else { alert("PIN Salah!"); }
     }
 </script>
 </body>
