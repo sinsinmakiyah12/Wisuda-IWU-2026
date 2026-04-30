@@ -3,185 +3,142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wisuda International Women University</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Sistem Absensi Wisuda IWU 2026</title>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js"></script>
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            font-family: 'Poppins', sans-serif; 
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-            min-height: 100vh; overflow-x: hidden;
-        }
-        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-        
-        /* HEADER STYLES */
-        .header { text-align: center; color: white; margin-bottom: 40px; animation: fadeInDown 1s ease; }
-        .header h1 { font-size: 2.8rem; font-weight: 700; margin-bottom: 10px; text-shadow: 0 4px 20px rgba(0,0,0,0.3); }
-        .header .theme { font-size: 1.1rem; font-weight: 600; letter-spacing: 1px; margin-bottom: 5px; text-transform: uppercase; opacity: 0.95; line-height: 1.4; max-width: 800px; margin: 0 auto 10px; }
-        .header .academic-year { font-size: 1.2rem; opacity: 0.9; }
-        
-        .section { display: none; animation: fadeInUp 0.8s ease; }
-        .section.active { display: block; }
-        
-        /* CARDS & BUTTONS */
-        .role-selector { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; margin-bottom: 50px; }
-        .role-card { 
-            background: rgba(255,255,255,0.15); backdrop-filter: blur(20px); 
-            border: 1px solid rgba(255,255,255,0.3); border-radius: 25px; 
-            padding: 50px 40px; width: 350px; text-align: center; color: white; 
-            cursor: pointer; transition: all 0.4s ease; box-shadow: 0 25px 50px rgba(0,0,0,0.15);
-        }
-        .role-card:hover { transform: translateY(-15px) scale(1.05); background: rgba(255,255,255,0.25); }
-        .role-card i { font-size: 4.5rem; margin-bottom: 25px; color: #e0c3fc; }
-        
-        .input-section {
-            background: rgba(255,255,255,0.15); backdrop-filter: blur(20px); 
-            border: 1px solid rgba(255,255,255,0.3); border-radius: 25px; 
-            padding: 50px; text-align: center; margin-bottom: 40px;
-        }
-        #nimInput { padding: 20px 35px; border: none; border-radius: 50px; font-size: 1.3rem; width: 380px; max-width: 90%; background: white; font-weight: 500; }
-        .btn-primary { background: linear-gradient(135deg, #10b981, #059669); color: white; border: none; padding: 20px 45px; border-radius: 50px; font-weight: 600; cursor: pointer; transition: all 0.4s ease; margin-left: 10px; }
-        
-        .qr-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; margin-bottom: 40px; }
-        .qr-card { background: white; border-radius: 20px; padding: 30px; text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.1); border-top: 5px solid #764ba2; }
-        canvas { width: 200px; height: 200px; margin: 20px auto; display: block; }
-
-        .no-data { text-align: center; color: white; padding: 40px; background: rgba(239, 68, 68, 0.2); border-radius: 20px; margin-bottom: 20px; border: 2px solid #ef4444; }
-        .back-btn { background: rgba(255,255,255,0.2); color: white; border: 1px solid white; padding: 15px 30px; border-radius: 50px; cursor: pointer; margin-top: 20px; }
-
-        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        /* CSS Singkat untuk Tampilan Professional */
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 0; padding: 20px; box-sizing: border-box; }
+        .card { background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(10px); padding: 30px; border-radius: 20px; box-shadow: 0 8px 32px rgba(0,0,0,0.2); width: 100%; max-width: 500px; text-align: center; border: 1px solid rgba(255,255,255,0.3); }
+        h2 { color: white; margin-bottom: 20px; }
+        .input-field { width: 100%; padding: 12px; margin: 10px 0; border-radius: 10px; border: none; font-size: 1rem; box-sizing: border-box; }
+        .btn-primary { background: #4facfe; color: white; border: none; padding: 12px 25px; border-radius: 10px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px; transition: 0.3s; }
+        .btn-secondary { background: transparent; color: white; border: 1px solid white; padding: 10px 20px; border-radius: 10px; cursor: pointer; margin-top: 15px; width: 100%; }
+        .qr-card { background: white; padding: 15px; border-radius: 15px; margin-top: 20px; }
+        #noData { background: rgba(255, 0, 0, 0.2); color: white; padding: 10px; border-radius: 10px; margin-top: 15px; border: 1px solid #ff4d4d; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- HEADER UTAMA -->
-        <div class="header">
-            <h1><i class="fas fa-graduation-cap"></i> Wisuda IWU 2026</h1>
-            <p class="theme">TRANSFORMASI BANGSA MELALUI INTELEKTUAL MUDA YANG ADAPTIF</p>
-            <p class="academic-year">Tahun Akademik 2025/2026</p>
+
+    <!-- SECTION 1: SEARCH NIM -->
+    <div id="mainInputArea" class="card">
+        <h2>Wisuda IWU 2026</h2>
+        <div id="inputBox">
+            <input type="text" id="nimInput" placeholder="Masukkan NIM Anda" class="input-field">
+            <button class="btn-primary" onclick="loadMahasiswaData()">CEK DATA & QR</button>
+            <button class="btn-secondary" onclick="showAdmin()">AREA PANITIA</button>
+        </div>
+        
+        <!-- Pesan Error -->
+        <div id="noData" style="display:none;">
+            <i class="fas fa-exclamation-circle"></i> NIM tidak ditemukan! <br>Pastikan benar atau hubungi Admin HIMAIF.
         </div>
 
-        <!-- LANDING PAGE -->
-        <div id="landing" class="section active">
-            <div class="role-selector">
-                <div class="role-card" onclick="showMahasiswa()">
-                    <i class="fas fa-user-graduate"></i>
-                    <h3>Wisudawan</h3>
-                    <p>Unduh QR Code Kehadiran & Atribut</p>
-                </div>
-                <div class="role-card" onclick="showPanitia()">
-                    <i class="fas fa-qrcode"></i>
-                    <h3>Panitia</h3>
-                    <p>Scanner Verifikasi Real-time</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- SECTION MAHASISWA -->
-        <div id="mahasiswaSection" class="section">
-            <div class="input-section" id="inputArea">
-                <h2 style="color: white; margin-bottom: 20px;">Masukkan NIM Anda</h2>
-                <input type="text" id="nimInput" placeholder="Contoh: 22012345">
-                <button class="btn-primary" onclick="loadMahasiswaData()">Cari Data</button>
-            </div>
-
-            <div id="noData" class="no-data" style="display: none;">
-                <i class="fas fa-exclamation-circle" style="font-size: 3rem; margin-bottom: 10px;"></i><br>
-                <strong>NIM tidak ditemukan!</strong><br>Pastikan NIM benar atau hubungi Admin HIMAIF.
-            </div>
-
-            <div id="qrGrid" class="qr-grid"></div>
-
-            <button class="back-btn" onclick="location.reload()"><i class="fas fa-arrow-left"></i> Kembali</button>
-        </div>
-
-        <!-- SECTION PANITIA (Placeholder) -->
-        <div id="panitiaSection" class="section">
-            <div class="input-section">
-                <h2 style="color: white;">Area Panitia</h2>
-                <p style="color: white; margin-top: 10px;">Silakan masukkan PIN Keamanan untuk mengakses Scanner.</p>
-                <button class="back-btn" onclick="location.reload()">Kembali</button>
-            </div>
+        <!-- Tampilan Hasil & QR -->
+        <div id="resultArea" style="display:none; margin-top: 20px;">
+            <div id="infoMhs"></div>
+            <div id="qrGrid"></div>
+            <button class="btn-secondary" onclick="location.reload()">KEMBALI</button>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    <!-- SECTION 2: AREA PANITIA (WITH PIN) -->
+    <div id="adminSection" class="card" style="display: none;">
+        <h2>Area Panitia</h2>
+        <div id="loginArea">
+            <p style="color: white;">Masukkan PIN Keamanan untuk mengakses Scanner.</p>
+            <input type="password" id="pinInput" placeholder="Masukkan PIN" class="input-field" style="max-width: 200px; text-align: center;">
+            <button class="btn-primary" onclick="checkPin()">MASUK</button>
+            <button class="btn-secondary" onclick="hideAdmin()">KEMBALI</button>
+        </div>
+
+        <!-- Area Scanner -->
+        <div id="scannerArea" style="display: none;">
+            <div id="reader" style="width: 100%; border-radius: 15px; overflow: hidden;"></div>
+            <p id="scanResult" style="color: white; margin-top: 10px;"></p>
+            <button class="btn-secondary" onclick="hideAdmin()">KELUAR</button>
+        </div>
+    </div>
+
     <script>
-        // GANTI INI DENGAN URL APPS SCRIPT KAMU YANG BARU
-        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbydHSoLaslpJvdR5pu546qUikGgAKkk65vGGUB7CsrfG22pfXrzFLW37vxQa2yXXLAQ7Q/exec';
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzmskt5K9VEh_Jwet6A4OiEOaF2fdpzz5P08zumvQee3bgPNbnYElDrVA9SWeqJoxrZLg/exec'; // GANTI DENGAN LINK DEPLOY TERBARU
+        const ADMIN_PIN = "WISUDAIWU26"; // PIN Akses Panitia
 
-        function showMahasiswa() {
-            document.getElementById('landing').classList.remove('active');
-            document.getElementById('mahasiswaSection').classList.add('active');
-        }
-
-        function showPanitia() {
-            document.getElementById('landing').classList.remove('active');
-            document.getElementById('panitiaSection').classList.add('active');
-        }
-
+        // --- FUNGSI SEARCH MAHASISWA ---
         async function loadMahasiswaData() {
             const nim = document.getElementById('nimInput').value.trim();
             if (!nim) return alert('Masukkan NIM!');
 
-            const inputArea = document.getElementById('inputArea');
-            const qrGrid = document.getElementById('qrGrid');
+            const inputBox = document.getElementById('inputBox');
             const noData = document.getElementById('noData');
-            
-            inputArea.innerHTML = '<i class="fas fa-spinner fa-spin" style="color:white; font-size:2rem;"></i>';
+            const resultArea = document.getElementById('resultArea');
+            const infoMhs = document.getElementById('infoMhs');
+
             noData.style.display = 'none';
+            inputBox.innerHTML = '<i class="fas fa-spinner fa-spin" style="color:white; font-size:2rem;"></i>';
 
             try {
-                // Mencari NIM tanpa menghapus angka nol di depan
-                const response = await fetch(`${APPS_SCRIPT_URL}?action=getMahasiswa&nim=${nim}`);
+                const response = await fetch(`${APPS_SCRIPT_URL}?action=getMahasiswa&nim=${encodeURIComponent(nim)}`);
                 const data = await response.json();
 
                 if (data && data.nim) {
-                    inputArea.innerHTML = `
-                        <h2 style="color: white;">Halo, ${data.nama}</h2>
-                        <p style="color: white; opacity: 0.9;">${data.prodi} | Kursi: <strong>${data.kursi}</strong></p>
+                    inputBox.style.display = 'none';
+                    resultArea.style.display = 'block';
+                    infoMhs.innerHTML = `
+                        <h3 style="color: white; margin-bottom:5px;">${data.nama}</h3>
+                        <p style="color: white; opacity:0.8;">${data.prodi} <br> <b>Kursi: ${data.kursi}</b></p>
                     `;
-                    
-                    const categories = [
-                        { id: 'simulasi', name: 'Simulasi Wisuda' },
-                        { id: 'kehadiran_mhs', name: 'Presensi Wisudawan' },
-                        { id: 'kehadiran_ortu', name: 'Presensi Orang Tua' },
-                        { id: 'toga', name: 'Ambil Toga' },
-                        { id: 'ijazah', name: 'Ambil Ijazah' }
-                    ];
-
-                    qrGrid.innerHTML = categories.map(cat => `
-                        <div class="qr-card">
-                            <h3>${cat.name}</h3>
-                            <canvas id="qr_${cat.id}"></canvas>
-                            <button class="btn-primary" onclick="downloadQR('qr_${cat.id}', '${data.nama}_${cat.id}')">Simpan Gambar</button>
-                        </div>
-                    `).join('');
-
-                    categories.forEach(cat => {
-                        QRCode.toCanvas(document.getElementById(`qr_${cat.id}`), `MHS:${data.nim}:${cat.id}`, {
-                            width: 200, margin: 2
-                        });
-                    });
+                    generateQRCodes(data.nim);
                 } else {
-                    inputArea.innerHTML = `<h2 style="color: white;">Cari Data</h2>
-                        <input type="text" id="nimInput" value="${nim}">
-                        <button class="btn-primary" onclick="loadMahasiswaData()">Cari Data</button>`;
-                    noData.style.display = 'block';
+                    location.reload(); // Reset untuk coba lagi
+                    alert('NIM tidak terdaftar!');
                 }
             } catch (err) {
-                alert('Koneksi Error!');
+                alert('Gagal koneksi ke database.');
                 location.reload();
             }
         }
 
-        function downloadQR(canvasId, filename) {
-            const link = document.createElement('a');
-            link.download = filename + '.png';
-            link.href = document.getElementById(canvasId).toDataURL();
-            link.click();
+        function generateQRCodes(nim) {
+            const qrGrid = document.getElementById('qrGrid');
+            const categories = [{id: 'mhs', name: 'QR Presensi Wisudawan'}];
+            
+            qrGrid.innerHTML = categories.map(c => `
+                <div class="qr-card">
+                    <p style="color: #333; font-weight: bold; margin-bottom: 10px;">${c.name}</p>
+                    <canvas id="qr_${c.id}"></canvas>
+                </div>
+            `).join('');
+
+            categories.forEach(c => {
+                QRCode.toCanvas(document.getElementById(`qr_${c.id}`), `MHS:${nim}:${c.id}`, { width: 200 });
+            });
+        }
+
+        // --- FUNGSI AREA PANITIA ---
+        function showAdmin() {
+            document.getElementById('adminSection').style.display = 'block';
+            document.getElementById('mainInputArea').style.display = 'none';
+        }
+
+        function hideAdmin() {
+            document.getElementById('adminSection').style.display = 'none';
+            document.getElementById('mainInputArea').style.display = 'block';
+            document.getElementById('loginArea').style.display = 'block';
+            document.getElementById('scannerArea').style.display = 'none';
+            document.getElementById('pinInput').value = '';
+        }
+
+        function checkPin() {
+            const pin = document.getElementById('pinInput').value;
+            if (pin === ADMIN_PIN) {
+                document.getElementById('loginArea').style.display = 'none';
+                document.getElementById('scannerArea').style.display = 'block';
+                // startScanner(); // Panggil fungsi scanner kamu di sini
+            } else {
+                alert('PIN Salah!');
+            }
         }
     </script>
 </body>
