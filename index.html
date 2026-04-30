@@ -9,7 +9,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* TAMPILAN TETAP SAMA SESUAI REQUEST */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
         body { 
             background: #0d0421; 
@@ -22,6 +21,7 @@
         }
         .container { width: 100%; max-width: 500px; text-align: center; }
         
+        /* EFEK KOTAK TRANSPARAN */
         .glass-card { 
             background: rgba(255, 255, 255, 0.05); 
             backdrop-filter: blur(15px); 
@@ -67,11 +67,16 @@
             margin: 20px 0; font-size: 1rem; text-align: center; font-weight: 600; 
             background: rgba(255,255,255,0.95); color: #333; 
         }
+        
+        /* TOMBOL UTAMA */
         .btn-purple { 
             background: linear-gradient(135deg, #6a1b9a, #8e24aa); 
             color: white; border: none; padding: 18px; border-radius: 15px; 
             width: 100%; font-weight: 700; cursor: pointer; text-transform: uppercase;
+            transition: 0.3s;
         }
+        .btn-purple:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(142, 36, 170, 0.4); }
+
         .btn-outline-wide { 
             background: transparent; color: white; border: 1.5px solid rgba(255,255,255,0.3); 
             padding: 15px; border-radius: 20px; width: 100%; font-weight: 600; 
@@ -84,11 +89,12 @@
 <body>
 
 <div class="container">
-    <!-- MENU UTAMA -->
-    <div id="mainMenu">
-        <h1 style="margin-bottom: 30px; font-weight: 800;">WISUDA IWU 2026</h1>
-        <button class="btn-purple" style="margin-bottom: 20px; padding: 40px;" onclick="showPage('viewKategori')">
-            <i class="fas fa-user-graduate"></i><br>WISUDAWAN
+    <!-- MENU UTAMA DENGAN GLASS-CARD -->
+    <div id="mainMenu" class="glass-card">
+        <h1 style="margin-bottom: 30px; font-weight: 800; letter-spacing: 1px;">WISUDA IWU 2026</h1>
+        <button class="btn-purple" style="margin-bottom: 10px; padding: 30px;" onclick="showPage('viewKategori')">
+            <i class="fas fa-user-graduate" style="font-size: 24px; margin-bottom: 10px;"></i><br>
+            WISUDAWAN
         </button>
         <button class="btn-outline-wide" onclick="showPage('viewPanitia')">
             PANITIA SCANNER
@@ -97,7 +103,7 @@
 
     <!-- TAMPILAN PILIH LAYANAN (GRID 2-2-1) -->
     <div id="viewKategori" class="glass-card" style="display: none;">
-        <h2 style="font-weight: 700;">Pilih Layanan QR</h2>
+        <h2 style="font-weight: 700; margin-bottom: 10px;">Pilih Layanan QR</h2>
         <div class="grid-container">
             <div class="grid-item" onclick="selectKategori('Simulasi')">
                 <i class="fas fa-vial"></i><p>Simulasi</p>
@@ -125,9 +131,10 @@
         <button id="btnCari" class="btn-purple" onclick="cariDanGenerate()">GENERATE QR</button>
         
         <div id="hasilMhs" style="display:none; margin-top:20px;">
-            <div id="infoDetail" style="margin-bottom: 10px; background: rgba(255,255,255,0.1); padding: 10px; border-radius: 10px;"></div>
+            <div id="infoDetail" style="margin-bottom: 10px; background: rgba(255,255,255,0.1); padding: 15px; border-radius: 15px;"></div>
             <div class="qr-display"><canvas id="qrCanvas"></canvas></div>
-            <button class="btn-purple" style="background: #2e7d32;" onclick="downloadQR()">DOWNLOAD</button>
+            <br>
+            <button class="btn-purple" style="background: #2e7d32; margin-top: 10px;" onclick="downloadQR()">DOWNLOAD QR</button>
         </div>
         <button class="btn-outline-wide" onclick="showPage('viewKategori')">KEMBALI</button>
     </div>
@@ -182,10 +189,8 @@
         btn.innerText = "GENERATE QR";
     }
 
-    /* FUNGSI DOWNLOAD TERBARU DENGAN CEKLIST & JAM */
     async function downloadQR() {
         if(!currentData) return;
-
         const canvas = document.getElementById('qrCanvas');
         const link = document.createElement('a');
         link.download = `QR_${selectedType}_${currentData.nim}.png`;
@@ -195,15 +200,9 @@
         try {
             fetch(URL_SCRIPT, {
                 method: 'POST',
-                body: JSON.stringify({
-                    action: 'updateDownload',
-                    nim: currentData.nim,
-                    tipe: selectedType
-                })
+                body: JSON.stringify({ action: 'updateDownload', nim: currentData.nim, tipe: selectedType })
             });
-        } catch (e) {
-            console.log("Update database gagal.");
-        }
+        } catch (e) {}
     }
 
     function startCamera() {
