@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem Absensi Wisuda IWU 2026</title>
+    <title>Wisuda IWU 2026</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -64,7 +64,7 @@
             border: none; padding: 12px 30px; border-radius: 50px; font-weight: 600; 
             cursor: pointer; transition: all 0.3s ease; font-size: 0.95rem;
         }
-        .btn-download:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(102,126,234,0.4); }
+        .btn-download:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(102,126,234,0.4); }
         .btn-download:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
         .scan-section { 
             background: rgba(255,255,255,0.95); border-radius: 20px; padding: 40px; 
@@ -165,8 +165,8 @@
     <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
     <script>
         let currentRole = ''; let mahasiswaData = {}; let html5QrCode;
-        const PANITIA_PIN = 'WISUDA24'; // 🔐 GANTI PIN INI!
-        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxcrXUslNSVlgB0gKjbCL_6ZgliCuhDPa1eUXIddF0nEaRUtOCptO-M0YnjyjCoFIw25A/exec'; // GANTI INI!
+        const PANITIA_PIN = 'WISUDAIWU26'; 
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzVSvEDDpBnkbUabe7QefBodtli42kCMZ3ozfMTS4BdPdVxYxGsRE0_ew2M9zN5Qld7_w/exec';
 
         function showMahasiswa() {
             document.querySelector('.role-selector').style.display = 'none';
@@ -227,37 +227,42 @@
         function displayQRCodes() {
             const qrGrid = document.getElementById('qrGrid');
             const types = [
-                { id: 'simulasi', name: 'Simulasi Wisuda', icon: '🎉', status: 'simulasi' },
-                { id: 'kehadiran_ortu', name: 'Kehadiran OrtU', icon: '👨‍👩‍👧', status: 'kehadiran_ortu' },
-                { id: 'kehadiran_mhs', name: 'Kehadiran Mahasiswa', icon: '✅', status: 'kehadiran_mhs' },
-                { id: 'toga', name: 'Status Toga', icon: '🎓', status: 'status_toga' },
-                { id: 'ijazah', name: 'Status Ijazah', icon: '📜', status: 'status_ijazah' }
+                { id: 'simulasi', name: 'Simulasi Wisuda', icon: '🎉' },
+                { id: 'kehadiran_ortu', name: 'Kehadiran OrtU', icon: '👨‍👩‍👧' },
+                { id: 'kehadiran_mhs', name: 'Kehadiran Mahasiswa', icon: '✅' },
+                { id: 'toga', name: 'Status Toga', icon: '🎓' },
+                { id: 'ijazah', name: 'Status Ijazah', icon: '📜' }
             ];
             
-            qrGrid.innerHTML = types.map(type => `
-                <div class="qr-card ${mahasiswaData.status_download === 'Sudah Download' ? 'downloaded' : ''}">
-                    <h3>${type.icon} ${type.name}</h3>
-                    <div class="qr-info">
-                        <strong>${mahasiswaData.nama}</strong><br>
-                        ${mahasiswaData.prodi} - ${mahasiswaData.fakultas}<br>
-                        ${mahasiswaData.ortu1} ${mahasiswaData.ortu2}<br>
-                        <strong>Kursi: ${mahasiswaData.kursi}</strong>
+            qrGrid.innerHTML = types.map(type => {
+                const isDownloaded = mahasiswaData[`download_${type.id}`] === 'Downloaded';
+                return `
+                    <div class="qr-card ${isDownloaded ? 'downloaded' : ''}" id="card_${type.id}">
+                        <h3>${type.icon} ${type.name}</h3>
+                        <div class="qr-info">
+                            <strong>${mahasiswaData.nama}</strong><br>
+                            ${mahasiswaData.prodi} - ${mahasiswaData.fakultas}<br>
+                            ${mahasiswaData.ortu1} ${mahasiswaData.ortu2}<br>
+                            <strong>Kursi: ${mahasiswaData.kursi}</strong>
+                        </div>
+                        <canvas id="qr_${type.id}"></canvas>
+                        <br>
+                        <button class="btn-download" onclick="downloadQR('${type.id}')" 
+                                ${isDownloaded ? 'disabled' : ''}>
+                            ${isDownloaded ? '✅ Sudah Download' : '📥 Download QR'}
+                        </button>
                     </div>
-                    <canvas id="qr_${type.id}" ${mahasiswaData.status_download === 'Sudah Download' ? 'style="opacity:0.5"' : ''}></canvas>
-                    <br>
-                    <button class="btn-download" onclick="downloadQR('${type.id}')" 
-                            ${mahasiswaData.status_download === 'Sudah Download' ? 'disabled' : ''}>
-                        ${mahasiswaData.status_download === 'Sudah Download' ? '✅ Sudah Download Semua QR' : '📥 Download QR ' + type.name}
-                    </button>
-                </div>
-            `).join('');
+                `;
+            }).join('');
             
             qrGrid.style.display = 'grid';
             
-            // Generate semua QR jika belum download
-            if (mahasiswaData.status_download !== 'Sudah Download') {
-                types.forEach(type => generateQR(`MHS:${mahasiswaData.nim}:${type.id}`, `qr_${type.id}`));
-            }
+            // Generate QR codes
+            types.forEach(type => {
+                const canvas = document.getElementById(`qr_${type.id}`);
+                const qrText = `MHS:${mahasiswaData.nim}:${type.id}`;
+                generateQR(qrText, `qr_${type.id}`);
+            });
         }
 
         function generateQR(text, canvasId) {
@@ -273,14 +278,23 @@
             link.href = canvas.toDataURL();
             link.click();
             
-            // Mark all as downloaded
+            // Mark specific QR as downloaded
             try {
                 await fetch(APPS_SCRIPT_URL, {
                     method: 'POST', 
-                    body: JSON.stringify({ action: 'markDownloaded', nim: mahasiswaData.nim })
+                    body: JSON.stringify({ 
+                        action: 'markDownloaded', 
+                        nim: mahasiswaData.nim,
+                        type: type 
+                    })
                 });
-                alert('✅ QR berhasil diunduh! Status updated di database.');
-                loadMahasiswaData();
+                
+                // Update UI immediately
+                document.getElementById(`card_${type}`).classList.add('downloaded');
+                document.querySelector(`#card_${type} button`).disabled = true;
+                document.querySelector(`#card_${type} button`).textContent = '✅ Sudah Download';
+                
+                alert(`✅ QR ${type.toUpperCase()} berhasil diunduh!`);
             } catch (error) {
                 alert('✅ QR berhasil diunduh! (Update database gagal)');
             }
@@ -348,13 +362,12 @@
                     <div class="stat-card"><div class="stat-number">${stats.mhs}</div><div>Kehadiran Mhs</div></div>
                     <div class="stat-card"><div class="stat-number">${stats.toga}</div><div>Toga Diambil</div></div>
                     <div class="stat-card"><div class="stat-number">${stats.ijazah}</div><div>Ijazah Diambil</div></div>
-                    <div class="stat-card"><div class="stat-number">${stats.download}</div><div>QR Download</div></div>
+                    <div class="stat-card"><div class="stat-number">${stats.download}</div><div>Total QR Download</div></div>
                 `;
                 statsGrid.style.display = 'grid';
             } catch (e) { console.log('Stats update error:', e); }
         }
 
-        // Enter key support
         document.getElementById('nimInput').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') loadMahasiswaData();
         });
