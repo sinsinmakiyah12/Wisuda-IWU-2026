@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wisuda IWU 2026</title>
-    <!-- Library QR & Scanner -->
+    <title>Sistem Wisuda IWU 2026</title>
     <script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js"></script>
     <script src="https://unpkg.com/html5-qrcode"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
         
         body { 
-            background: linear-gradient(135deg, #6654f1 0%, #a246f1 100%); 
+            background: radial-gradient(circle at top right, #1e0b4d, #0d0421); 
             min-height: 100vh; 
             display: flex; 
             align-items: center; 
@@ -20,178 +20,171 @@
             padding: 20px;
         }
 
-        /* Glassmorphism Card */
-        .card { 
-            background: rgba(255, 255, 255, 0.2); 
-            backdrop-filter: blur(15px); 
-            -webkit-backdrop-filter: blur(15px);
-            padding: 50px 40px; 
-            border-radius: 40px; 
-            box-shadow: 0 20px 40px rgba(0,0,0,0.15); 
-            width: 100%; 
-            max-width: 550px; 
-            text-align: center; 
-            border: 1.5px solid rgba(255,255,255,0.3);
-        }
+        .container { width: 100%; max-width: 500px; }
 
-        h1 { color: white; margin-bottom: 40px; font-size: 2rem; font-weight: 800; letter-spacing: 0.5px; }
-
-        /* Input Styling */
-        .input-field { 
-            width: 100%; 
-            padding: 18px 25px; 
-            margin-bottom: 25px; 
-            border-radius: 18px; 
-            border: none; 
-            font-size: 1.1rem; 
-            background: white;
-            color: #555;
-            outline: none;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-        }
-
-        /* Button Cek Data (Biru Cerah) */
-        .btn-cek { 
-            background: #4cc9f0; 
-            color: white; 
-            border: none; 
-            padding: 18px; 
-            border-radius: 18px; 
-            cursor: pointer; 
-            font-weight: 800; 
-            width: 100%; 
-            font-size: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        /* Menu Card Styling (Sesuai Gambar) */
+        .menu-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            padding: 40px 20px;
+            margin-bottom: 25px;
+            text-align: center;
+            cursor: pointer;
             transition: all 0.3s ease;
-            margin-bottom: 18px;
-            box-shadow: 0 10px 20px rgba(76, 201, 240, 0.3);
+            color: white;
         }
 
-        .btn-cek:hover { transform: translateY(-2px); box-shadow: 0 12px 25px rgba(76, 201, 240, 0.4); }
-
-        /* Button Area Panitia (Outline Putih) */
-        .btn-panitia { 
-            background: transparent; 
-            color: white; 
-            border: 2px solid white; 
-            padding: 18px; 
-            border-radius: 18px; 
-            cursor: pointer; 
-            font-weight: 600; 
-            width: 100%; 
-            font-size: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: all 0.3s ease;
+        .menu-card:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.3);
         }
 
-        .btn-panitia:hover { background: rgba(255,255,255,0.1); }
+        .menu-card i { font-size: 60px; margin-bottom: 20px; color: #a286f4; opacity: 0.8; }
+        .menu-card h2 { font-size: 1.5rem; font-weight: 700; margin-bottom: 10px; }
+        .menu-card p { font-size: 0.9rem; opacity: 0.7; line-height: 1.5; }
 
-        /* QR & Result Area */
-        .info-box { color: white; margin-bottom: 25px; }
-        .qr-container { background: white; padding: 20px; border-radius: 25px; display: inline-block; margin: 10px 0; }
-        
-        #noData { display:none; color: #fff; background: rgba(255, 77, 77, 0.4); padding: 12px; border-radius: 12px; margin-top: 15px; }
+        /* Main Glass Card (For Search & Scanner) */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 35px;
+            padding: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+            display: none; /* Hidden by default */
+        }
 
-        /* Admin Area */
-        #scannerArea { width: 100%; }
-        #reader { border-radius: 20px; overflow: hidden; margin-top: 15px; border: 2px solid white !important; }
+        .input-field {
+            width: 100%; padding: 18px; border-radius: 15px; border: none;
+            margin-bottom: 20px; font-size: 1rem; background: white; outline: none;
+        }
+
+        .btn-blue {
+            background: #4cc9f0; color: white; border: none; padding: 18px;
+            border-radius: 15px; width: 100%; font-weight: 700; cursor: pointer;
+            text-transform: uppercase; margin-bottom: 15px;
+        }
+
+        .btn-outline {
+            background: transparent; color: white; border: 2px solid white;
+            padding: 15px; border-radius: 15px; width: 100%; cursor: pointer;
+        }
+
+        .qr-area { background: white; padding: 20px; border-radius: 20px; display: inline-block; margin: 20px 0; }
+        #reader { border-radius: 20px; overflow: hidden; border: 2px solid white !important; }
     </style>
 </head>
 <body>
 
-    <div class="card">
-        <div id="mainUI">
-            <h1>Wisuda IWU 2026</h1>
-            
-            <div id="searchBox">
-                <input type="text" id="nimInput" placeholder="Masukkan NIM Anda" class="input-field">
-                <button class="btn-cek" onclick="loadMahasiswaData()">CEK DATA & QR</button>
-                <button class="btn-panitia" onclick="goToAdmin()">AREA PANITIA</button>
+    <div class="container">
+        
+        <!-- STEP 1: MENU UTAMA -->
+        <div id="mainMenu">
+            <div class="menu-card" onclick="showWisudawan()">
+                <i class="fas fa-user-graduate"></i>
+                <h2>Wisudawan</h2>
+                <p>Unduh QR Code Kehadiran & Atribut</p>
             </div>
 
-            <div id="noData">NIM tidak terdaftar. Cek kembali atau hubungi HIMAIF.</div>
-
-            <!-- Area Hasil Scan Mahasiswa -->
-            <div id="resultArea" style="display:none;">
-                <div class="info-box" id="infoMhs"></div>
-                <div class="qr-container"><canvas id="qrCanvas"></canvas></div>
-                <button class="btn-panitia" onclick="location.reload()" style="margin-top:25px;">KEMBALI</button>
+            <div class="menu-card" onclick="showPanitia()">
+                <i class="fas fa-qrcode"></i>
+                <h2>Panitia</h2>
+                <p>Scanner Verifikasi Real-time</p>
             </div>
         </div>
 
-        <!-- Area Login & Scanner Panitia -->
-        <div id="adminArea" style="display:none;">
-            <div id="loginPanitia">
-                <h2 style="color:white; margin-bottom:20px;">LOGIN PANITIA</h2>
+        <!-- STEP 2: AREA WISUDAWAN -->
+        <div id="areaWisudawan" class="glass-card">
+            <h2 style="color:white; margin-bottom:25px;">Cek Data Wisuda</h2>
+            <input type="text" id="nimInput" placeholder="Masukkan NIM Anda" class="input-field">
+            <button class="btn-blue" onclick="loadMahasiswaData()">LIHAT QR CODE</button>
+            <button class="btn-outline" onclick="goBack()">KEMBALI</button>
+
+            <div id="resultMhs" style="display:none; margin-top:30px;">
+                <div id="infoMhs" style="color:white; margin-bottom:15px;"></div>
+                <div class="qr-area"><canvas id="qrCanvas"></canvas></div>
+            </div>
+        </div>
+
+        <!-- STEP 3: AREA PANITIA (LOGIN) -->
+        <div id="areaPanitia" class="glass-card">
+            <div id="loginSection">
+                <h2 style="color:white; margin-bottom:25px;">Akses Panitia</h2>
                 <input type="password" id="pinInput" placeholder="Masukkan PIN" class="input-field" style="text-align:center;">
-                <button class="btn-cek" onclick="verifyPin()">MASUK</button>
-                <button class="btn-panitia" onclick="location.reload()">BATAL</button>
+                <button class="btn-blue" onclick="checkPin()">MASUK</button>
+                <button class="btn-outline" onclick="goBack()">KEMBALI</button>
             </div>
-            <div id="scannerArea" style="display:none;">
-                <h2 style="color:white;">SCANNER PRESENSI</h2>
+
+            <div id="scannerSection" style="display:none;">
+                <h2 style="color:white; margin-bottom:15px;">Scanner Aktif</h2>
                 <div id="reader"></div>
-                <p id="scanStatus" style="color:white; margin-top:15px; font-weight:600;"></p>
-                <button class="btn-panitia" onclick="location.reload()" style="margin-top:20px;">KELUAR</button>
+                <p id="scanStatus" style="color:white; margin-top:20px; font-weight:600;"></p>
+                <button class="btn-outline" onclick="location.reload()" style="margin-top:20px;">KELUAR</button>
             </div>
         </div>
+
     </div>
 
     <script>
         const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwtVl3lHGkb_vb7-cQuycylVz-ClfM6Kq2Q58TBbdbClXPfKrOpWfM0Ryn0moTdqUGxCg/exec'; // GANTI INI
-        const PIN_AKSES = 'WISUDAIWU26'; 
-        let scanner;
+        const ADMIN_PIN = "WISUDAIWU26";
+        let html5QrCode;
+
+        function showWisudawan() {
+            document.getElementById('mainMenu').style.display = 'none';
+            document.getElementById('areaWisudawan').style.display = 'block';
+        }
+
+        function showPanitia() {
+            document.getElementById('mainMenu').style.display = 'none';
+            document.getElementById('areaPanitia').style.display = 'block';
+        }
+
+        function goBack() {
+            location.reload();
+        }
 
         async function loadMahasiswaData() {
             const nim = document.getElementById('nimInput').value.trim();
             if(!nim) return;
-
             try {
                 const res = await fetch(`${APPS_SCRIPT_URL}?action=getMahasiswa&nim=${nim}`);
                 const data = await res.json();
-
                 if(data.nim) {
-                    document.getElementById('searchBox').style.display = 'none';
-                    document.getElementById('noData').style.display = 'none';
-                    document.getElementById('resultArea').style.display = 'block';
-                    document.getElementById('infoMhs').innerHTML = `<h3>${data.nama}</h3><p>${data.prodi}</p><p>Kursi: <b>${data.kursi}</b></p>`;
-                    
-                    QRCode.toCanvas(document.getElementById('qrCanvas'), `MHS:${data.nim}`, { width: 220 });
-                } else {
-                    document.getElementById('noData').style.display = 'block';
-                }
-            } catch(e) { alert("Koneksi gagal."); }
+                    document.getElementById('resultMhs').style.display = 'block';
+                    document.getElementById('infoMhs').innerHTML = `<h3>${data.nama}</h3><p>${data.prodi}<br>Kursi: ${data.kursi}</p>`;
+                    QRCode.toCanvas(document.getElementById('qrCanvas'), `MHS:${data.nim}`, { width: 200 });
+                } else { alert("NIM tidak ditemukan!"); }
+            } catch(e) { alert("Error koneksi."); }
         }
 
-        function goToAdmin() {
-            document.getElementById('mainUI').style.display = 'none';
-            document.getElementById('adminArea').style.display = 'block';
-        }
-
-        function verifyPin() {
-            if(document.getElementById('pinInput').value === PIN_AKSES) {
-                document.getElementById('loginPanitia').style.display = 'none';
-                document.getElementById('scannerArea').style.display = 'block';
-                startCamera();
+        function checkPin() {
+            if(document.getElementById('pinInput').value === ADMIN_PIN) {
+                document.getElementById('loginSection').style.display = 'none';
+                document.getElementById('scannerSection').style.display = 'block';
+                startScanner();
             } else { alert("PIN Salah!"); }
         }
 
-        function startCamera() {
-            scanner = new Html5Qrcode("reader");
-            scanner.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 }, (txt) => {
+        function startScanner() {
+            html5QrCode = new Html5Qrcode("reader");
+            html5QrCode.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 }, (txt) => {
                 document.getElementById('scanStatus').innerText = "Memproses...";
-                sendScanData(txt);
-            }).catch(e => alert("Kamera error: " + e));
+                sendScan(txt);
+            });
         }
 
-        async function sendScanData(txt) {
+        async function sendScan(txt) {
             try {
                 const res = await fetch(APPS_SCRIPT_URL, { method: 'POST', body: JSON.stringify({action: 'scanQR', data: txt}) });
                 const out = await res.json();
-                document.getElementById('scanStatus').innerText = out.message;
-                document.getElementById('scanStatus').style.color = out.success ? "#00ff00" : "#ff4d4d";
-            } catch(e) { document.getElementById('scanStatus').innerText = "Gagal kirim data."; }
+                const status = document.getElementById('scanStatus');
+                status.innerText = out.message;
+                status.style.color = out.success ? "#00ff00" : "#ff4d4d";
+            } catch(e) { }
         }
     </script>
 </body>
