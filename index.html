@@ -8,97 +8,15 @@
     <script src="https://unpkg.com/html5-qrcode"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* Reset & Base Style */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        
-        body { 
-            background: linear-gradient(135deg, #7b61ff 0%, #4a3aff 100%); 
-            min-height: 100vh; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            padding: 20px;
-        }
-
-        /* Glassmorphism Card */
-        .card { 
-            background: rgba(255, 255, 255, 0.15); 
-            backdrop-filter: blur(15px); 
-            -webkit-backdrop-filter: blur(15px);
-            padding: 40px; 
-            border-radius: 30px; 
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2); 
-            width: 100%; 
-            max-width: 600px; 
-            text-align: center; 
-            border: 1px solid rgba(255,255,255,0.2);
-        }
-
-        h1 { color: white; margin-bottom: 30px; font-size: 1.8rem; font-weight: 700; }
-
-        /* Input Styling */
-        .input-field { 
-            width: 100%; 
-            padding: 15px 20px; 
-            margin-bottom: 20px; 
-            border-radius: 15px; 
-            border: none; 
-            font-size: 1.1rem; 
-            background: white;
-            color: #333;
-            outline: none;
-        }
-
-        /* Button Styling sesuai Gambar */
-        .btn-cek { 
-            background: #4facfe; 
-            color: white; 
-            border: none; 
-            padding: 15px; 
-            border-radius: 12px; 
-            cursor: pointer; 
-            font-weight: 800; 
-            width: 100%; 
-            font-size: 1rem;
-            text-transform: uppercase;
-            transition: 0.3s;
-            margin-bottom: 15px;
-        }
-
-        .btn-cek:hover { background: #00f2fe; }
-
-        .btn-panitia { 
-            background: transparent; 
-            color: white; 
-            border: 2px solid rgba(255,255,255,0.8); 
-            padding: 15px; 
-            border-radius: 12px; 
-            cursor: pointer; 
-            font-weight: 600; 
-            width: 100%; 
-            font-size: 1rem;
-            text-transform: uppercase;
-            transition: 0.3s;
-        }
-
-        .btn-panitia:hover { background: rgba(255,255,255,0.1); }
-
-        /* Info & QR Area */
-        .info-box { margin-top: 25px; color: white; }
+        body { background: linear-gradient(135deg, #7b61ff 0%, #4a3aff 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .card { background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); padding: 40px; border-radius: 30px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); width: 100%; max-width: 600px; text-align: center; border: 1px solid rgba(255,255,255,0.2); }
+        h1 { color: white; margin-bottom: 30px; font-weight: 700; }
+        .input-field { width: 100%; padding: 15px; margin-bottom: 20px; border-radius: 15px; border: none; font-size: 1.1rem; outline: none; }
+        .btn-cek { background: #4facfe; color: white; border: none; padding: 15px; border-radius: 12px; cursor: pointer; font-weight: 800; width: 100%; text-transform: uppercase; margin-bottom: 15px; }
+        .btn-panitia { background: transparent; color: white; border: 2px solid rgba(255,255,255,0.8); padding: 15px; border-radius: 12px; cursor: pointer; font-weight: 600; width: 100%; text-transform: uppercase; }
         .qr-card { background: white; padding: 20px; border-radius: 20px; margin-top: 20px; display: inline-block; }
-        
-        #noData { 
-            display:none; 
-            color: #ffd700; 
-            font-weight: bold; 
-            margin-top: 15px; 
-            background: rgba(0,0,0,0.2); 
-            padding: 10px; 
-            border-radius: 10px; 
-        }
-
-        /* Area Login Panitia */
-        #loginArea input { background: rgba(255,255,255,0.9); }
+        #noData { display:none; color: #ffd700; margin-top: 15px; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 10px; }
     </style>
 </head>
 <body>
@@ -106,76 +24,56 @@
     <div id="mainContainer" class="card">
         <h1>Wisuda IWU 2026</h1>
         
-        <!-- Input Utama -->
         <div id="inputBox">
             <input type="text" id="nimInput" placeholder="Masukkan NIM Anda" class="input-field">
             <button class="btn-cek" onclick="loadMahasiswaData()">CEK DATA & QR</button>
             <button class="btn-panitia" onclick="showAdmin()">AREA PANITIA</button>
         </div>
 
-        <!-- Pesan Error -->
         <div id="noData">NIM tidak ditemukan! Hubungi Admin HIMAIF.</div>
 
-        <!-- Tampilan Hasil (Hidden by default) -->
         <div id="resultArea" style="display:none;">
-            <div class="info-box" id="infoMhs"></div>
-            <div id="qrGrid"></div>
+            <div id="infoMhs" style="color: white; margin-bottom: 20px;"></div>
+            <div class="qr-card"><canvas id="qrCanvas"></canvas></div>
             <button class="btn-panitia" onclick="location.reload()" style="margin-top:20px;">KEMBALI</button>
         </div>
 
-        <!-- Login Panitia (Hidden by default) -->
         <div id="adminSection" style="display:none;">
             <div id="loginArea">
-                <p style="color: white; margin-bottom:15px;">LOGIN PANITIA</p>
+                <p style="color: white; margin-bottom:15px;">AREA PANITIA</p>
                 <input type="password" id="pinInput" placeholder="PIN Keamanan" class="input-field" style="text-align:center;">
                 <button class="btn-cek" onclick="checkPin()">MASUK</button>
                 <button class="btn-panitia" onclick="hideAdmin()">BATAL</button>
             </div>
             <div id="scannerArea" style="display:none;">
+                <h3 style="color: white; margin-bottom: 15px;">Scanner Presensi</h3>
                 <div id="reader" style="width: 100%; border-radius: 15px; overflow:hidden;"></div>
+                <p id="scanResult" style="color: white; margin-top: 15px; font-weight: bold;"></p>
                 <button class="btn-panitia" onclick="hideAdmin()" style="margin-top:20px;">KELUAR</button>
             </div>
         </div>
     </div>
 
     <script>
-        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzmskt5K9VEh_Jwet6A4OiEOaF2fdpzz5P08zumvQee3bgPNbnYElDrVA9SWeqJoxrZLg/exec'; // Ganti dengan URL deployment kamu
-        const ADMIN_PIN = "WISUDAIWU2026"; 
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwtVl3lHGkb_vb7-cQuycylVz-ClfM6Kq2Q58TBbdbClXPfKrOpWfM0Ryn0moTdqUGxCg/exec'; //
+        const ADMIN_PIN = "WISUDAIWU26"; // PIN Login Panitia
+        let html5QrCode;
 
         async function loadMahasiswaData() {
             const nim = document.getElementById('nimInput').value.trim();
-            if (!nim) return alert('Masukkan NIM!');
-
-            const inputBox = document.getElementById('inputBox');
-            const noData = document.getElementById('noData');
-            const resultArea = document.getElementById('resultArea');
-            const infoMhs = document.getElementById('infoMhs');
-
-            noData.style.display = 'none';
-            inputBox.style.opacity = '0.5';
-
+            if (!nim) return;
             try {
                 const response = await fetch(`${APPS_SCRIPT_URL}?action=getMahasiswa&nim=${encodeURIComponent(nim)}`);
                 const data = await response.json();
-
                 if (data && data.nim) {
-                    inputBox.style.display = 'none';
-                    resultArea.style.display = 'block';
-                    infoMhs.innerHTML = `<h2>Halo, ${data.nama}</h2><p>${data.prodi} | Kursi: ${data.kursi}</p>`;
-                    
-                    QRCode.toCanvas(document.getElementById('qrGrid'), `MHS:${data.nim}:mhs`, { 
-                        width: 250,
-                        margin: 2,
-                        color: { dark: "#000000", light: "#ffffff" }
-                    });
+                    document.getElementById('inputBox').style.display = 'none';
+                    document.getElementById('resultArea').style.display = 'block';
+                    document.getElementById('infoMhs').innerHTML = `<h2>Halo, ${data.nama}</h2><p>${data.prodi} | Kursi: ${data.kursi}</p>`;
+                    QRCode.toCanvas(document.getElementById('qrCanvas'), `MHS:${data.nim}:mhs`, { width: 200 });
                 } else {
-                    noData.style.display = 'block';
-                    inputBox.style.opacity = '1';
+                    document.getElementById('noData').style.display = 'block';
                 }
-            } catch (err) {
-                alert('Terjadi kesalahan koneksi.');
-                location.reload();
-            }
+            } catch (err) { alert('Error koneksi.'); }
         }
 
         function showAdmin() {
@@ -183,19 +81,34 @@
             document.getElementById('adminSection').style.display = 'block';
         }
 
-        function hideAdmin() {
-            location.reload();
-        }
-
         function checkPin() {
-            const pin = document.getElementById('pinInput').value;
-            if (pin === ADMIN_PIN) {
+            if (document.getElementById('pinInput').value === ADMIN_PIN) {
                 document.getElementById('loginArea').style.display = 'none';
                 document.getElementById('scannerArea').style.display = 'block';
-                // Inisialisasi Scanner di sini jika perlu
-            } else {
-                alert('PIN Salah!');
-            }
+                startScanner();
+            } else { alert('PIN Salah!'); }
+        }
+
+        function startScanner() {
+            html5QrCode = new Html5Qrcode("reader");
+            html5QrCode.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 }, (decodedText) => {
+                processScan(decodedText);
+            }).catch(err => alert("Kamera Error: " + err));
+        }
+
+        async function processScan(decodedText) {
+            const resEl = document.getElementById('scanResult');
+            resEl.innerText = "Memproses...";
+            try {
+                const response = await fetch(APPS_SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: 'scanQR', data: decodedText }) });
+                const result = await response.json();
+                resEl.innerText = result.message;
+                resEl.style.color = result.success ? "#00ff00" : "#ff4d4d";
+            } catch (e) { resEl.innerText = "Gagal kirim data."; }
+        }
+
+        function hideAdmin() {
+            if (html5QrCode) { html5QrCode.stop().then(() => location.reload()); } else { location.reload(); }
         }
     </script>
 </body>
