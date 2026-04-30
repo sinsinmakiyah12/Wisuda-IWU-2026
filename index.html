@@ -15,411 +15,174 @@
         }
         .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
         
-        /* COMMON STYLES */
+        /* HEADER STYLES */
         .header { text-align: center; color: white; margin-bottom: 40px; animation: fadeInDown 1s ease; }
         .header h1 { font-size: 2.8rem; font-weight: 700; margin-bottom: 10px; text-shadow: 0 4px 20px rgba(0,0,0,0.3); }
-        .header .theme { font-size: 1.1rem; font-weight: 600; letter-spacing: 1px; margin-bottom: 5px; text-transform: uppercase; opacity: 0.95; }
+        .header .theme { font-size: 1.1rem; font-weight: 600; letter-spacing: 1px; margin-bottom: 5px; text-transform: uppercase; opacity: 0.95; line-height: 1.4; max-width: 800px; margin: 0 auto 10px; }
         .header .academic-year { font-size: 1.2rem; opacity: 0.9; }
         
         .section { display: none; animation: fadeInUp 0.8s ease; }
         .section.active { display: block; }
         
-        /* LANDING PAGE */
-        .role-selector { 
-            display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; margin-bottom: 50px;
-        }
+        /* CARDS & BUTTONS */
+        .role-selector { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; margin-bottom: 50px; }
         .role-card { 
             background: rgba(255,255,255,0.15); backdrop-filter: blur(20px); 
             border: 1px solid rgba(255,255,255,0.3); border-radius: 25px; 
             padding: 50px 40px; width: 350px; text-align: center; color: white; 
             cursor: pointer; transition: all 0.4s ease; box-shadow: 0 25px 50px rgba(0,0,0,0.15);
         }
-        .role-card:hover { 
-            transform: translateY(-15px) scale(1.05); background: rgba(255,255,255,0.25); 
-            box-shadow: 0 40px 80px rgba(0,0,0,0.25);
-        }
+        .role-card:hover { transform: translateY(-15px) scale(1.05); background: rgba(255,255,255,0.25); }
         .role-card i { font-size: 4.5rem; margin-bottom: 25px; color: #e0c3fc; }
-        .role-card h3 { font-size: 1.6rem; margin-bottom: 15px; font-weight: 600; }
-        .role-card p { opacity: 0.95; line-height: 1.6; font-size: 1.1rem; }
         
-        /* MAHASISWA SECTION */
         .input-section {
             background: rgba(255,255,255,0.15); backdrop-filter: blur(20px); 
             border: 1px solid rgba(255,255,255,0.3); border-radius: 25px; 
-            padding: 50px; text-align: center; margin-bottom: 40px; box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            padding: 50px; text-align: center; margin-bottom: 40px;
         }
-        #nimInput { padding: 20px 35px; border: none; border-radius: 50px; font-size: 1.3rem; width: 380px; max-width: 90%; box-shadow: 0 20px 40px rgba(0,0,0,0.2); background: rgba(255,255,255,0.95); font-weight: 500; }
-        .btn-primary { background: linear-gradient(135deg, #10b981, #059669); color: white; border: none; padding: 20px 45px; border-radius: 50px; font-weight: 600; cursor: pointer; transition: all 0.4s ease; font-size: 1.1rem; margin-left: 20px; box-shadow: 0 20px 40px rgba(16,185,129,0.4); }
-        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 30px 60px rgba(16,185,129,0.6); }
+        #nimInput { padding: 20px 35px; border: none; border-radius: 50px; font-size: 1.3rem; width: 380px; max-width: 90%; background: white; font-weight: 500; }
+        .btn-primary { background: linear-gradient(135deg, #10b981, #059669); color: white; border: none; padding: 20px 45px; border-radius: 50px; font-weight: 600; cursor: pointer; transition: all 0.4s ease; margin-left: 10px; }
         
-        .qr-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 35px; margin-bottom: 40px; }
-        .qr-card { background: rgba(255,255,255,0.95); border-radius: 25px; padding: 40px; text-align: center; box-shadow: 0 25px 50px rgba(0,0,0,0.15); transition: all 0.4s ease; border: 3px solid transparent; position: relative; overflow: hidden; }
-        .qr-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 6px; background: linear-gradient(90deg, #667eea, #764ba2, #f093fb); }
-        .qr-card:hover { transform: translateY(-10px); box-shadow: 0 40px 80px rgba(0,0,0,0.25); }
-        .qr-card.downloaded { border-color: #10b981; background: linear-gradient(135deg, #10b98120, #05966920); transform: scale(1.02); }
-        .qr-card h3 { font-size: 1.4rem; margin-bottom: 20px; color: #4a5568; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 12px; }
-        .qr-card.downloaded h3 { color: #059669; }
-        .qr-info { font-size: 0.95rem; color: #6b7280; margin-bottom: 25px; line-height: 1.6; background: rgba(102,126,234,0.1); padding: 20px; border-radius: 15px; }
-        canvas { width: 220px; height: 220px; margin: 0 auto 30px; border-radius: 18px; box-shadow: 0 20px 50px rgba(0,0,0,0.2); }
-        
-        /* PANITIA SECTION */
-        .pin-section { background: rgba(255,255,255,0.15); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.3); border-radius: 25px; padding: 60px; text-align: center; max-width: 500px; margin: 0 auto 50px; box-shadow: 0 30px 60px rgba(0,0,0,0.2); }
-        #pinInput { padding: 25px 40px; border: none; border-radius: 50px; font-size: 1.6rem; width: 100%; max-width: 350px; font-weight: 700; letter-spacing: 4px; text-align: center; background: rgba(255,255,255,0.95); box-shadow: 0 20px 50px rgba(0,0,0,0.2); margin-bottom: 30px; }
-        .btn-admin { background: linear-gradient(135deg, #ef4444, #dc2626); color: white; border: none; padding: 25px 60px; border-radius: 50px; font-weight: 700; cursor: pointer; transition: all 0.4s ease; font-size: 1.3rem; box-shadow: 0 25px 50px rgba(239,68,68,0.4); }
-        .btn-admin:hover { transform: translateY(-5px); box-shadow: 0 35px 70px rgba(239,68,68,0.6); }
-        
-        .scanner-section { background: rgba(255,255,255,0.95); border-radius: 25px; padding: 50px; text-align: center; box-shadow: 0 30px 70px rgba(0,0,0,0.2); margin-bottom: 40px; }
-        .scanner-tabs { display: flex; justify-content: center; gap: 20px; margin-bottom: 40px; flex-wrap: wrap; }
-        .tab-btn { padding: 18px 35px; border: none; border-radius: 50px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; font-size: 1.1rem; background: rgba(102,126,234,0.2); color: #4a5568; }
-        .tab-btn.active { background: linear-gradient(135deg, #667eea, #764ba2); color: white; box-shadow: 0 15px 40px rgba(102,126,234,0.4); transform: translateY(-3px); }
-        #video { width: 100%; max-width: 500px; height: 500px; border-radius: 25px; margin: 0 auto 30px; box-shadow: 0 25px 60px rgba(0,0,0,0.2); display: block; }
-        #scanBtn { background: linear-gradient(135deg, #10b981, #059669); color: white; border: none; padding: 25px 60px; border-radius: 50px; font-weight: 700; cursor: pointer; transition: all 0.4s ease; font-size: 1.3rem; margin: 25px 0; box-shadow: 0 20px 50px rgba(16,185,129,0.4); }
-        #scanBtn:hover:not(:disabled) { transform: translateY(-5px); box-shadow: 0 30px 70px rgba(16,185,129,0.6); }
-        #scanResult { min-height: 80px; font-size: 1.5rem; font-weight: 700; padding: 30px; border-radius: 20px; margin: 30px 0; }
-        .success { background: rgba(16,185,129,0.2); color: #059669; border: 3px solid #10b981; }
-        .error { background: rgba(239,68,68,0.2); color: #dc2626; border: 3px solid #ef4444; }
-        
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 30px; margin-top: 50px; }
-        .stat-card { background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.7)); padding: 35px; border-radius: 25px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.1); transition: all 0.3s ease; }
-        .stat-card:hover { transform: translateY(-8px); box-shadow: 0 35px 80px rgba(0,0,0,0.2); }
-        .stat-number { font-size: 3rem; font-weight: 800; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 15px; }
-        .stat-label { color: #6b7280; font-weight: 600; font-size: 1.1rem; }
-        
-        .no-data { text-align: center; color: white; font-size: 1.4rem; padding: 80px 30px; background: rgba(255,255,255,0.15); border-radius: 25px; backdrop-filter: blur(20px); box-shadow: 0 25px 60px rgba(0,0,0,0.2); }
-        .back-btn { background: rgba(255,255,255,0.25); color: white; border: 2px solid rgba(255,255,255,0.4); padding: 20px 45px; border-radius: 35px; cursor: pointer; font-family: inherit; font-size: 1.2rem; font-weight: 600; transition: all 0.4s ease; display: block; margin: 30px auto; backdrop-filter: blur(15px); }
-        .back-btn:hover { background: rgba(255,255,255,0.35); transform: translateY(-5px); box-shadow: 0 25px 60px rgba(0,0,0,0.3); }
-        
-        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-50px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(50px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-12px); } 75% { transform: translateX(12px); } }
-        @media (max-width: 768px) { .role-selector { flex-direction: column; gap: 30px; } .role-card { width: 100%; max-width: 400px; } .qr-grid, .stats-grid { grid-template-columns: 1fr; } .header h1 { font-size: 2.2rem; } }
+        .qr-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; margin-bottom: 40px; }
+        .qr-card { background: white; border-radius: 20px; padding: 30px; text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.1); border-top: 5px solid #764ba2; }
+        canvas { width: 200px; height: 200px; margin: 20px auto; display: block; }
+
+        .no-data { text-align: center; color: white; padding: 40px; background: rgba(239, 68, 68, 0.2); border-radius: 20px; margin-bottom: 20px; border: 2px solid #ef4444; }
+        .back-btn { background: rgba(255,255,255,0.2); color: white; border: 1px solid white; padding: 15px 30px; border-radius: 50px; cursor: pointer; margin-top: 20px; }
+
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- LANDING -->
+        <!-- HEADER UTAMA -->
+        <div class="header">
+            <h1><i class="fas fa-graduation-cap"></i> Wisuda IWU 2026</h1>
+            <p class="theme">TRANSFORMASI BANGSA MELALUI INTELEKTUAL MUDA YANG ADAPTIF</p>
+            <p class="academic-year">Tahun Akademik 2025/2026</p>
+        </div>
+
+        <!-- LANDING PAGE -->
         <div id="landing" class="section active">
-            <div class="header">
-                <h1><i class="fas fa-graduation-cap"></i> Wisuda IWU 2026</h1>
-                <p class="theme">TRANSFORMASI BANGSA MELALUI INTELEKTUAL MUDA YANG ADAPTIF</p>
-                <p class="academic-year">Tahun Akademik 2025/2026</p>
-            </div>
             <div class="role-selector">
                 <div class="role-card" onclick="showMahasiswa()">
                     <i class="fas fa-user-graduate"></i>
                     <h3>Wisudawan</h3>
-                    <p>📱 Download 5 QR Code untuk semua proses wisuda</p>
+                    <p>Unduh QR Code Kehadiran & Atribut</p>
                 </div>
                 <div class="role-card" onclick="showPanitia()">
                     <i class="fas fa-qrcode"></i>
                     <h3>Panitia</h3>
-                    <p>🔐 Scanner Real-time + Monitoring Dashboard</p>
+                    <p>Scanner Verifikasi Real-time</p>
                 </div>
             </div>
         </div>
 
-        <!-- MAHASISWA SECTION -->
+        <!-- SECTION MAHASISWA -->
         <div id="mahasiswaSection" class="section">
-            <div class="input-section" id="inputSection">
-                <h2 style="color: white; font-size: 2rem; margin-bottom: 30px;">
-                    <i class="fas fa-user-graduate"></i> Masukkan NIM Anda
-                </h2>
-                <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 20px;">
-                    <input type="text" id="nimInput" placeholder="Contoh: 2201234567" maxlength="15">
-                    <button class="btn-primary" onclick="loadMahasiswaData()">
-                        <i class="fas fa-search"></i> Generate QR Codes
-                    </button>
-                </div>
+            <div class="input-section" id="inputArea">
+                <h2 style="color: white; margin-bottom: 20px;">Masukkan NIM Anda</h2>
+                <input type="text" id="nimInput" placeholder="Contoh: 22012345">
+                <button class="btn-primary" onclick="loadMahasiswaData()">Cari Data</button>
             </div>
-            <div id="qrGrid" class="qr-grid" style="display: none;"></div>
+
             <div id="noData" class="no-data" style="display: none;">
-                <i class="fas fa-exclamation-triangle" style="font-size: 5rem; color: #f87171; margin-bottom: 25px;"></i>
-                <strong>NIM tidak ditemukan dalam database!</strong><br><br>
-                <small>Pastikan NIM sudah terdaftar atau hubungi panitia wisuda</small>
+                <i class="fas fa-exclamation-circle" style="font-size: 3rem; margin-bottom: 10px;"></i><br>
+                <strong>NIM tidak ditemukan!</strong><br>Pastikan NIM benar atau hubungi Admin HIMAIF.
             </div>
-            <button class="back-btn" onclick="showLanding()">
-                <i class="fas fa-arrow-left"></i> Kembali ke Menu Utama
-            </button>
+
+            <div id="qrGrid" class="qr-grid"></div>
+
+            <button class="back-btn" onclick="location.reload()"><i class="fas fa-arrow-left"></i> Kembali</button>
         </div>
 
-        <!-- PANITIA SECTION -->
+        <!-- SECTION PANITIA (Placeholder) -->
         <div id="panitiaSection" class="section">
-            <div class="pin-section" id="pinSection">
-                <h2 style="color: white; font-size: 2rem; margin-bottom: 35px;">
-                    <i class="fas fa-lock"></i> Verifikasi Panitia
-                </h2>
-                <input type="password" id="pinInput" placeholder="Masukkan PIN Panitia">
-                <br><button class="btn-admin" onclick="verifyPin()">
-                    <i class="fas fa-sign-in-alt"></i> Masuk Scanner
-                </button>
-            </div>
-            
-            <div id="scannerContainer" style="display: none;">
-                <div class="scanner-section">
-                    <h2 id="scannerHeader" style="color: #4a5568; font-size: 2.2rem; margin-bottom: 30px;">
-                        <i class="fas fa-qrcode"></i> Scanner
-                    </h2>
-                    <div class="scanner-tabs" id="scannerTabs">
-                        <!-- Tabs loaded dynamically -->
-                    </div>
-                    <div id="video-container">
-                        <div id="video"></div>
-                    </div>
-                    <button id="scanBtn">
-                        <i class="fas fa-camera"></i> Mulai Scanner QR
-                    </button>
-                    <div id="scanResult"></div>
-                </div>
-                
-                <div class="stats-grid" id="statsGrid">
-                    <!-- Stats loaded dynamically -->
-                </div>
-                
-                <button class="back-btn" onclick="showLanding()">
-                    <i class="fas fa-arrow-left"></i> Kembali ke Menu
-                </button>
+            <div class="input-section">
+                <h2 style="color: white;">Area Panitia</h2>
+                <p style="color: white; margin-top: 10px;">Silakan masukkan PIN Keamanan untuk mengakses Scanner.</p>
+                <button class="back-btn" onclick="location.reload()">Kembali</button>
             </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
-    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
     <script>
-        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwWClUZCjzKIXfvAY1RNCs57feqJOmE27bvlqPsRd6LS1iKUBat17VUJ7x3hj_UDpxWhA/exec';
-        const PANITIA_PIN = 'WISUDAIWU26';
-        let mahasiswaData = {}, html5QrCode, currentTab = 'simulasi';
+        // GANTI INI DENGAN URL APPS SCRIPT KAMU YANG BARU
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw_hH0lNMTcLUygVgn0sYLwr-mznrQLPECcktju3jSIZW0t2AUIrF3yivhJ2NSSbqUvMw/exec';
 
-        const categoryLabels = {
-            'simulasi': 'Simulasi Wisuda',
-            'kehadiran_ortu': 'Kehadiran Orang Tua',
-            'kehadiran_mhs': 'Kehadiran Mahasiswa',
-            'toga': 'Pengambilan Toga',
-            'ijazah': 'Pengambilan Ijazah'
-        };
+        function showMahasiswa() {
+            document.getElementById('landing').classList.remove('active');
+            document.getElementById('mahasiswaSection').classList.add('active');
+        }
 
-        // Navigation
-        function showMahasiswa() { hideAll(); document.getElementById('mahasiswaSection').classList.add('active'); }
-        function showPanitia() { hideAll(); document.getElementById('panitiaSection').classList.add('active'); document.getElementById('pinInput').focus(); }
-        function showLanding() { hideAll(); document.getElementById('landing').classList.add('active'); if (html5QrCode) html5QrCode.stop(); }
-        function hideAll() { document.querySelectorAll('.section').forEach(s => s.classList.remove('active')); }
-
-        // MAHASISWA FUNCTIONS
-        document.getElementById('nimInput')?.addEventListener('keypress', e => e.key === 'Enter' && loadMahasiswaData());
+        function showPanitia() {
+            document.getElementById('landing').classList.remove('active');
+            document.getElementById('panitiaSection').classList.add('active');
+        }
 
         async function loadMahasiswaData() {
-            const nimInput = document.getElementById('nimInput').value.trim();
-            if (!nimInput) return alert('⭕ Masukkan NIM terlebih dahulu!');
+            const nim = document.getElementById('nimInput').value.trim();
+            if (!nim) return alert('Masukkan NIM!');
+
+            const inputArea = document.getElementById('inputArea');
+            const qrGrid = document.getElementById('qrGrid');
+            const noData = document.getElementById('noData');
             
-            const inputSection = document.getElementById('inputSection');
-            const originalContent = inputSection.innerHTML;
-            inputSection.innerHTML += '<div id="loading" style="text-align:center;margin-top:30px"><i class="fas fa-spinner fa-spin" style="font-size:3rem;color:white"></i></div>';
-            
+            inputArea.innerHTML = '<i class="fas fa-spinner fa-spin" style="color:white; font-size:2rem;"></i>';
+            noData.style.display = 'none';
+
             try {
-                const nim = nimInput.replace(/^0+/, '').toUpperCase();
+                // Mencari NIM tanpa menghapus angka nol di depan
                 const response = await fetch(`${APPS_SCRIPT_URL}?action=getMahasiswa&nim=${nim}`);
-                mahasiswaData = await response.json();
-                
-                document.getElementById('loading')?.remove();
-                
-                if (mahasiswaData.nim) {
-                    inputSection.innerHTML = `
-                        <h2 style="color: white; font-size: 2rem; margin-bottom: 30px;">
-                            <i class="fas fa-user-graduate"></i> Selamat ${mahasiswaData.nama || 'Mahasiswa'}
-                        </h2>
-                        <p style="color: rgba(255,255,255,0.9); font-size: 1.2rem; background: rgba(255,255,255,0.2); padding: 20px; border-radius: 20px; backdrop-filter: blur(10px);">
-                            <strong>${mahasiswaData.prodi}</strong> - ${mahasiswaData.fakultas}<br>
-                            Kursi: <strong style="font-size: 1.5rem;">${mahasiswaData.kursi}</strong>
-                        </p>
+                const data = await response.json();
+
+                if (data && data.nim) {
+                    inputArea.innerHTML = `
+                        <h2 style="color: white;">Halo, ${data.nama}</h2>
+                        <p style="color: white; opacity: 0.9;">${data.prodi} | Kursi: <strong>${data.kursi}</strong></p>
                     `;
-                    displayQRCodes();
-                } else {
-                    showNoData();
-                    inputSection.innerHTML = originalContent;
-                }
-            } catch (error) {
-                alert('❌ Error: ' + error.message);
-                inputSection.innerHTML = originalContent;
-            }
-        }
+                    
+                    const categories = [
+                        { id: 'simulasi', name: 'Simulasi Wisuda' },
+                        { id: 'kehadiran_mhs', name: 'Presensi Wisudawan' },
+                        { id: 'kehadiran_ortu', name: 'Presensi Orang Tua' },
+                        { id: 'toga', name: 'Ambil Toga' },
+                        { id: 'ijazah', name: 'Ambil Ijazah' }
+                    ];
 
-        function displayQRCodes() {
-            document.getElementById('noData').style.display = 'none';
-            document.getElementById('qrGrid').style.display = 'grid';
-
-            const types = [
-                { id: 'simulasi', name: 'Simulasi Wisuda', icon: 'star' },
-                { id: 'kehadiran_ortu', name: 'Kehadiran Orang Tua', icon: 'users' },
-                { id: 'kehadiran_mhs', name: 'Kehadiran Mahasiswa', icon: 'check-circle' },
-                { id: 'toga', name: 'Pengambilan Toga', icon: 'hat-wizard' },
-                { id: 'ijazah', name: 'Pengambilan Ijazah', icon: 'scroll' }
-            ];
-
-            document.getElementById('qrGrid').innerHTML = types.map(type => {
-                const isDownloaded = mahasiswaData[`download_${type.id}`] === 'Downloaded';
-                return `
-                    <div class="qr-card ${isDownloaded ? 'downloaded' : ''}" id="card_${type.id}">
-                        <h3><i class="fas fa-${type.icon}"></i> ${type.name}</h3>
-                        <div class="qr-info">
-                            <strong>${mahasiswaData.nama}</strong><br>
-                            ${mahasiswaData.prodi}<br>
-                            <strong>NIM: ${mahasiswaData.nim}</strong><br>
-                            Kursi: ${mahasiswaData.kursi}
+                    qrGrid.innerHTML = categories.map(cat => `
+                        <div class="qr-card">
+                            <h3>${cat.name}</h3>
+                            <canvas id="qr_${cat.id}"></canvas>
+                            <button class="btn-primary" onclick="downloadQR('qr_${cat.id}', '${data.nama}_${cat.id}')">Simpan Gambar</button>
                         </div>
-                        <canvas id="qr_${type.id}"></canvas>
-                        <button class="btn-primary" onclick="downloadQR('${type.id}')" 
-                                ${isDownloaded ? 'disabled' : ''}>
-                            ${isDownloaded ? '✅ Sudah Download' : '📥 Download QR'}
-                        </button>
-                    </div>
-                `;
-            }).join('');
+                    `).join('');
 
-            types.forEach(type => {
-                QRCode.toCanvas(document.getElementById(`qr_${type.id}`), `MHS:${mahasiswaData.nim}:${type.id}`, {
-                    width: 220, margin: 2, color: { dark: '#1a202c', light: '#ffffff' }
-                });
-            });
+                    categories.forEach(cat => {
+                        QRCode.toCanvas(document.getElementById(`qr_${cat.id}`), `MHS:${data.nim}:${cat.id}`, {
+                            width: 200, margin: 2
+                        });
+                    });
+                } else {
+                    inputArea.innerHTML = `<h2 style="color: white;">Cari Data</h2>
+                        <input type="text" id="nimInput" value="${nim}">
+                        <button class="btn-primary" onclick="loadMahasiswaData()">Cari Data</button>`;
+                    noData.style.display = 'block';
+                }
+            } catch (err) {
+                alert('Koneksi Error!');
+                location.reload();
+            }
         }
 
-        async function downloadQR(type) {
-            const canvas = document.getElementById(`qr_${type}`);
+        function downloadQR(canvasId, filename) {
             const link = document.createElement('a');
-            link.download = `QR_${mahasiswaData.nama.replace(/[^a-zA-Z0-9]/g, '_')}_${type}.png`;
-            link.href = canvas.toDataURL();
+            link.download = filename + '.png';
+            link.href = document.getElementById(canvasId).toDataURL();
             link.click();
-            
-            try {
-                await fetch(APPS_SCRIPT_URL, {
-                    method: 'POST', body: JSON.stringify({ action: 'markDownloaded', nim: mahasiswaData.nim, type }),
-                    headers: { 'Content-Type': 'application/json' }
-                });
-                const card = document.getElementById(`card_${type}`);
-                card.classList.add('downloaded');
-                card.querySelector('button').innerHTML = '✅ Sudah Download';
-                card.querySelector('button').disabled = true;
-            } catch (e) { console.error('DB Update failed:', e); }
         }
-
-        function showNoData() {
-            document.getElementById('qrGrid').style.display = 'none';
-            document.getElementById('noData').style.display = 'block';
-        }
-
-        // PANITIA FUNCTIONS
-        function verifyPin() {
-            const pin = document.getElementById('pinInput').value;
-            if (pin === PANITIA_PIN) {
-                document.getElementById('pinSection').style.display = 'none';
-                document.getElementById('scannerContainer').style.display = 'block';
-                initScanner();
-            } else {
-                const input = document.getElementById('pinInput');
-                input.style.animation = 'shake 0.6s';
-                input.style.border = '4px solid #ef4444';
-                setTimeout(() => { input.style.animation = ''; input.style.border = ''; }, 600);
-                alert('❌ PIN PANITIA SALAH!');
-            }
-        }
-
-        function initScanner() {
-            html5QrCode = new Html5Qrcode("video");
-            loadScannerTabs();
-            updateStats();
-            updateScannerHeader();
-            
-            document.getElementById('scanBtn').onclick = startScanner;
-        }
-
-        function loadScannerTabs() {
-            const tabsContainer = document.getElementById('scannerTabs');
-            tabsContainer.innerHTML = `
-                <button class="tab-btn active" data-tab="simulasi">🎉 Simulasi</button>
-                <button class="tab-btn" data-tab="kehadiran_ortu">👨‍👩‍👧 Orang Tua</button>
-                <button class="tab-btn" data-tab="kehadiran_mhs">✅ Mahasiswa</button>
-                <button class="tab-btn" data-tab="toga">🎓 Toga</button>
-                <button class="tab-btn" data-tab="ijazah">📜 Ijazah</button>
-            `;
-
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.onclick = () => {
-                    document.querySelector('.tab-btn.active')?.classList.remove('active');
-                    btn.classList.add('active');
-                    currentTab = btn.dataset.tab;
-                    updateScannerHeader();
-                };
-            });
-        }
-
-        function updateScannerHeader() {
-            document.getElementById('scannerHeader').innerHTML = `<i class="fas fa-qrcode"></i> Scanner ${categoryLabels[currentTab]}`;
-        }
-
-        let scannerRunning = false;
-        function startScanner() {
-            if (scannerRunning) {
-                html5QrCode.stop().then(() => {
-                    scannerRunning = false;
-                    document.getElementById('scanBtn').innerHTML = '<i class="fas fa-camera"></i> Mulai Scanner QR';
-                });
-                return;
-            }
-
-            scannerRunning = true;
-            document.getElementById('scanBtn').innerHTML = '<i class="fas fa-stop"></i> Stop Scanner';
-            
-            html5QrCode.start(
-                { facingMode: "environment" }, 
-                { fps: 10, qrbox: { width: 250, height: 250 } },
-                handleScan
-            ).catch(err => {
-                scannerRunning = false;
-                document.getElementById('scanBtn').innerHTML = '<i class="fas fa-camera"></i> Mulai Scanner QR';
-                alert('Kamera error: ' + err);
-            });
-        }
-
-        async function handleScan(decodedText) {
-            const resultDiv = document.getElementById('scanResult');
-            resultDiv.className = '';
-            resultDiv.innerHTML = '<i class="fas fa-spinner fa-spin" style="color: #667eea; font-size: 2rem;"></i> Processing...';
-            
-            try {
-                const response = await fetch(APPS_SCRIPT_URL, {
-                    method: 'POST',
-                    body: JSON.stringify({ action: 'scanQR', data: decodedText, category: currentTab }),
-                    headers: { 'Content-Type': 'application/json' }
-                });
-                const result = await response.json();
-                resultDiv.className = result.success ? 'success' : 'error';
-                resultDiv.innerHTML = result.message;
-                updateStats();
-            } catch (error) {
-                resultDiv.className = 'error';
-                resultDiv.innerHTML = '❌ Error koneksi';
-            }
-        }
-
-        async function updateStats() {
-            try {
-                const response = await fetch(`${APPS_SCRIPT_URL}?action=getStats`);
-                const stats = await response.json();
-                document.getElementById('statsGrid').innerHTML = `
-                    <div class="stat-card"><div class="stat-number">${stats.simulasi}</div><div class="stat-label">Simulasi</div></div>
-                    <div class="stat-card"><div class="stat-number">${stats.ortu}</div><div class="stat-label">Orang Tua</div></div>
-                    <div class="stat-card"><div class="stat-number">${stats.mhs}</div><div class="stat-label">Mahasiswa</div></div>
-                    <div class="stat-card"><div class="stat-number">${stats.toga}</div><div class="stat-label">Toga</div></div>
-                    <div class="stat-card"><div class="stat-number">${stats.ijazah}</div><div class="stat-label">Ijazah</div></div>
-                    <div class="stat-card"><div class="stat-number">${stats.download}</div><div class="stat-label">QR Download</div></div>
-                `;
-            } catch (e) { console.log('Stats error:', e); }
-        }
-
-        // Auto update stats every 10 seconds
-        setInterval(() => {
-            if (document.getElementById('scannerContainer').style.display === 'block') {
-                updateStats();
-            }
-        }, 10000);
     </script>
 </body>
 </html>
