@@ -48,20 +48,27 @@
         <button class="btn-purple" onclick="cariDataMhs()">CARI DATA</button>
         
         <div id="hasilMhs" style="display:none; margin-top:20px;">
-            <div id="infoDetail"></div>
-            <select id="tipeQR" class="input-box" onchange="renderQR()">
-                <option value="Simulasi">QR Simulasi</option>
-                <option value="Ortu">QR Undangan Ortu</option>
-                <option value="Mahasiswa">QR Kehadiran</option>
-                <option value="Toga">QR Ambil Toga</option>
-                <option value="Ijazah">QR Ambil Ijazah</option>
-            </select>
-            <div class="qr-display"><canvas id="qrCanvas"></canvas></div>
-            <button class="btn-purple" onclick="downloadQR()">DOWNLOAD & UPDATE</button>
-        </div>
-        <button class="btn-outline" onclick="location.reload()">KEMBALI</button>
+    <div id="infoDetail" class="menu-card" style="cursor:default; background:rgba(162, 134, 244, 0.2);"></div>
+    
+    <p style="margin-bottom: 10px; font-weight: 600;">Pilih Kategori QR:</p>
+    <!-- Kita pakai Select dulu agar simpel, atau bisa dibuat tombol grid nanti -->
+    <select id="tipeQR" class="input-box" onchange="renderQR()">
+        <option value="Simulasi">1. QR Simulasi</option>
+        <option value="Mahasiswa">2. QR Kehadiran Hari H</option>
+        <option value="Ortu">3. QR Undangan Orang Tua</option>
+        <option value="Toga">4. QR Pengambilan Toga</option>
+        <option value="Ijazah">5. QR Pengambilan Ijazah</option>
+    </select>
+
+    <div class="qr-display" style="border: 5px solid #6a1b9a;">
+        <canvas id="qrCanvas"></canvas>
+        <p id="labelQR" style="color: black; font-size: 12px; font-weight: bold; margin-top: 5px;"></p>
     </div>
 
+    <button class="btn-purple" onclick="downloadQR()">
+        <i class="fas fa-download"></i> DOWNLOAD QR
+    </button>
+</div>
     <!-- HALAMAN PANITIA -->
     <div id="viewPanitia" class="glass-card">
         <h2>Scanner Panitia</h2>
@@ -78,7 +85,7 @@
 </div>
 
 <script>
-    const URL_SCRIPT = "https://script.google.com/macros/s/AKfycby3cvhso9z9rrnGeCxN3ACxR2ldcNmNQui70XJZVuS7TEzyqz48RzkgUV_zAjdi5NoOjw/exec"; 
+    const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbw1NbJf7p1zmXDPEl1hqQJ91jbHSa7tQz4KnySsHwVADdfhlUB_cj9a6C8F-Fo-RSyWLw/exec"; 
     let currentData = null;
 
     function showPage(id) {
@@ -101,9 +108,22 @@
     }
 
     function renderQR() {
-        const tipe = document.getElementById('tipeQR').value;
-        QRCode.toCanvas(document.getElementById('qrCanvas'), `${currentData.nim}|${tipe}`, { width: 180 });
-    }
+    const tipe = document.getElementById('tipeQR').value;
+    const canvas = document.getElementById('qrCanvas');
+    const label = document.getElementById('labelQR');
+    
+    // QR mengandung data NIM dan Tipe (Contoh: 230101|Toga)
+    QRCode.toCanvas(canvas, `${currentData.nim}|${tipe}`, { 
+        width: 200,
+        margin: 2,
+        color: {
+            dark: '#000000',
+            light: '#ffffff'
+        }
+    });
+    
+    label.innerText = `QR ${tipe} - ${currentData.nim}`;
+}
 
     async function downloadQR() {
         const tipe = document.getElementById('tipeQR').value;
