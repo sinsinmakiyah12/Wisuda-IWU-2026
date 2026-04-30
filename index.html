@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem Wisuda IWU 2026</title>
+    <title>Wisuda IWU 2025/2026</title>
     <!-- Library QR & Font -->
     <script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js"></script>
     <script src="https://unpkg.com/html5-qrcode"></script>
@@ -22,19 +22,29 @@
             color: white;
         }
 
-        .container { width: 100%; max-width: 450px; text-align: center; }
+        .container { width: 100%; max-width: 480px; text-align: center; }
 
-        /* Judul & Tema */
+        /* Judul & Tema (Disesuaikan) */
         .header-section { margin-bottom: 40px; }
-        .header-section h1 { font-size: 2.2rem; font-weight: 800; letter-spacing: 1px; color: #fff; }
-        .header-section p { font-size: 0.9rem; opacity: 0.8; color: #a286f4; text-transform: uppercase; font-weight: 600; margin-top: 5px; }
+        .header-section h1 { font-size: 1.8rem; font-weight: 800; letter-spacing: 1px; color: #fff; line-height: 1.2; }
+        .header-section .tahun { font-size: 1.1rem; color: #4cc9f0; font-weight: 700; margin-top: 5px; }
+        .header-section .tema { 
+            font-size: 0.85rem; 
+            opacity: 0.9; 
+            color: #a286f4; 
+            font-style: italic;
+            font-weight: 500; 
+            margin-top: 15px; 
+            line-height: 1.4;
+            padding: 0 10px;
+        }
 
-        /* Menu Card Styling (Sesuai Gambar Referensi) */
+        /* Menu Card Styling */
         .menu-card {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 30px;
-            padding: 45px 25px;
+            padding: 40px 25px;
             margin-bottom: 25px;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -44,11 +54,11 @@
             transform: translateY(-8px);
             border-color: rgba(255, 255, 255, 0.3);
         }
-        .menu-card i { font-size: 60px; margin-bottom: 20px; color: #a286f4; }
-        .menu-card h2 { font-size: 1.7rem; margin-bottom: 8px; font-weight: 700; }
-        .menu-card p { font-size: 1rem; opacity: 0.7; font-weight: 400; }
+        .menu-card i { font-size: 55px; margin-bottom: 20px; color: #a286f4; }
+        .menu-card h2 { font-size: 1.6rem; margin-bottom: 8px; font-weight: 700; }
+        .menu-card p { font-size: 0.95rem; opacity: 0.7; }
 
-        /* Glass Card UI */
+        /* Interface Glass UI */
         .glass-card {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(25px);
@@ -66,14 +76,14 @@
         .btn-action {
             background: #4cc9f0; color: white; border: none; padding: 18px;
             border-radius: 15px; width: 100%; font-weight: 700; cursor: pointer;
-            text-transform: uppercase; margin-bottom: 15px; box-shadow: 0 8px 20px rgba(76, 201, 240, 0.3);
+            text-transform: uppercase; margin-bottom: 15px;
         }
         .btn-back {
             background: transparent; color: white; border: 2px solid white;
             padding: 15px; border-radius: 15px; width: 100%; cursor: pointer; font-weight: 600;
         }
 
-        .qr-display { background: white; padding: 20px; border-radius: 20px; display: inline-block; margin: 20px 0; }
+        .qr-display { background: white; padding: 15px; border-radius: 20px; display: inline-block; margin: 20px 0; }
         #reader { width: 100%; border-radius: 20px; overflow: hidden; border: 2px solid white !important; }
     </style>
 </head>
@@ -81,13 +91,14 @@
 
     <div class="container">
         
-        <!-- BAGIAN 1: JUDUL & TEMA -->
-        <div class="header-section" id="headerMain">
-            <h1>WISUDA IWU 2026</h1>
-            <p>Empowering Women Through Technology & Innovation</p>
+        <!-- HEADER: JUDUL & TEMA -->
+        <div class="header-section" id="headerArea">
+            <h1>SIDANG TERBUKA SENAT WISUDA IWU</h1>
+            <div class="tahun">Tahun Akademik 2025/2026</div>
+            <div class="tema">"Transformasi Bangsa Melalui Intelektual Muda yang Adaptif"</div>
         </div>
         
-        <!-- BAGIAN 2: MENU UTAMA -->
+        <!-- MENU UTAMA -->
         <div id="uiMenu">
             <div class="menu-card" onclick="openWisudawan()">
                 <i class="fas fa-user-graduate"></i>
@@ -102,11 +113,11 @@
             </div>
         </div>
 
-        <!-- BAGIAN 3: INTERFACE WISUDAWAN -->
+        <!-- AREA WISUDAWAN -->
         <div id="uiWisudawan" class="glass-card">
-            <h2 style="margin-bottom:25px;">Cek Data Wisuda</h2>
+            <h2 style="margin-bottom:25px;">Data Wisudawan</h2>
             <input type="text" id="nimMhs" placeholder="Masukkan NIM Anda" class="input-box">
-            <button class="btn-action" onclick="getQR()">TAMPILKAN QR</button>
+            <button class="btn-action" onclick="getQR()">LIHAT DATA</button>
             <button class="btn-back" onclick="backToMenu()">KEMBALI</button>
 
             <div id="hasilMhs" style="display:none; margin-top:30px;">
@@ -115,21 +126,19 @@
             </div>
         </div>
 
-        <!-- BAGIAN 4: LOGIN PANITIA DENGAN PASSWORD -->
+        <!-- LOGIN & SCANNER PANITIA -->
         <div id="uiPanitia" class="glass-card">
             <div id="loginPanitia">
-                <h2 style="margin-bottom:25px;">Akses Keamanan</h2>
-                <p style="margin-bottom:15px; font-size:0.9rem; opacity:0.8;">Masukkan Password Panitia HIMAIF</p>
-                <input type="password" id="pinPass" placeholder="Password" class="input-box" style="text-align:center;">
-                <button class="btn-action" onclick="prosesLogin()">MASUK</button>
+                <h2 style="margin-bottom:20px;">Akses Panitia</h2>
+                <input type="password" id="pinPass" placeholder="Masukkan Password" class="input-box" style="text-align:center;">
+                <button class="btn-action" onclick="prosesLogin()">MASUK KE SCANNER</button>
                 <button class="btn-back" onclick="backToMenu()">BATAL</button>
             </div>
 
-            <!-- SCANNER (Hanya tampil jika password benar) -->
             <div id="scannerSection" style="display:none;">
                 <h2 style="margin-bottom:20px;">Scanner Presensi</h2>
                 <div id="reader"></div>
-                <p id="statusScan" style="margin-top:20px; font-weight:700; font-size:1.1rem;"></p>
+                <p id="statusScan" style="margin-top:20px; font-weight:700;"></p>
                 <button class="btn-back" onclick="location.reload()" style="margin-top:20px;">KELUAR</button>
             </div>
         </div>
@@ -138,18 +147,18 @@
 
     <script>
         const URL_SCRIPT = 'https://script.google.com/macros/s/AKfycbwtVl3lHGkb_vb7-cQuycylVz-ClfM6Kq2Q58TBbdbClXPfKrOpWfM0Ryn0moTdqUGxCg/exec'; // Ganti dengan link Apps Script kamu
-        const PIN_SECRET = "WISUDAIWU2026"; // Ganti password di sini sesuai keinginan
+        const PIN_SECRET = "WISUDAIWU2026"; 
         let html5QrScanner;
 
         function openWisudawan() {
             document.getElementById('uiMenu').style.display = 'none';
-            document.getElementById('headerMain').style.display = 'none';
+            document.getElementById('headerArea').style.display = 'none';
             document.getElementById('uiWisudawan').style.display = 'block';
         }
 
         function openPanitia() {
             document.getElementById('uiMenu').style.display = 'none';
-            document.getElementById('headerMain').style.display = 'none';
+            document.getElementById('headerArea').style.display = 'none';
             document.getElementById('uiPanitia').style.display = 'block';
         }
 
@@ -159,17 +168,17 @@
 
         async function getQR() {
             const nim = document.getElementById('nimMhs').value.trim();
-            if(!nim) return alert("Masukkan NIM terlebih dahulu!");
+            if(!nim) return;
             
             try {
                 const res = await fetch(`${URL_SCRIPT}?action=getMahasiswa&nim=${nim}`);
                 const d = await res.json();
                 if(d.nim) {
                     document.getElementById('hasilMhs').style.display = 'block';
-                    document.getElementById('detailMhs').innerHTML = `<h3>${d.nama}</h3><p>${d.prodi}</p><p>Kursi: <b>${d.kursi}</b></p>`;
+                    document.getElementById('detailMhs').innerHTML = `<h3>${d.nama}</h3><p>${d.prodi}</p><p>Nomor Kursi: <b>${d.kursi}</b></p>`;
                     QRCode.toCanvas(document.getElementById('canvasQR'), `MHS:${d.nim}`, { width: 220 });
-                } else { alert("Data NIM tidak ditemukan!"); }
-            } catch(e) { alert("Terjadi kesalahan koneksi."); }
+                } else { alert("NIM tidak ditemukan!"); }
+            } catch(e) { alert("Kesalahan koneksi."); }
         }
 
         function prosesLogin() {
@@ -177,16 +186,14 @@
                 document.getElementById('loginPanitia').style.display = 'none';
                 document.getElementById('scannerSection').style.display = 'block';
                 startScan();
-            } else { 
-                alert("Password Salah! Hanya Panitia HIMAIF yang diizinkan."); 
-            }
+            } else { alert("Password Salah!"); }
         }
 
         function startScan() {
             html5QrScanner = new Html5Qrcode("reader");
-            html5QrScanner.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 }, (decodedText) => {
-                document.getElementById('statusScan').innerText = "Memproses Data...";
-                kirimDataScan(decodedText);
+            html5QrScanner.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 }, (txt) => {
+                document.getElementById('statusScan').innerText = "Memproses...";
+                kirimDataScan(txt);
             });
         }
 
@@ -197,7 +204,7 @@
                 const st = document.getElementById('statusScan');
                 st.innerText = resJson.message;
                 st.style.color = resJson.success ? "#00ff00" : "#ff4d4d";
-            } catch(e) { alert("Gagal mengirim data scan."); }
+            } catch(e) { }
         }
     </script>
 </body>
