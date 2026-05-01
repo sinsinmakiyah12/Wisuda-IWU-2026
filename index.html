@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistem Wisuda IWU 2026</title>
     <script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js"></script>
-    <!-- Library untuk Scanner Panitia -->
     <script src="https://unpkg.com/html5-qrcode"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -22,32 +21,28 @@
         }
         .container { width: 100%; max-width: 400px; }
 
-        .menu-wrapper { display: flex; flex-direction: column; gap: 25px; }
+        /* Header Style */
+        .header-wisuda { text-align: center; margin-bottom: 30px; }
+        .header-wisuda i { font-size: 50px; color: #8c76cc; margin-bottom: 15px; }
+        .header-wisuda h1 { font-size: 16px; font-weight: 700; letter-spacing: 1px; color: #fff; line-height: 1.4; }
+        .header-wisuda p { font-size: 12px; color: #a286f4; margin-top: 5px; font-weight: 600; }
+
+        .menu-wrapper { display: flex; flex-direction: column; gap: 20px; }
         
         .menu-card {
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(12px);
             border-radius: 35px;
-            padding: 45px 25px;
+            padding: 35px 25px;
             text-align: center;
             cursor: pointer;
-            transition: transform 0.3s ease, background 0.3s ease;
+            transition: transform 0.3s ease;
         }
-        .menu-card:hover { 
-            background: rgba(255, 255, 255, 0.06); 
-            transform: translateY(-3px);
-        }
-        
-        .menu-card i { 
-            font-size: 85px; 
-            color: #8c76cc; 
-            margin-bottom: 25px; 
-            display: block;
-            opacity: 0.9;
-        }
-        .menu-card h2 { font-size: 22px; font-weight: 700; margin-bottom: 8px; }
-        .menu-card p { font-size: 14px; opacity: 0.7; line-height: 1.4; padding: 0 10px; }
+        .menu-card:hover { transform: translateY(-3px); background: rgba(255, 255, 255, 0.06); }
+        .menu-card i { font-size: 60px; color: #8c76cc; margin-bottom: 15px; display: block; }
+        .menu-card h2 { font-size: 20px; font-weight: 700; }
+        .menu-card p { font-size: 13px; opacity: 0.7; }
 
         .glass-card { 
             background: rgba(255, 255, 255, 0.05);
@@ -61,7 +56,7 @@
         .grid-item { 
             background: rgba(255, 255, 255, 0.04); 
             border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 18px; padding: 22px 5px; cursor: pointer;
+            border-radius: 18px; padding: 20px 5px; cursor: pointer;
         }
         .grid-item i { font-size: 22px; color: #a286f4; margin-bottom: 8px; display: block; }
         .grid-item p { font-size: 11px; font-weight: 600; text-transform: uppercase; }
@@ -77,22 +72,25 @@
         }
         .btn-back { 
             background: transparent; border: 1px solid rgba(255,255,255,0.15); 
-            color: white; padding: 12px; border-radius: 15px; margin-top: 20px; 
-            width: 100%; cursor: pointer; font-size: 13px;
+            color: white; padding: 12px; border-radius: 15px; margin-top: 20px; width: 100%; cursor: pointer;
         }
         
         .qr-display { background: white; padding: 12px; border-radius: 20px; display: inline-block; margin: 20px 0; }
         .info-mhs { background: rgba(255,255,255,0.06); padding: 15px; border-radius: 15px; margin-bottom: 12px; font-size: 14px; }
-        #statusMessage { font-size: 12px; margin-top: 10px; color: #81c784; font-weight: 600; }
-        
-        /* Scanner Styling */
         #reader { width: 100%; border-radius: 20px; overflow: hidden; background: #000; margin-top: 10px; }
-        .scan-feedback { margin-top: 15px; padding: 15px; border-radius: 15px; font-weight: 600; font-size: 14px; }
+        .scan-feedback { margin-top: 15px; padding: 15px; border-radius: 15px; font-weight: 600; }
     </style>
 </head>
 <body>
 
 <div class="container">
+    <!-- HEADER TEMA -->
+    <div id="headerArea" class="header-wisuda">
+        <i class="fas fa-graduation-cap"></i>
+        <h1>TRANSFORMASI BANGSA MELALUI INTELEKTUAL MUDA YANG ADAPTIF</h1>
+        <p>TAHUN AKADEMIK 2025/2026</p>
+    </div>
+
     <!-- MENU UTAMA -->
     <div id="mainMenu" class="menu-wrapper">
         <div class="menu-card" onclick="showPage('viewKategori')">
@@ -110,7 +108,7 @@
 
     <!-- PILIH LAYANAN (WISUDAWAN) -->
     <div id="viewKategori" class="glass-card" style="display: none;">
-        <h2 style="margin-bottom: 5px;">Layanan Wisuda</h2>
+        <h2>Layanan Wisuda</h2>
         <div class="grid-container">
             <div class="grid-item" onclick="selectKategori('Simulasi')"><i class="fas fa-vial"></i><p>Simulasi</p></div>
             <div class="grid-item" onclick="selectKategori('Kehadiran')"><i class="fas fa-id-badge"></i><p>Kehadiran</p></div>
@@ -123,16 +121,14 @@
 
     <!-- GENERATE QR (WISUDAWAN) -->
     <div id="viewInputNIM" class="glass-card" style="display: none;">
-        <h2 id="labelKategori" style="color: #a286f4; text-transform: uppercase; font-size: 18px;">QR</h2>
+        <h2 id="labelKategori" style="color: #a286f4;">QR</h2>
         <input type="text" id="nimInput" placeholder="MASUKKAN NIM" class="input-box">
         <button id="btnCari" class="btn-action" onclick="fetchData()">GENERATE QR</button>
         
         <div id="hasilMhs" style="display:none; margin-top:20px;">
             <div id="infoDetail" class="info-mhs"></div>
             <div class="qr-display"><canvas id="qrCanvas"></canvas></div><br>
-            <button id="btnDownload" class="btn-action" style="background: #388e3c;" onclick="downloadQR()">
-                <i class="fas fa-download"></i> SIMPAN QR
-            </button>
+            <button id="btnDownload" class="btn-action" style="background: #388e3c;" onclick="downloadQR()">SIMPAN QR</button>
             <div id="statusMessage"></div>
         </div>
         <button class="btn-back" onclick="showPage('viewKategori')">KEMBALI</button>
@@ -140,11 +136,10 @@
 
     <!-- PILIH GRID SCAN (PANITIA) -->
     <div id="viewPanitiaGrid" class="glass-card" style="display: none;">
-        <h2 style="margin-bottom: 5px;">Panel Panitia</h2>
-        <p style="font-size: 12px; opacity: 0.7;">Pilih Bagian Verifikasi:</p>
+        <h2>Panel Panitia</h2>
         <div class="grid-container">
             <div class="grid-item" onclick="startPanitiaScan('Simulasi')"><i class="fas fa-vial"></i><p>Simulasi</p></div>
-            <div class="grid-item" onclick="startPanitiaScan('Ortu')"><i class="fas fa-gift"></i><p>Ortu (Goodie)</p></div>
+            <div class="grid-item" onclick="startPanitiaScan('Ortu')"><i class="fas fa-gift"></i><p>Orang Tua</p></div>
             <div class="grid-item" onclick="startPanitiaScan('Mahasiswa')"><i class="fas fa-user-check"></i><p>Mahasiswa</p></div>
             <div class="grid-item" onclick="startPanitiaScan('Toga')"><i class="fas fa-graduation-cap"></i><p>Toga</p></div>
             <div class="grid-item" style="grid-column: span 2;" onclick="startPanitiaScan('Ijazah')"><i class="fas fa-scroll"></i><p>Ijazah</p></div>
@@ -154,7 +149,7 @@
 
     <!-- HALAMAN SCANNER (PANITIA) -->
     <div id="viewScanner" class="glass-card" style="display: none;">
-        <h2 id="labelScanMode" style="color: #a286f4; text-transform: uppercase; font-size: 18px; margin-bottom: 15px;">SCAN</h2>
+        <h2 id="labelScanMode" style="color: #a286f4; margin-bottom: 15px;">SCAN</h2>
         <div id="reader"></div>
         <div id="scanFeedback" class="scan-feedback" style="display: none;"></div>
         <button class="btn-back" onclick="stopScanner()">GANTI GRID</button>
@@ -162,8 +157,8 @@
 </div>
 
 <script>
-    // MASUKKAN URL WEB APP APPS SCRIPT KAMU DI SINI
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby2jB5p38L5J-3BFK8Utg3mbum7el1P4EeRoV-jpsU1w2eyP6SRKJwaG9SmTvfdaH7sDA/exec";
+    const PANITIA_PASS = "IWU2026JUARA"; // Password Panitia
     
     let currentType = "";
     let studentData = null;
@@ -171,35 +166,38 @@
     let selectedTipePanitia = "";
 
     function showPage(id) {
+        // Proteksi Password Panitia
+        if (id === 'viewPanitiaGrid') {
+            const pass = prompt("Masukkan Password Panitia:");
+            if (pass !== PANITIA_PASS) {
+                alert("Akses Ditolak!");
+                return;
+            }
+        }
+
         document.getElementById('mainMenu').style.display = 'none';
         document.getElementById('viewKategori').style.display = 'none';
         document.getElementById('viewInputNIM').style.display = 'none';
         document.getElementById('viewPanitiaGrid').style.display = 'none';
         document.getElementById('viewScanner').style.display = 'none';
+        document.getElementById('headerArea').style.display = (id === 'mainMenu') ? 'block' : 'none';
         
-        if (id === 'mainMenu') {
-            document.getElementById(id).style.display = 'flex';
-        } else {
-            document.getElementById(id).style.display = 'block';
-        }
+        if (id === 'mainMenu') document.getElementById(id).style.display = 'flex';
+        else document.getElementById(id).style.display = 'block';
     }
 
-    // LOGIKA WISUDAWAN (AMAN)
     function selectKategori(tipe) {
         currentType = tipe;
         document.getElementById('labelKategori').innerText = "QR " + tipe;
         document.getElementById('hasilMhs').style.display = 'none';
-        document.getElementById('statusMessage').innerText = "";
         document.getElementById('nimInput').value = "";
         showPage('viewInputNIM');
     }
 
     async function fetchData() {
         const nimInput = document.getElementById('nimInput').value.trim();
-        const btn = document.getElementById('btnCari');
-        if(!nimInput) return alert("NIM tidak boleh kosong!");
-        btn.innerText = "PROSES...";
-        btn.disabled = true;
+        if(!nimInput) return alert("NIM Kosong!");
+        document.getElementById('btnCari').innerText = "PROSES...";
 
         try {
             const response = await fetch(`${SCRIPT_URL}?action=getMahasiswa&nim=${nimInput}`);
@@ -209,9 +207,9 @@
                 document.getElementById('hasilMhs').style.display = 'block';
                 document.getElementById('infoDetail').innerHTML = `<strong>${data.nama}</strong><br>Kursi: ${data.kursi || '-'}`;
                 QRCode.toCanvas(document.getElementById('qrCanvas'), `${data.nim}|${currentType}`, { width: 180, margin: 2 });
-            } else { alert("NIM tidak ditemukan!"); }
-        } catch (e) { alert("Gagal memuat data."); } 
-        finally { btn.innerText = "GENERATE QR"; btn.disabled = false; }
+            } else alert("NIM Tidak Ada!");
+        } catch (e) { alert("Error!"); } 
+        finally { document.getElementById('btnCari').innerText = "GENERATE QR"; }
     }
 
     async function downloadQR() {
@@ -221,64 +219,48 @@
         link.download = `QR_${currentType}_${studentData.nim}.png`;
         link.href = canvas.toDataURL("image/png");
         link.click();
-
-        try {
-            await fetch(SCRIPT_URL, {
-                method: 'POST',
-                mode: 'no-cors', 
-                body: JSON.stringify({ nim: studentData.nim, tipe: currentType })
-            });
-            document.getElementById('btnDownload').innerHTML = `<i class="fas fa-check"></i> BERHASIL`;
-            document.getElementById('statusMessage').innerHTML = `Diunduh & dicatat ✓`;
-        } catch (e) { console.error("Gagal update database"); }
+        
+        fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ nim: studentData.nim, tipe: currentType }) });
+        document.getElementById('statusMessage').innerText = "Berhasil Dicatat ✓";
     }
 
-    // LOGIKA PANITIA (BARU)
     function startPanitiaScan(tipe) {
         selectedTipePanitia = tipe;
-        document.getElementById('labelScanMode').innerText = "SCAN " + tipe;
+        document.getElementById('labelScanMode').innerText = "SCAN " + (tipe === 'Ortu' ? 'ORANG TUA' : tipe);
         document.getElementById('scanFeedback').style.display = 'none';
         showPage('viewScanner');
         
         if(!html5QrCode) html5QrCode = new Html5Qrcode("reader");
-        
-        html5QrCode.start(
-            { facingMode: "environment" }, 
-            { fps: 10, qrbox: 250 },
-            (decodedText) => {
-                const nimScan = decodedText.split('|')[0];
-                executeVerify(nimScan);
-                html5QrCode.pause(); 
-            }
-        ).catch(err => alert("Kamera Error: " + err));
+        html5QrCode.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 }, (decodedText) => {
+            const nimScan = decodedText.split('|')[0];
+            executeVerify(nimScan);
+            html5QrCode.pause(); 
+        });
     }
 
     async function executeVerify(nim) {
-        const feedback = document.getElementById('scanFeedback');
-        feedback.style.display = 'block';
-        feedback.style.background = "rgba(255,255,255,0.1)";
-        feedback.innerHTML = "Memproses...";
-
+        const fb = document.getElementById('scanFeedback');
+        fb.style.display = 'block';
+        fb.innerHTML = "Memproses...";
         try {
             const response = await fetch(`${SCRIPT_URL}?action=verify&nim=${nim}&tipe=${selectedTipePanitia}`);
             const res = await response.json();
-
             if(res.status === "success") {
-                feedback.style.background = "rgba(56, 142, 60, 0.4)";
-                feedback.innerHTML = `<i class="fas fa-check-circle"></i> BERHASIL!<br>${res.nama}<br><span style="font-size:11px">${res.pesan}</span>`;
-                setTimeout(() => { feedback.style.display = 'none'; html5QrCode.resume(); }, 2500);
+                fb.style.background = "rgba(56, 142, 60, 0.4)";
+                fb.innerHTML = `BERHASIL!<br>${res.nama}`;
+                setTimeout(() => { fb.style.display = 'none'; html5QrCode.resume(); }, 2000);
             } else {
-                feedback.style.background = "rgba(211, 47, 47, 0.4)";
-                feedback.innerHTML = `<i class="fas fa-times-circle"></i> GAGAL!<br>NIM Tidak Ditemukan`;
-                setTimeout(() => { feedback.style.display = 'none'; html5QrCode.resume(); }, 2500);
+                fb.style.background = "rgba(211, 47, 47, 0.4)";
+                fb.innerHTML = `GAGAL! NIM SALAH`;
+                setTimeout(() => { fb.style.display = 'none'; html5QrCode.resume(); }, 2000);
             }
-        } catch (e) { alert("Koneksi Gagal"); html5QrCode.resume(); }
+        } catch (e) { html5QrCode.resume(); }
     }
 
     function stopScanner() {
         if (html5QrCode && html5QrCode.isScanning) {
-            html5QrCode.stop().then(() => showPage('viewPanitiaGrid')).catch(() => showPage('viewPanitiaGrid'));
-        } else { showPage('viewPanitiaGrid'); }
+            html5QrCode.stop().then(() => showPage('viewPanitiaGrid'));
+        } else showPage('viewPanitiaGrid');
     }
 </script>
 </body>
