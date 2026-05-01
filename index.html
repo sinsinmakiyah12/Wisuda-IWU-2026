@@ -20,7 +20,6 @@
         }
         .container { width: 100%; max-width: 400px; }
 
-        /* MENU UTAMA PERSIS image_ba7c95.png */
         .menu-wrapper { display: flex; flex-direction: column; gap: 25px; }
         
         .menu-card {
@@ -48,7 +47,6 @@
         .menu-card h2 { font-size: 22px; font-weight: 700; margin-bottom: 8px; }
         .menu-card p { font-size: 14px; opacity: 0.7; line-height: 1.4; padding: 0 10px; }
 
-        /* LAYANAN & QR SECTION */
         .glass-card { 
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(20px); 
@@ -89,7 +87,7 @@
 <body>
 
 <div class="container">
-    <!-- MENU UTAMA SESUAI image_ba7c95.png -->
+    <!-- MENU UTAMA -->
     <div id="mainMenu" class="menu-wrapper">
         <div class="menu-card" onclick="showPage('viewKategori')">
             <i class="fas fa-user-graduate"></i>
@@ -136,7 +134,8 @@
 </div>
 
 <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwj7lCEDs1TVUFvGIGfTIxKb6-mODKBykawyq5SEVPE-BzjrxzV5ajiKGxUOts6Lf-9bg/exec";
+    // GANTI URL INI JIKA KAMU MELAKUKAN NEW DEPLOYMENT
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx5sK3_lkzxN9Vspyqma4EpVMDDS2Sw51yD6-NWgFbrbkzyL_zp6IpKmXPpBokFgRuaiA/exec";
     let currentType = "";
     let studentData = null;
 
@@ -162,54 +161,75 @@
     }
 
     async function fetchData() {
-        const nim = document.getElementById('nimInput').value;
+        const nimInput = document.getElementById('nimInput').value.trim();
         const btn = document.getElementById('btnCari');
-        if(!nim) return alert("NIM tidak boleh kosong!");
+        if(!nimInput) return alert("NIM tidak boleh kosong!");
 
         btn.innerText = "PROSES...";
         btn.disabled = true;
 
         try {
-            const response = await fetch(`${SCRIPT_URL}?action=getMahasiswa&nim=${nim}`);
+            const response = await fetch(`${SCRIPT_URL}?action=getMahasiswa&nim=${nimInput}`);
             const data = await response.json();
 
             if(data.nim) {
                 studentData = data;
                 document.getElementById('hasilMhs').style.display = 'block';
-                document.getElementById('infoDetail').innerHTML = `<strong>${data.nama}</strong><br>Kursi: ${data.kursi}`;
+                
+                // Menampilkan Nama dan Kursi (Kursi diambil dari kolom H via Apps Script)
+                document.getElementById('infoDetail').innerHTML = `
+                    <strong>${data.nama}</strong><br>
+                    Kursi: ${data.kursi || '-'}
+                `;
                 
                 QRCode.toCanvas(document.getElementById('qrCanvas'), `${data.nim}|${currentType}`, { 
                     width: 180,
                     margin: 2
                 });
-                
                 document.getElementById('btnDownload').innerHTML = `<i class="fas fa-download"></i> SIMPAN QR`;
                 document.getElementById('statusMessage').innerHTML = "";
             } else {
                 alert("NIM tidak ditemukan!");
             }
-        } catch (error) {
-            alert("Gagal memuat data dari server.");
-        } finally {
-            btn.innerText = "GENERATE QR";
-            btn.disabled = false;
+        } catch (e) { 
+            alert("Gagal memuat data dari server."); 
+        } finally { 
+            btn.innerText = "GENERATE QR"; 
+            btn.disabled = false; 
         }
     }
 
-    function downloadQR() {
+    async function downloadQR() {
+        if(!studentData) return;
+        
         const canvas = document.getElementById('qrCanvas');
         const link = document.createElement('a');
         link.download = `QR_${currentType}_${studentData.nim}.png`;
         link.href = canvas.toDataURL("image/png");
         link.click();
 
-        const skrg = new Date();
-        const jam = skrg.getHours().toString().padStart(2, '0') + ":" + 
-                    skrg.getMinutes().toString().padStart(2, '0') + ":" + 
-                    skrg.getSeconds().toString().padStart(2, '0');
+        // Mengirim data ke Google Sheets untuk mencatat checklist (doPost)
+        try {
+            await fetch(SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors', 
+                body: JSON.stringify({
+                    nim: studentData.nim,
+                    tipe: currentType
+                })
+            });
+            
+            const skrg = new Date();
+            const jam = skrg.getHours().toString().padStart(2, '0') + ":" + 
+                        skrg.getMinutes().toString().padStart(2, '0') + ":" + 
+                        skrg.getSeconds().toString().padStart(2, '0');
 
-        document.getElementById('btnDownload').innerHTML = `<i class="fas fa-check"></i> BERHASIL`;
-        document.getElementById('statusMessage').innerHTML = `Diunduh pukul ${jam} ✓`;
+            document.getElementById('btnDownload').innerHTML = `<i class="fas fa-check"></i> BERHASIL`;
+            document.getElementById('statusMessage').innerHTML = `Diunduh & dicatat pukul ${jam} ✓`;
+        } catch (e) { 
+            console.error("Gagal update database"); 
+            alert("QR tersimpan, namun gagal mencatat ke database.");
+        }
     }
 </script>
 </body>
