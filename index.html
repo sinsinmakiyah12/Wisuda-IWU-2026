@@ -21,10 +21,9 @@
         }
         .container { width: 100%; max-width: 400px; }
 
-        /* Header Style */
         .header-wisuda { text-align: center; margin-bottom: 30px; }
         .header-wisuda i { font-size: 50px; color: #8c76cc; margin-bottom: 15px; }
-        .header-wisuda h1 { font-size: 16px; font-weight: 700; letter-spacing: 1px; color: #fff; line-height: 1.4; }
+        .header-wisuda h1 { font-size: 16px; font-weight: 700; color: #fff; line-height: 1.4; }
         .header-wisuda p { font-size: 12px; color: #a286f4; margin-top: 5px; font-weight: 600; }
 
         .menu-wrapper { display: flex; flex-direction: column; gap: 20px; }
@@ -84,21 +83,18 @@
 <body>
 
 <div class="container">
-    <!-- HEADER TEMA -->
     <div id="headerArea" class="header-wisuda">
         <i class="fas fa-graduation-cap"></i>
         <h1>TRANSFORMASI BANGSA MELALUI INTELEKTUAL MUDA YANG ADAPTIF</h1>
         <p>TAHUN AKADEMIK 2025/2026</p>
     </div>
 
-    <!-- MENU UTAMA -->
     <div id="mainMenu" class="menu-wrapper">
         <div class="menu-card" onclick="showPage('viewKategori')">
             <i class="fas fa-user-graduate"></i>
             <h2>Wisudawan</h2>
             <p>Unduh QR Code Kehadiran & Atribut</p>
         </div>
-
         <div class="menu-card" onclick="showPage('viewPanitiaGrid')">
             <i class="fas fa-qrcode"></i>
             <h2>Panitia</h2>
@@ -106,7 +102,6 @@
         </div>
     </div>
 
-    <!-- PILIH LAYANAN (WISUDAWAN) -->
     <div id="viewKategori" class="glass-card" style="display: none;">
         <h2>Layanan Wisuda</h2>
         <div class="grid-container">
@@ -119,12 +114,10 @@
         <button class="btn-back" onclick="showPage('mainMenu')">KEMBALI</button>
     </div>
 
-    <!-- GENERATE QR (WISUDAWAN) -->
     <div id="viewInputNIM" class="glass-card" style="display: none;">
         <h2 id="labelKategori" style="color: #a286f4;">QR</h2>
         <input type="text" id="nimInput" placeholder="MASUKKAN NIM" class="input-box">
         <button id="btnCari" class="btn-action" onclick="fetchData()">GENERATE QR</button>
-        
         <div id="hasilMhs" style="display:none; margin-top:20px;">
             <div id="infoDetail" class="info-mhs"></div>
             <div class="qr-display"><canvas id="qrCanvas"></canvas></div><br>
@@ -134,9 +127,8 @@
         <button class="btn-back" onclick="showPage('viewKategori')">KEMBALI</button>
     </div>
 
-    <!-- PILIH GRID SCAN (PANITIA) -->
     <div id="viewPanitiaGrid" class="glass-card" style="display: none;">
-        <h2>Panitia Wisuda IWU</h2>
+        <h2>Panel Panitia</h2>
         <div class="grid-container">
             <div class="grid-item" onclick="startPanitiaScan('Simulasi')"><i class="fas fa-vial"></i><p>Simulasi</p></div>
             <div class="grid-item" onclick="startPanitiaScan('Ortu')"><i class="fas fa-gift"></i><p>Orang Tua</p></div>
@@ -147,7 +139,6 @@
         <button class="btn-back" onclick="showPage('mainMenu')">KEMBALI</button>
     </div>
 
-    <!-- HALAMAN SCANNER (PANITIA) -->
     <div id="viewScanner" class="glass-card" style="display: none;">
         <h2 id="labelScanMode" style="color: #a286f4; margin-bottom: 15px;">SCAN</h2>
         <div id="reader"></div>
@@ -158,7 +149,8 @@
 
 <script>
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby2jB5p38L5J-3BFK8Utg3mbum7el1P4EeRoV-jpsU1w2eyP6SRKJwaG9SmTvfdaH7sDA/exec";
-    const PANITIA_PASS = "WISUDAIWU26"; // Password Panitia
+    const PANITIA_PASS = "WISUDAIWU26";
+    let isLoggedIn = false; // Status login panitia
     
     let currentType = "";
     let studentData = null;
@@ -166,13 +158,14 @@
     let selectedTipePanitia = "";
 
     function showPage(id) {
-        // Proteksi Password Panitia
-        if (id === 'viewPanitiaGrid') {
+        // Cek Password hanya jika belum login dan mau masuk menu panitia
+        if (id === 'viewPanitiaGrid' && !isLoggedIn) {
             const pass = prompt("Masukkan Password Panitia:");
             if (pass !== PANITIA_PASS) {
                 alert("Akses Ditolak!");
                 return;
             }
+            isLoggedIn = true; // Set status sudah login
         }
 
         document.getElementById('mainMenu').style.display = 'none';
@@ -198,7 +191,6 @@
         const nimInput = document.getElementById('nimInput').value.trim();
         if(!nimInput) return alert("NIM Kosong!");
         document.getElementById('btnCari').innerText = "PROSES...";
-
         try {
             const response = await fetch(`${SCRIPT_URL}?action=getMahasiswa&nim=${nimInput}`);
             const data = await response.json();
@@ -219,7 +211,6 @@
         link.download = `QR_${currentType}_${studentData.nim}.png`;
         link.href = canvas.toDataURL("image/png");
         link.click();
-        
         fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ nim: studentData.nim, tipe: currentType }) });
         document.getElementById('statusMessage').innerText = "Berhasil Dicatat ✓";
     }
@@ -246,6 +237,9 @@
             const response = await fetch(`${SCRIPT_URL}?action=verify&nim=${nim}&tipe=${selectedTipePanitia}`);
             const res = await response.json();
             if(res.status === "success") {
+                // FITUR GETAR (VIBRATE)
+                if (navigator.vibrate) navigator.vibrate(200); 
+                
                 fb.style.background = "rgba(56, 142, 60, 0.4)";
                 fb.innerHTML = `BERHASIL!<br>${res.nama}`;
                 setTimeout(() => { fb.style.display = 'none'; html5QrCode.resume(); }, 2000);
